@@ -5,14 +5,21 @@ import { useGeolocation } from "../hooks/use-geolocation";
 import { GoogleMap as ReactGoogleMap, useJsApiLoader, Marker } from "@react-google-maps/api";
 
 const containerStyle = {
-  width: "400px",
-  height: "400px",
+  width: "800px",
+  height: "800px",
+  maxWidth: "100%",
 };
 
 type TMap = google.maps.Map;
+type MouseMapEvent = google.maps.MapMouseEvent;
 
 const GoogleMap = () => {
   const [map, setMap] = React.useState<TMap | null>(null);
+  const [selectedLocation, setSelectedLocation] = React.useState<{
+    lat: number;
+    lng: number;
+  } | null>();
+
   const { state, error, userLocation } = useGeolocation();
 
   const { isLoaded } = useJsApiLoader({
@@ -20,24 +27,37 @@ const GoogleMap = () => {
     googleMapsApiKey: process.env.NEXT_PUBLIC_GOOGLE_MAPS_API_KEY!,
   });
 
-  console.log("process.env.NEXT_PUBLIC_GOOGLE_MAPS_API_KEY", process.env.NEXT_PUBLIC_GOOGLE_MAPS_API_KEY);
+  const onLoad = React.useCallback(
+    (map: TMap) => {
+      if (!userLocation) return;
 
-  const onLoad = React.useCallback((map: TMap) => {
-    if (!userLocation) return;
+      // Pan to the user's location, so we don't have to use map.fitBounds()
+      map.panTo({
+        lat: userLocation!.latitude,
+        lng: userLocation!.longitude,
+      });
 
-    // This is just an example of getting and using the map instance!!! don't just blindly copy!
-    const bounds = new window.google.maps.LatLngBounds({
-      lat: userLocation!.latitude,
-      lng: userLocation!.longitude,
-    });
+      setMap(map);
+    },
+    [userLocation]
+  );
 
-    map.fitBounds(bounds);
-    setMap(map);
-  }, []);
+  const onMapClick = React.useCallback(
+    (event: MouseMapEvent) => {
+      if (event.latLng && map) {
+        setSelectedLocation({
+          lat: event.latLng.lat(),
+          lng: event.latLng.lng(),
+        });
 
-  // const onUnmount = React.useCallback((map: TMap) => {
-  //   setMap(null);
-  // }, []);
+        map.panTo({
+          lat: event.latLng.lat(),
+          lng: event.latLng.lng(),
+        });
+      }
+    },
+    [map]
+  );
 
   if (state === "loading" || !isLoaded) {
     return <p>Getting your location...</p>;
@@ -47,18 +67,24 @@ const GoogleMap = () => {
     return <p className="text-red-500">Error: {error}</p>;
   }
 
-  return isLoaded ? (
+  return (
     <ReactGoogleMap
       mapContainerStyle={containerStyle}
-      center={{ lat: userLocation.latitude, lng: userLocation.longitude }}
+      mapTypeId={google.maps.MapTypeId.ROADMAP}
       zoom={15}
       onLoad={onLoad}
-      // onUnmount={onUnmount}
+      onClick={onMapClick}
+      options={{
+        disableDefaultUI: true,
+      }}
     >
-      <Marker position={{ lat: userLocation.latitude, lng: userLocation.longitude }} />
+      <Marker
+        position={{
+          lat: selectedLocation?.lat ?? userLocation.latitude,
+          lng: selectedLocation?.lng ?? userLocation.longitude,
+        }}
+      />
     </ReactGoogleMap>
-  ) : (
-    <p>Loading...</p>
   );
 };
 
