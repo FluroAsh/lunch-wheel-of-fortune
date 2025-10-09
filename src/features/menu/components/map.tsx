@@ -2,7 +2,11 @@
 
 import React from "react";
 import { useGeolocation } from "../hooks/use-geolocation";
-import { GoogleMap as ReactGoogleMap, useJsApiLoader, Marker } from "@react-google-maps/api";
+import {
+  GoogleMap as ReactGoogleMaps,
+  useJsApiLoader,
+  Marker,
+} from "@react-google-maps/api";
 
 const containerStyle = {
   width: "800px",
@@ -22,7 +26,7 @@ const GoogleMap = () => {
 
   const { state, error, userLocation } = useGeolocation();
 
-  const { isLoaded } = useJsApiLoader({
+  const { isLoaded: isMapsAPIReady } = useJsApiLoader({
     id: "google-map-script",
     googleMapsApiKey: process.env.NEXT_PUBLIC_GOOGLE_MAPS_API_KEY!,
   });
@@ -59,7 +63,7 @@ const GoogleMap = () => {
     [map]
   );
 
-  if (state === "loading" || !isLoaded) {
+  if (state === "loading" || !isMapsAPIReady) {
     return <p>Getting your location...</p>;
   }
 
@@ -68,7 +72,7 @@ const GoogleMap = () => {
   }
 
   return (
-    <ReactGoogleMap
+    <ReactGoogleMaps
       mapContainerStyle={containerStyle}
       mapTypeId={google.maps.MapTypeId.ROADMAP}
       zoom={15}
@@ -84,7 +88,7 @@ const GoogleMap = () => {
           lng: selectedLocation?.lng ?? userLocation.longitude,
         }}
       />
-    </ReactGoogleMap>
+    </ReactGoogleMaps>
   );
 };
 
