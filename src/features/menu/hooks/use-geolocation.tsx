@@ -14,7 +14,7 @@ export const useGeolocation = (options: PositionOptions = {}) => {
 
   const getCurrentPosition = useCallback(() => {
     // Check if geolocation is supported and we're in the browser
-    if (typeof window === "undefined" || !navigator.geolocation) {
+    if (!navigator.geolocation) {
       setState("error");
       setError("Geolocation is not supported by this browser.");
       return;
@@ -44,14 +44,19 @@ export const useGeolocation = (options: PositionOptions = {}) => {
   // Initial geolocation request
   useEffect(() => {
     getCurrentPosition();
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
   // Reset state after user is considered idle
   useEffect(() => {
-    const timeout = setTimeout(() => {
-      setState("idle");
-      setError(null);
-    }, IDLE_TIMEOUT);
+    let timeout: NodeJS.Timeout;
+
+    if (state !== "loading") {
+      timeout = setTimeout(() => {
+        setState("idle");
+        setError(null);
+      }, IDLE_TIMEOUT);
+    }
 
     return () => clearTimeout(timeout);
   }, [state]);

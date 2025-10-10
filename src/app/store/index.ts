@@ -6,7 +6,7 @@ type PlacesState = {
   setPlaces: (places: NearbyPlaces) => void;
 };
 
-export const usePlaces = create<PlacesState>((set) => ({
+export const usePlacesStore = create<PlacesState>((set) => ({
   places: [],
-  setPlaces: (places: NearbyPlaces) => set({ places }),
+  setPlaces: (places: NearbyPlaces | undefined) => set({ places }),
 }));
