@@ -5,9 +5,12 @@ import { useEffect } from "react";
 const IDLE_TIMEOUT = 10000;
 
 export const useGeolocation = (options: PositionOptions = {}) => {
-  const [userLocation, setUserLocation] = useState<GeolocationCoordinates | null>(null);
+  const [userLocation, setUserLocation] =
+    useState<GeolocationCoordinates | null>(null);
   const [error, setError] = useState<string | null>(null);
-  const [state, setState] = useState<"idle" | "loading" | "error" | "success">("idle");
+  const [state, setState] = useState<"idle" | "loading" | "error" | "success">(
+    "idle"
+  );
 
   const getCurrentPosition = useCallback(() => {
     // Check if geolocation is supported and we're in the browser
@@ -57,6 +60,10 @@ export const useGeolocation = (options: PositionOptions = {}) => {
     state,
     error,
     userLocation,
+    coords: {
+      lat: userLocation?.latitude || 0,
+      lng: userLocation?.longitude || 0,
+    },
     retry: getCurrentPosition,
   };
 };

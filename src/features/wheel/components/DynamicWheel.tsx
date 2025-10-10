@@ -7,7 +7,7 @@ import { Wheel } from "react-custom-roulette-r19";
 
 export type WheelProps = ComponentProps<typeof Wheel>;
 
-// Dynamically import with no SSR - Wheel library accesses window object during initial SSR
+// Dynamically import with no SSR - Wheel library othewise accesses window object during initial SSR render
 const ClientsideSafeWheel = dynamic(
   () =>
     import("react-custom-roulette-r19").then((mod) => ({ default: mod.Wheel })),
