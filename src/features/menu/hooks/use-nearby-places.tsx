@@ -1,7 +1,8 @@
-import { usePlacesStore } from "@/app/store";
-import { MapInstance, NearbyPlaces } from "@/types/google";
 import { useRef, useState } from "react";
+
+import { usePlacesStore } from "@/app/store";
 import { getCachedPlaces, setCachedPlaces } from "@/lib/cache";
+import { MapInstance, NearbyPlaces } from "@/types/google";
 
 export const useNearbyPlaces = (map: MapInstance | null) => {
   const { radius } = usePlacesStore();
@@ -41,8 +42,8 @@ export const useNearbyPlaces = (map: MapInstance | null) => {
             } else {
               reject(new Error(`Places search failed with status: ${status}`));
             }
-          }
-        )
+          },
+        ),
       );
 
       setCachedPlaces(lat, lng, radius, result); // Store result in cache

@@ -1,6 +1,7 @@
-import { NearbyPlaces } from "@/types/google";
 import { create } from "zustand";
+
 import { clearAllCache, clearExpiredCache } from "@/lib/cache";
+import { NearbyPlaces } from "@/types/google";
 
 type PlacesState = {
   places: NearbyPlaces;

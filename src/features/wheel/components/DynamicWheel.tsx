@@ -14,12 +14,12 @@ const ClientsideSafeWheel = dynamic(
   {
     ssr: false,
     loading: () => (
-      <div className="flex items-center justify-center w-[420px] h-[420px] rounded-full m-4 animate-pulse bg-gray-600">
+      <div className="m-4 flex h-[420px] w-[420px] animate-pulse items-center justify-center rounded-full bg-gray-600">
         {/* TODO: Add an icon instead of text */}
         <div className="text-neutral-100">Loading wheel...</div>
       </div>
     ),
-  }
+  },
 );
 
 export default function DynamicWheel(props: WheelProps) {

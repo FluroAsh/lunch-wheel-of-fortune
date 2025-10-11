@@ -22,7 +22,7 @@ const roundCoordinate = (coord: number): number => {
 export const generateCacheKey = (
   lat: number,
   lng: number,
-  radius: number
+  radius: number,
 ): string => {
   const roundedLat = roundCoordinate(lat);
   const roundedLng = roundCoordinate(lng);
@@ -35,7 +35,7 @@ export const generateCacheKey = (
 export const getCachedPlaces = (
   lat: number,
   lng: number,
-  radius: number
+  radius: number,
 ): NearbyPlaces | null => {
   try {
     const key = generateCacheKey(lat, lng, radius);
@@ -67,7 +67,7 @@ export const setCachedPlaces = (
   lat: number,
   lng: number,
   radius: number,
-  data: NearbyPlaces
+  data: NearbyPlaces,
 ) => {
   try {
     const key = generateCacheKey(lat, lng, radius);

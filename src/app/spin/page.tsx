@@ -1,9 +1,11 @@
 "use client";
 
-import { cn } from "@/lib/utils";
 import { useState } from "react";
+
 import { type WheelDataType } from "react-custom-roulette-r19";
+
 import DynamicWheel from "@/features/wheel/components/DynamicWheel";
+import { cn } from "@/lib/utils";
 
 // TODO: Feed data from Google Places/ API
 const data: WheelDataType[] = [
@@ -44,7 +46,7 @@ export default function Page() {
   };
 
   return (
-    <div className="flex flex-col items-center justify-center h-screen">
+    <div className="flex h-screen flex-col items-center justify-center">
       <DynamicWheel
         mustStartSpinning={mustSpin}
         prizeNumber={prizeNumber}
@@ -70,8 +72,8 @@ export default function Page() {
         disabled={mustSpin}
         onClick={handleSpinClick}
         className={cn(
-          "text-white p-2 rounded-md min-w-[100px]",
-          mustSpin ? "bg-gray-600 text-gray-300" : "bg-blue-500"
+          "min-w-[100px] rounded-md p-2 text-white",
+          mustSpin ? "bg-gray-600 text-gray-300" : "bg-blue-500",
         )}
       >
         {hasSpun ? "Spin Again" : "Spin"}

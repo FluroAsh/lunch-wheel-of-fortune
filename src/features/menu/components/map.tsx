@@ -1,19 +1,22 @@
 "use client";
 
 import React, { useEffect, useMemo } from "react";
-import { useGeolocation } from "../hooks/use-geolocation";
+
 import {
+  Circle,
+  Libraries,
+  Marker,
   GoogleMap as ReactGoogleMaps,
   useJsApiLoader,
-  Marker,
-  Libraries,
-  Circle,
 } from "@react-google-maps/api";
-import { Coords, MouseMapEvent, MapInstance } from "@/types/google";
+import { debounce } from "radash";
+
 import { usePlacesStore } from "@/app/store";
+import { Coords, MapInstance, MouseMapEvent } from "@/types/google";
+
+import { useGeolocation } from "../hooks/use-geolocation";
 import { useNearbyPlaces } from "../hooks/use-nearby-places";
 import { MapSkeleton } from "./map.skeleton";
-import { debounce } from "radash";
 
 const containerStyle = {
   width: "800px",
@@ -81,11 +84,11 @@ const GoogleMap = () => {
     () =>
       debounce({ delay: 500 }, () => {
         searchPlaces(currentLocation.lat, currentLocation.lng).then((places) =>
-          setPlaces(places)
+          setPlaces(places),
         );
       }),
     // eslint-disable-next-line react-hooks/exhaustive-deps
-    [currentLocation.lat, currentLocation.lng]
+    [currentLocation.lat, currentLocation.lng],
   );
 
   if (state === "loading" || !isMapsAPIReady || !currentLocation) {
@@ -104,7 +107,7 @@ const GoogleMap = () => {
     <>
       {/* TODO: Add Google autocomplete for address search (ie when geolocation fails/is disabled) */}
       <input
-        className="p-2 my-2 rounded-md border border-neutral-300"
+        className="my-2 rounded-md border border-neutral-300 p-2"
         type="text"
         placeholder="Search WIP"
       />
@@ -155,13 +158,13 @@ const GoogleMap = () => {
       {isLoadingPlaces ? (
         <MapSkeleton />
       ) : places && places.length > 0 ? (
-        <div className="overflow-y-auto p-2 bg-neutral-800/50 max-w-[800px] my-2 rounded-md border space-y-2 border-neutral-300">
-          <p className="font-bold ">Places nearby that are currently open</p>
+        <div className="my-2 max-w-[800px] space-y-2 overflow-y-auto rounded-md border border-neutral-300 bg-neutral-800/50 p-2">
+          <p className="font-bold">Places nearby that are currently open</p>
           <ul>
             {places.map((place) => (
               <li key={place.place_id}>
                 <a
-                  className="block hover:underline hover:text-blue-500 truncate w-fit"
+                  className="block w-fit truncate hover:text-blue-500 hover:underline"
                   href={`https://www.google.com/maps/place/?q=place_id:${place.place_id}`}
                   target="_blank"
                 >
@@ -172,10 +175,10 @@ const GoogleMap = () => {
           </ul>
         </div>
       ) : (
-        <div className="overflow-y-auto p-2 bg-neutral-800/50 max-w-[800px] rounded-md border border-neutral-300 my-2">
+        <div className="my-2 max-w-[800px] overflow-y-auto rounded-md border border-neutral-300 bg-neutral-800/50 p-2">
           <div className="text-neutral-100">No places found</div>
           <button
-            className="p-2 rounded-md border border-blue-500 bg-blue-500 font-bold text-blue-100"
+            className="rounded-md border border-blue-500 bg-blue-500 p-2 font-bold text-blue-100"
             onClick={retry}
           >
             Try again

@@ -1,5 +1,4 @@
-import { useState, useCallback } from "react";
-
+import { useCallback, useState } from "react";
 import { useEffect } from "react";
 
 const IDLE_TIMEOUT = 10000;
@@ -9,7 +8,7 @@ export const useGeolocation = (options: PositionOptions = {}) => {
     useState<GeolocationCoordinates | null>(null);
   const [error, setError] = useState<string | null>(null);
   const [state, setState] = useState<"idle" | "loading" | "error" | "success">(
-    "idle"
+    "idle",
   );
 
   const getCurrentPosition = useCallback(() => {
@@ -37,7 +36,7 @@ export const useGeolocation = (options: PositionOptions = {}) => {
         maximumAge: 10000,
         enableHighAccuracy: true,
         ...options,
-      }
+      },
     );
   }, [options]);
 
