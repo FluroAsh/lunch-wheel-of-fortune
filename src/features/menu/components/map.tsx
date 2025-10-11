@@ -22,6 +22,7 @@ const containerStyle = {
   width: "800px",
   height: "600px",
   maxWidth: "100%",
+  color: "#1f1f1f",
 };
 
 const libraries: Libraries = ["places"]; // Must be static to prevent script loader reloading
@@ -136,7 +137,6 @@ const GoogleMap = () => {
         options={{ disableDefaultUI: true }}
       >
         <Circle
-          key={`circle-${currentLocation.lat}-${currentLocation.lng}`}
           center={{ lat: currentLocation.lat, lng: currentLocation.lng }}
           radius={radius}
           options={{
