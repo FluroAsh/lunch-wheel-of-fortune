@@ -1,6 +1,7 @@
 import { create } from "zustand";
 
 import { clearAllCache, clearExpiredCache } from "@/lib/cache";
+import { MAP } from "@/lib/constants";
 import { NearbyPlaces } from "@/types/google";
 
 type PlacesState = {
@@ -14,7 +15,7 @@ type PlacesState = {
 
 export const usePlacesStore = create<PlacesState>((set) => ({
   places: [],
-  radius: 1000,
+  radius: MAP.defaultRadius,
   setPlaces: (places: NearbyPlaces | undefined) => set({ places }),
   setRadius: (radius: number) => set({ radius }),
   clearCache: clearAllCache,

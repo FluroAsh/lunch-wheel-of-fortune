@@ -12,10 +12,13 @@ import {
 import { debounce } from "radash";
 
 import { usePlacesStore } from "@/app/store";
+import { MAP } from "@/lib/constants";
+import { cn } from "@/lib/utils";
 import { Coords, MapInstance, MouseMapEvent } from "@/types/google";
 
 import { useGeolocation } from "../hooks/use-geolocation";
 import { useNearbyPlaces } from "../hooks/use-nearby-places";
+import { getPriceLevel, getStarRating } from "../utils/map";
 import { MapSkeleton } from "./map.skeleton";
 
 const containerStyle = {
@@ -83,7 +86,7 @@ const GoogleMap = () => {
 
   const debouncedSearch = useMemo(
     () =>
-      debounce({ delay: 500 }, () => {
+      debounce({ delay: MAP.searchDebounceDelay }, () => {
         searchPlaces(currentLocation.lat, currentLocation.lng).then((places) =>
           setPlaces(places),
         );
@@ -115,17 +118,19 @@ const GoogleMap = () => {
 
       <div className="flex items-center gap-2">
         <input
+          id="radius"
+          name="radius"
           type="range"
           min={500}
           max={5000}
-          step={200}
+          step={250}
           value={radius}
           onChange={(e) => {
             setRadius(parseInt(e.target.value));
             debouncedSearch();
           }}
         />
-        <span>{radius} meters</span>
+        <label htmlFor="radius">{radius} meters</label>
       </div>
 
       <ReactGoogleMaps
@@ -136,6 +141,11 @@ const GoogleMap = () => {
         onClick={onMapClick}
         options={{ disableDefaultUI: true }}
       >
+        <Marker
+          animation={google.maps.Animation.DROP}
+          position={{ lat: currentLocation.lat, lng: currentLocation.lng }}
+        />
+
         <Circle
           center={{ lat: currentLocation.lat, lng: currentLocation.lng }}
           radius={radius}
@@ -148,10 +158,6 @@ const GoogleMap = () => {
             clickable: false,
           }}
         />
-        <Marker
-          animation={google.maps.Animation.DROP}
-          position={{ lat: currentLocation.lat, lng: currentLocation.lng }}
-        />
       </ReactGoogleMaps>
 
       {/* TODO: These should be selectable, and saved in a list for use in the spinning wheel */}
@@ -159,19 +165,46 @@ const GoogleMap = () => {
         <MapSkeleton />
       ) : places && places.length > 0 ? (
         <div className="my-2 max-w-[800px] space-y-2 overflow-y-auto rounded-md border border-neutral-300 bg-neutral-800/50 p-2">
-          <p className="font-bold">Places nearby that are currently open</p>
+          <p className="font-bold">Places nearby that are currently OPEN! 🍽️</p>
           <ul>
-            {places.map((place) => (
-              <li key={place.place_id}>
-                <a
-                  className="block w-fit truncate hover:text-blue-500 hover:underline"
-                  href={`https://www.google.com/maps/place/?q=place_id:${place.place_id}`}
-                  target="_blank"
-                >
-                  {place.name}
-                </a>
-              </li>
-            ))}
+            {places.map((place, idx) => {
+              const isFirst = idx === 0;
+              const isLast = idx === places.length - 1;
+              const isEven = idx % 2 === 0;
+
+              return (
+                <li className="flex gap-2" key={place.place_id}>
+                  <div
+                    className={cn(
+                      "flex w-40 justify-between bg-neutral-700/50 px-2",
+                      isFirst && "rounded-t-md pt-2",
+                      isLast && "rounded-b-md pb-2",
+                      isEven ? "bg-neutral-700/50" : "bg-neutral-700/25",
+                    )}
+                  >
+                    <span>{getStarRating(Math.round(place.rating ?? 0))}</span>
+                    <span>{getPriceLevel(place.price_level ?? 0)}</span>
+                  </div>
+
+                  <div
+                    className={cn(
+                      "w-full overflow-hidden",
+                      isFirst && "rounded-t-md pt-2",
+                      isLast && "rounded-b-md pb-2",
+                      isEven ? "bg-neutral-700/50" : "bg-neutral-700/25",
+                    )}
+                  >
+                    <a
+                      className="block w-fit max-w-full truncate px-2 hover:text-blue-500 hover:underline"
+                      href={`https://www.google.com/maps/place/?q=place_id:${place.place_id}`}
+                      target="_blank"
+                    >
+                      {place.name}
+                    </a>
+                  </div>
+                </li>
+              );
+            })}
           </ul>
         </div>
       ) : (

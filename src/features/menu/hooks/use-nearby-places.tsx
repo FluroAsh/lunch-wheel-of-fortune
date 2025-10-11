@@ -1,11 +1,14 @@
 import { useRef, useState } from "react";
 
 import { usePlacesStore } from "@/app/store";
-import { getCachedPlaces, setCachedPlaces } from "@/lib/cache";
+import {
+  getCachedPlaces,
+  invalidateCacheForCoordinates,
+  setCachedPlaces,
+} from "@/lib/cache";
 import { MapInstance, NearbyPlaces } from "@/types/google";
 
 export const useNearbyPlaces = (map: MapInstance | null) => {
-  const { radius } = usePlacesStore();
   const [isLoading, setIsLoading] = useState<boolean>(false);
   const [error, setError] = useState<string | null>(null);
   const isFetched = useRef<boolean>(false);
@@ -13,6 +16,17 @@ export const useNearbyPlaces = (map: MapInstance | null) => {
   const searchPlaces = async (lat: number, lng: number) => {
     try {
       if (!map) return [];
+
+      const { radius } = usePlacesStore.getState();
+
+      // Invalidate cache entries for same coordinates but different radius
+      const isRemoved = invalidateCacheForCoordinates(lat, lng, radius);
+
+      if (isRemoved) {
+        console.debug(
+          "[Cache]: Invalidated cache entries for same coordinates but different radius",
+        );
+      }
 
       // Cache-first Loading
       const cachedResult = getCachedPlaces(lat, lng, radius);
