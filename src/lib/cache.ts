@@ -146,22 +146,20 @@ export const invalidateCacheForCoordinates = (
       const key = localStorage.key(i);
       const cachedRadius = parseInt(key?.split("_").pop() ?? "0");
 
-      // Only invalidate cache entries if the radius difference is greater than the minimum threshold
-      const radiusDiff = Math.max(0, Math.abs(cachedRadius - currentRadius));
-
-      if (key?.startsWith(coordinatePrefix)) {
-        console.log(`[cache] — MATCH — radiusDiff ${key}`, {
-          radiusDiff,
-          cachedRadius,
-          currentRadius,
-        });
-      }
+      // Only invalidate cache entries if the radius delta is greater than the minimum threshold
+      const radiusDelta = Math.max(0, Math.abs(cachedRadius - currentRadius));
 
       if (
         key &&
         key.startsWith(coordinatePrefix) &&
-        radiusDiff >= CACHE.radiusThreshold
+        radiusDelta >= CACHE.radiusThreshold
       ) {
+        console.log(`[cache] — MATCH — radiusDelta: ${key}`, {
+          radiusDelta,
+          cachedRadius,
+          currentRadius,
+        });
+
         keysToRemove.push(key!);
       }
     }
