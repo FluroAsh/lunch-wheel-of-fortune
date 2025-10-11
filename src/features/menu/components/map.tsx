@@ -1,6 +1,6 @@
 "use client";
 
-import React, { useCallback, useEffect, useMemo } from "react";
+import React, { useEffect, useMemo } from "react";
 import { useGeolocation } from "../hooks/use-geolocation";
 import {
   GoogleMap as ReactGoogleMaps,
@@ -28,7 +28,8 @@ const GoogleMap = () => {
   const [selectedLocation, setSelectedLocation] =
     React.useState<Coords | null>();
 
-  const { places, setPlaces, radius, setRadius } = usePlacesStore();
+  const { places, setPlaces, radius, setRadius, clearExpiredCache } =
+    usePlacesStore();
   const { state, error, coords, retry } = useGeolocation();
 
   const { isLoaded: isMapsAPIReady, loadError: mapsAPILoadError } =
@@ -41,11 +42,15 @@ const GoogleMap = () => {
   const {
     searchPlaces,
     isLoading: isLoadingPlaces,
-    error: hasPlacesError,
     isFetched,
   } = useNearbyPlaces(map);
 
   const currentLocation: Coords = selectedLocation ?? coords;
+
+  // Clear expired cache entries on component mount
+  useEffect(() => {
+    clearExpiredCache();
+  }, [clearExpiredCache]);
 
   useEffect(() => {
     // FIXME: This is being called twice
@@ -107,7 +112,7 @@ const GoogleMap = () => {
       <div className="flex items-center gap-2">
         <input
           type="range"
-          min={100}
+          min={500}
           max={5000}
           step={200}
           value={radius}

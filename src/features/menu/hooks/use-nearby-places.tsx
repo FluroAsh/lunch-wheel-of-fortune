@@ -1,6 +1,7 @@
 import { usePlacesStore } from "@/app/store";
 import { MapInstance, NearbyPlaces } from "@/types/google";
 import { useRef, useState } from "react";
+import { getCachedPlaces, setCachedPlaces } from "@/lib/cache";
 
 export const useNearbyPlaces = (map: MapInstance | null) => {
   const { radius } = usePlacesStore();
@@ -12,6 +13,14 @@ export const useNearbyPlaces = (map: MapInstance | null) => {
     try {
       if (!map) return [];
 
+      // Cache-first Loading
+      const cachedResult = getCachedPlaces(lat, lng, radius);
+      if (cachedResult) {
+        console.debug("[Cache]: Cache hit — returning cached result");
+        return cachedResult;
+      }
+
+      console.debug("[Cache]: Cache miss — fetching from API");
       const service = new google.maps.places.PlacesService(map);
       setIsLoading(true);
       setError(null);
@@ -35,6 +44,9 @@ export const useNearbyPlaces = (map: MapInstance | null) => {
           }
         )
       );
+
+      setCachedPlaces(lat, lng, radius, result); // Store result in cache
+      console.debug("[Cache]: Cached places search result");
 
       setIsLoading(false);
       return result;
