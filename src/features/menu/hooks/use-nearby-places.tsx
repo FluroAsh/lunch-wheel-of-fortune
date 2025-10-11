@@ -1,7 +1,9 @@
+import { usePlacesStore } from "@/app/store";
 import { MapInstance, NearbyPlaces } from "@/types/google";
 import { useRef, useState } from "react";
 
 export const useNearbyPlaces = (map: MapInstance | null) => {
+  const { radius } = usePlacesStore();
   const [isLoading, setIsLoading] = useState<boolean>(false);
   const [error, setError] = useState<string | null>(null);
   const isFetched = useRef<boolean>(false);
@@ -19,7 +21,7 @@ export const useNearbyPlaces = (map: MapInstance | null) => {
           {
             type: "restaurant",
             keyword: "restaraunts and cafes near me", // TODO: Make this dynamic, eg. with user preferences
-            radius: 1000,
+            radius,
             openNow: true,
             rankBy: google.maps.places.RankBy.PROMINENCE,
             location: { lat, lng },

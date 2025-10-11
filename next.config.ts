@@ -1,7 +1,7 @@
 import type { NextConfig } from "next";
 
 const nextConfig: NextConfig = {
-  /* config options here */
+  reactStrictMode: false, // Google Maps API does not play nice with StrictMode enabled
 };
 
 export default nextConfig;

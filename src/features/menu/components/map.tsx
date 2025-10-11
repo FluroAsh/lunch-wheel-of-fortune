@@ -1,17 +1,19 @@
 "use client";
 
-import React, { useEffect } from "react";
+import React, { useCallback, useEffect, useMemo } from "react";
 import { useGeolocation } from "../hooks/use-geolocation";
 import {
   GoogleMap as ReactGoogleMaps,
   useJsApiLoader,
   Marker,
   Libraries,
+  Circle,
 } from "@react-google-maps/api";
 import { Coords, MouseMapEvent, MapInstance } from "@/types/google";
 import { usePlacesStore } from "@/app/store";
 import { useNearbyPlaces } from "../hooks/use-nearby-places";
 import { MapSkeleton } from "./map.skeleton";
+import { debounce } from "radash";
 
 const containerStyle = {
   width: "800px",
@@ -26,7 +28,7 @@ const GoogleMap = () => {
   const [selectedLocation, setSelectedLocation] =
     React.useState<Coords | null>();
 
-  const { places, setPlaces } = usePlacesStore();
+  const { places, setPlaces, radius, setRadius } = usePlacesStore();
   const { state, error, coords, retry } = useGeolocation();
 
   const { isLoaded: isMapsAPIReady, loadError: mapsAPILoadError } =
@@ -46,7 +48,9 @@ const GoogleMap = () => {
   const currentLocation: Coords = selectedLocation ?? coords;
 
   useEffect(() => {
+    // FIXME: This is being called twice
     if (map && !isFetched) {
+      console.log("searchPlaces");
       searchPlaces(coords.lat, coords.lng).then((places) => setPlaces(places));
     }
   }, [map, coords, searchPlaces, setPlaces, isFetched]);
@@ -68,11 +72,22 @@ const GoogleMap = () => {
     }
   };
 
-  if (state === "loading" || !isMapsAPIReady) {
+  const debouncedSearch = useMemo(
+    () =>
+      debounce({ delay: 500 }, () => {
+        searchPlaces(currentLocation.lat, currentLocation.lng).then((places) =>
+          setPlaces(places)
+        );
+      }),
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+    [currentLocation.lat, currentLocation.lng]
+  );
+
+  if (state === "loading" || !isMapsAPIReady || !currentLocation) {
     return <p>Getting your location...</p>;
   }
 
-  if (state === "error" || mapsAPILoadError || hasPlacesError) {
+  if (state === "error" || mapsAPILoadError) {
     return (
       <p className="text-red-500">
         Error: {error || mapsAPILoadError?.message}
@@ -89,6 +104,21 @@ const GoogleMap = () => {
         placeholder="Search WIP"
       />
 
+      <div className="flex items-center gap-2">
+        <input
+          type="range"
+          min={100}
+          max={5000}
+          step={200}
+          value={radius}
+          onChange={(e) => {
+            setRadius(parseInt(e.target.value));
+            debouncedSearch();
+          }}
+        />
+        <span>{radius} meters</span>
+      </div>
+
       <ReactGoogleMaps
         mapContainerStyle={containerStyle}
         mapTypeId={google.maps.MapTypeId.ROADMAP}
@@ -97,11 +127,22 @@ const GoogleMap = () => {
         onClick={onMapClick}
         options={{ disableDefaultUI: true }}
       >
-        <Marker
-          position={{
-            lat: currentLocation.lat,
-            lng: currentLocation.lng,
+        <Circle
+          key={`circle-${currentLocation.lat}-${currentLocation.lng}`}
+          center={{ lat: currentLocation.lat, lng: currentLocation.lng }}
+          radius={radius}
+          options={{
+            fillColor: "hsla(217, 71%, 53%, 0.1)",
+            fillOpacity: 0.1,
+            strokeColor: "#4285F4",
+            strokeOpacity: 0.8,
+            strokeWeight: 2,
+            clickable: false,
           }}
+        />
+        <Marker
+          animation={google.maps.Animation.DROP}
+          position={{ lat: currentLocation.lat, lng: currentLocation.lng }}
         />
       </ReactGoogleMaps>
 
