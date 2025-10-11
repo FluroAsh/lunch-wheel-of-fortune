@@ -132,9 +132,9 @@ const GoogleMap = () => {
           center={{ lat: currentLocation.lat, lng: currentLocation.lng }}
           radius={radius}
           options={{
-            fillColor: "hsla(217, 71%, 53%, 0.1)",
+            fillColor: "#000",
             fillOpacity: 0.1,
-            strokeColor: "#4285F4",
+            strokeColor: "#1f1f1f50",
             strokeOpacity: 0.8,
             strokeWeight: 2,
             clickable: false,
