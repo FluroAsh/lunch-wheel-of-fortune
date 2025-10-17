@@ -1,11 +1,11 @@
 import { useRef, useState } from "react";
 
-import { usePlacesStore } from "@/app/store";
 import {
   getCachedPlaces,
   invalidateCacheForCoordinates,
   setCachedPlaces,
 } from "@/lib/cache";
+import { usePlacesStore } from "@/store";
 import { MapInstance, NearbyPlaces } from "@/types/google";
 
 export const useNearbyPlaces = (map: MapInstance | null) => {
@@ -17,6 +17,7 @@ export const useNearbyPlaces = (map: MapInstance | null) => {
     try {
       if (!map) return [];
 
+      // Get radius immediately to avoid render race condition
       const { radius } = usePlacesStore.getState();
 
       // Invalidate cache entries for same coordinates but different radius

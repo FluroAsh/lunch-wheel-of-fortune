@@ -1,3 +1,5 @@
+import Link from "next/link";
+
 import GoogleMap from "@/features/menu/components/map";
 
 export default function Home() {
@@ -10,6 +12,15 @@ export default function Home() {
 
       {/* Enabled when user location is available */}
       <GoogleMap />
+
+      <div className="flex justify-center">
+        <Link
+          href="/spin"
+          className="rounded-md bg-blue-500 px-4 py-2 text-blue-100 transition-colors duration-200 hover:bg-blue-600"
+        >
+          Spin the wheel
+        </Link>
+      </div>
     </div>
   );
 }

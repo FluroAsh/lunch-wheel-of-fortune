@@ -11,9 +11,9 @@ import {
 } from "@react-google-maps/api";
 import { debounce } from "radash";
 
-import { usePlacesStore } from "@/app/store";
 import { MAP } from "@/lib/constants";
 import { cn } from "@/lib/utils";
+import { usePlacesStore } from "@/store";
 import { Coords, MapInstance, MouseMapEvent } from "@/types/google";
 
 import { useGeolocation } from "../hooks/use-geolocation";

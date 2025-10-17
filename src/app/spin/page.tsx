@@ -1,18 +1,13 @@
 "use client";
 
-import { useState } from "react";
+import { useRouter } from "next/navigation";
+import { useEffect, useState } from "react";
 
 import { type WheelDataType } from "react-custom-roulette-r19";
 
 import DynamicWheel from "@/features/wheel/components/DynamicWheel";
-import { cn } from "@/lib/utils";
-
-// TODO: Feed data from Google Places/ API
-const data: WheelDataType[] = [
-  { option: "0" },
-  { option: "1" },
-  { option: "2" },
-];
+import { cn, truncateText } from "@/lib/utils";
+import { usePlacesStore } from "@/store";
 
 const baseColors = [
   { bg: "#3e3e3e", text: "#ffffff" },
@@ -26,9 +21,23 @@ const baseColors = [
 ];
 
 export default function Page() {
+  const router = useRouter();
+  const { places } = usePlacesStore();
+
   const [mustSpin, setMustSpin] = useState(false);
   const [prizeNumber, setPrizeNumber] = useState(0);
   const [hasSpun, setHasSpun] = useState(false);
+
+  const data: WheelDataType[] = places.map((place) => ({
+    option: truncateText(10, place.name ?? ""),
+  }));
+
+  useEffect(() => {
+    // Do not redirect in-render to avoid setState issues
+    if (places.length === 0) {
+      router.replace("/");
+    }
+  }, [places, router]);
 
   const handleSpinClick = () => {
     if (!mustSpin) {
@@ -45,7 +54,11 @@ export default function Page() {
     }
   };
 
-  return (
+  if (places.length === 0) {
+    return <p>Redirecting... Please wait.</p>;
+  }
+
+  return places.length > 0 ? (
     <div className="flex h-screen flex-col items-center justify-center">
       <DynamicWheel
         mustStartSpinning={mustSpin}
@@ -79,5 +92,5 @@ export default function Page() {
         {hasSpun ? "Spin Again" : "Spin"}
       </button>
     </div>
-  );
+  ) : null;
 }
