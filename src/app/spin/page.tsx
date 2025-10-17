@@ -55,8 +55,15 @@ export default function Page() {
   }
 
   return places.length > 0 ? (
-    <div className="flex h-screen flex-col items-center justify-center">
-      {prizeNumber && <p>{places[prizeNumber].name}</p>}
+    <div className="flex flex-1 flex-col items-center justify-center">
+      <p
+        className={
+          !!prizeNumber && state === "idle" ? "opacity-100" : "opacity-0"
+        }
+      >
+        {places[prizeNumber].name}
+      </p>
+
       <DynamicWheel
         mustStartSpinning={state === "spinning"}
         onStopSpinning={onStop}
