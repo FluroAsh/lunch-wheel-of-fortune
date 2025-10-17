@@ -24,9 +24,9 @@ export default function Page() {
   const router = useRouter();
   const { places } = usePlacesStore();
 
-  const [mustSpin, setMustSpin] = useState(false);
   const [prizeNumber, setPrizeNumber] = useState(0);
   const [hasSpun, setHasSpun] = useState(false);
+  const [state, setState] = useState<"idle" | "spinning">("idle");
 
   const data: WheelDataType[] = places.map((place) => ({
     option: truncateText(10, place.name ?? ""),
@@ -40,18 +40,14 @@ export default function Page() {
   }, [places, router]);
 
   const handleSpinClick = () => {
-    if (!mustSpin) {
-      const newPrizeNumber = Math.floor(Math.random() * data.length);
-      setPrizeNumber(newPrizeNumber);
-      setMustSpin(true);
-    }
+    const newPrizeNumber = Math.floor(Math.random() * places.length);
+    setPrizeNumber(newPrizeNumber);
+    setState("spinning");
   };
 
   const onStop = () => {
-    setMustSpin(false);
-    if (!hasSpun) {
-      setHasSpun(true);
-    }
+    setState("idle");
+    setHasSpun(true);
   };
 
   if (places.length === 0) {
@@ -60,8 +56,10 @@ export default function Page() {
 
   return places.length > 0 ? (
     <div className="flex h-screen flex-col items-center justify-center">
+      {prizeNumber && <p>{places[prizeNumber].name}</p>}
       <DynamicWheel
-        mustStartSpinning={mustSpin}
+        mustStartSpinning={state === "spinning"}
+        onStopSpinning={onStop}
         prizeNumber={prizeNumber}
         data={data.map((option, idx) => {
           const colorScheme = baseColors[idx % baseColors.length];
@@ -78,15 +76,15 @@ export default function Page() {
         })}
         backgroundColors={["#3e3e3e", "#df3428"]}
         textColors={["#ffffff"]}
-        onStopSpinning={onStop}
+        spinDuration={0.1}
       />
 
       <button
-        disabled={mustSpin}
+        disabled={state === "spinning"}
         onClick={handleSpinClick}
         className={cn(
           "min-w-[100px] rounded-md p-2 text-white",
-          mustSpin ? "bg-gray-600 text-gray-300" : "bg-blue-500",
+          state === "idle" ? "bg-blue-500" : "bg-gray-600 text-gray-300",
         )}
       >
         {hasSpun ? "Spin Again" : "Spin"}
