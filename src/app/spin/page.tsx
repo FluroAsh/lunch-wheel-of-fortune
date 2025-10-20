@@ -24,8 +24,8 @@ export default function Page() {
   const router = useRouter();
   const { places } = usePlacesStore();
 
-  const [prizeNumber, setPrizeNumber] = useState(0);
-  const [hasSpun, setHasSpun] = useState(false);
+  const [prizeNumber, setPrizeNumber] = useState<number>(0);
+  const [hasSpun, setHasSpun] = useState<boolean>(false);
   const [state, setState] = useState<"idle" | "spinning">("idle");
 
   const data: WheelDataType[] = places.map((place) => ({
@@ -56,13 +56,11 @@ export default function Page() {
 
   return places.length > 0 ? (
     <div className="flex flex-1 flex-col items-center justify-center">
-      <p
-        className={
-          !!prizeNumber && state === "idle" ? "opacity-100" : "opacity-0"
-        }
-      >
-        {places[prizeNumber].name}
-      </p>
+      {hasSpun && state === "idle" ? (
+        <p>{places[prizeNumber].name}</p>
+      ) : (
+        <div className="h-6 opacity-0" />
+      )}
 
       <DynamicWheel
         mustStartSpinning={state === "spinning"}
@@ -74,8 +72,6 @@ export default function Page() {
           return {
             ...option,
             style: {
-              // backgroundColor: idx % 2 === 0 ? "white" : "black",
-              // textColor: idx % 2 === 0 ? "black" : "white",
               backgroundColor: colorScheme.bg,
               textColor: colorScheme.text,
             },
