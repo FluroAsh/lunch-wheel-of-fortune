@@ -1,0 +1,25 @@
+.gm-style {
+  color: #efefef;
+  --dialog-bg-color: hsl(240, 5.9%, 10%);
+}
+
+/* container */
+.gm-style .gm-style-iw {
+  background-color: var(--dialog-bg-color);
+}
+
+/* content */
+.gm-style .gm-style-iw-d {
+  background-color: var(--dialog-bg-color);
+  overflow: hidden !important;
+  padding-right: 12px;
+  padding-bottom: 12px;
+}
+
+.gm-style .gm-style-iw-tc::after {
+  background-color: var(--dialog-bg-color);
+}
+
+.gm-ui-hover-effect[title="Close"] > span {
+  background-color: #fff;
+}

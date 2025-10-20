@@ -1,5 +1,6 @@
 import Link from "next/link";
 
+import "@/css/map.css";
 import GoogleMap from "@/features/menu/components/map";
 
 export default function Home() {
@@ -10,7 +11,6 @@ export default function Home() {
         <p>Spin the wheel, and let the wheel decide what&apos;s on the menu!</p>
       </div>
 
-      {/* Enabled when user location is available */}
       <GoogleMap />
 
       <div className="flex justify-center">

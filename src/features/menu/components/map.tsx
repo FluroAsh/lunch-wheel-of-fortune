@@ -3,22 +3,25 @@
 import React, { useEffect, useMemo } from "react";
 
 import {
-  Circle,
-  Libraries,
-  Marker,
-  GoogleMap as ReactGoogleMaps,
-  useJsApiLoader,
-} from "@react-google-maps/api";
+  AdvancedMarker,
+  Map,
+  MapMouseEvent,
+  useApiIsLoaded,
+  useApiLoadingStatus,
+  useMap,
+} from "@vis.gl/react-google-maps";
 import { debounce } from "radash";
 
 import { MAP } from "@/lib/constants";
-import { cn } from "@/lib/utils";
+import { cn, filterLatLng } from "@/lib/utils";
 import { usePlacesStore } from "@/store";
-import { Coords, MapInstance, MouseMapEvent } from "@/types/google";
+import { Coords } from "@/types/google";
 
 import { useGeolocation } from "../hooks/use-geolocation";
 import { useNearbyPlaces } from "../hooks/use-nearby-places";
 import { getPriceLevel, getStarRating } from "../utils/map";
+import { AdvancedMarkerComponent } from "./advanced-marker";
+import { Circle } from "./circle";
 import { MapSkeleton } from "./map.skeleton";
 
 const containerStyle = {
@@ -28,23 +31,19 @@ const containerStyle = {
   color: "#1f1f1f",
 };
 
-const libraries: Libraries = ["places"]; // Must be static to prevent script loader reloading
-
 const GoogleMap = () => {
-  const [map, setMap] = React.useState<MapInstance | null>(null);
+  const map = useMap();
+  const isMapsAPIReady = useApiIsLoaded();
+  const status = useApiLoadingStatus();
+
+  const [placeMarkers, setPlaceMarkers] = React.useState<React.ReactNode[]>([]);
   const [selectedLocation, setSelectedLocation] =
     React.useState<Coords | null>();
 
   const { places, setPlaces, radius, setRadius, clearExpiredCache } =
     usePlacesStore();
-  const { state, error, coords, retry } = useGeolocation();
 
-  const { isLoaded: isMapsAPIReady, loadError: mapsAPILoadError } =
-    useJsApiLoader({
-      id: "google-map-script",
-      googleMapsApiKey: process.env.NEXT_PUBLIC_GOOGLE_MAPS_API_KEY!,
-      libraries,
-    });
+  const { state, error, coords, retry } = useGeolocation();
 
   const {
     searchPlaces,
@@ -54,6 +53,18 @@ const GoogleMap = () => {
 
   const currentLocation: Coords = selectedLocation ?? coords;
 
+  useEffect(() => {
+    if (map && isFetched && !isLoadingPlaces && places.length > 0) {
+      const markers = places
+        .filter(filterLatLng)
+        .map((place) => (
+          <AdvancedMarkerComponent key={place.place_id} place={place} />
+        ));
+
+      setPlaceMarkers(markers);
+    }
+  }, [places, map, isFetched, isLoadingPlaces]);
+
   // Clear expired cache entries on component mount
   useEffect(() => {
     clearExpiredCache();
@@ -62,25 +73,18 @@ const GoogleMap = () => {
   useEffect(() => {
     // FIXME: This is being called twice
     if (map && !isFetched) {
-      console.log("searchPlaces");
       searchPlaces(coords.lat, coords.lng).then((places) => setPlaces(places));
     }
   }, [map, coords, searchPlaces, setPlaces, isFetched]);
 
-  const onLoad = (map: MapInstance) => {
-    // Pan to the user's location, so we don't have to use map.fitBounds()
-    map.panTo({ lat: coords.lat, lng: coords.lng });
-    setMap(map);
-  };
+  const onMapClick = (event: MapMouseEvent) => {
+    if (event.detail.latLng && map) {
+      const newLat = event.detail.latLng.lat;
+      const newLng = event.detail.latLng.lng;
 
-  const onMapClick = (event: MouseMapEvent) => {
-    if (event.latLng && map) {
-      const newLat = event.latLng.lat();
-      const newLng = event.latLng.lng();
-
-      searchPlaces(newLat, newLng).then((places) => setPlaces(places));
       map.panTo({ lat: newLat, lng: newLng });
       setSelectedLocation({ lat: newLat, lng: newLng });
+      searchPlaces(newLat, newLng).then((places) => setPlaces(places));
     }
   };
 
@@ -95,14 +99,17 @@ const GoogleMap = () => {
     [currentLocation.lat, currentLocation.lng],
   );
 
+  console.log({ state });
+
   if (state === "loading" || !isMapsAPIReady || !currentLocation) {
     return <p>Getting your location...</p>;
   }
 
-  if (state === "error" || mapsAPILoadError) {
+  if (state === "error" || status === "FAILED") {
     return (
       <p className="text-red-500">
-        Error: {error || mapsAPILoadError?.message}
+        Error:{" "}
+        {error || status === "FAILED" ? "Failed to load Google Maps API" : ""}
       </p>
     );
   }
@@ -133,32 +140,37 @@ const GoogleMap = () => {
         <label htmlFor="radius">{radius} meters</label>
       </div>
 
-      <ReactGoogleMaps
-        mapContainerStyle={containerStyle}
+      <Map
+        key="google-map"
+        mapId={MAP.id}
         mapTypeId={google.maps.MapTypeId.ROADMAP}
-        zoom={15}
-        onLoad={onLoad}
+        defaultCenter={currentLocation}
+        style={containerStyle}
+        defaultZoom={15}
         onClick={onMapClick}
-        options={{ disableDefaultUI: true }}
+        disableDefaultUI
       >
-        <Marker
-          animation={google.maps.Animation.DROP}
-          position={{ lat: currentLocation.lat, lng: currentLocation.lng }}
+        <AdvancedMarker
+          key="current-location-marker"
+          position={{
+            lat: currentLocation.lat,
+            lng: currentLocation.lng,
+          }}
         />
 
         <Circle
+          key="radius-circle"
           center={{ lat: currentLocation.lat, lng: currentLocation.lng }}
           radius={radius}
-          options={{
-            fillColor: "#000",
-            fillOpacity: 0.1,
-            strokeColor: "#1f1f1f50",
-            strokeOpacity: 0.8,
-            strokeWeight: 2,
-            clickable: false,
-          }}
+          strokeColor="#1b99ff"
+          strokeOpacity={0.5}
+          fillColor="#1b99ff"
+          fillOpacity={0.1}
+          clickable={false}
         />
-      </ReactGoogleMaps>
+
+        {placeMarkers.map((marker) => marker)}
+      </Map>
 
       {/* TODO: These should be selectable, and saved in a list for use in the spinning wheel */}
       {isLoadingPlaces ? (

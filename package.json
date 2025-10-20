@@ -9,7 +9,7 @@
     "lint": "next lint"
   },
   "dependencies": {
-    "@react-google-maps/api": "^2.20.7",
+    "@vis.gl/react-google-maps": "^1.5.5",
     "clsx": "^2.1.1",
     "next": "15.3.2",
     "radash": "^12.1.1",

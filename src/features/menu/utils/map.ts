@@ -6,6 +6,8 @@ export const getPriceLevel = (price_level: number) => {
       return "$$";
     case 3:
       return "$$$";
+    default:
+      return "";
   }
 };
 
