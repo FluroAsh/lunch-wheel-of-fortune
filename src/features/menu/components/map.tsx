@@ -99,8 +99,6 @@ const GoogleMap = () => {
     [currentLocation.lat, currentLocation.lng],
   );
 
-  console.log({ state });
-
   if (state === "loading" || !isMapsAPIReady || !currentLocation) {
     return <p>Getting your location...</p>;
   }
