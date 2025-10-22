@@ -93,7 +93,24 @@ const GoogleMap = () => {
   );
 
   if (state === "loading" || !isMapsAPIReady || !currentLocation) {
-    return <p>Getting your location...</p>;
+    // if (true) {
+    return (
+      <div>
+        {/* Search Bar */}
+        <div className="my-2 flex h-10.5 w-48 animate-pulse items-center justify-center rounded-md bg-neutral-600/50" />
+
+        {/* Radius Slider */}
+        <div className="my-2 flex h-4 w-60 animate-pulse items-center justify-center rounded-full bg-neutral-600/50" />
+
+        {/* Map */}
+        <div
+          style={containerStyle}
+          className="flex animate-pulse items-center justify-center bg-neutral-600/50"
+        >
+          <p className="text-neutral-100">Getting your location...</p>
+        </div>
+      </div>
+    );
   }
 
   if (state === "error" || status === "FAILED") {
