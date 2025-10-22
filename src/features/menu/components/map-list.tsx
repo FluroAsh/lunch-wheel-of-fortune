@@ -8,7 +8,7 @@ import { getPriceLevel, getStarRating } from "../utils/map";
 import { MapSkeleton } from "./map-skeleton";
 
 export const MapList = () => {
-  const { places, isLoadingPlaces } = useMapStore();
+  const { places, isLoadingPlaces, setActiveMarker } = useMapStore();
   const { retry } = useGeolocation();
 
   if (isLoadingPlaces) {
@@ -51,6 +51,8 @@ export const MapList = () => {
                   className="block w-fit max-w-full truncate px-2 hover:text-blue-500 hover:underline"
                   href={`https://www.google.com/maps/place/?q=place_id:${place.place_id}`}
                   target="_blank"
+                  onMouseEnter={() => setActiveMarker(place.place_id)}
+                  onMouseLeave={() => setActiveMarker(undefined)}
                 >
                   {place.name}
                 </a>

@@ -11,6 +11,8 @@ type MapState = {
   setRadius: (radius: number) => void;
   isLoadingPlaces: boolean;
   setIsLoadingPlaces: (isLoadingPlaces: boolean) => void;
+  activeMarker: string | undefined;
+  setActiveMarker: (id: string | undefined) => void;
   clearCache: () => void;
   clearExpiredCache: () => void;
 };
@@ -22,6 +24,8 @@ export const useMapStore = create<MapState>((set) => ({
   setRadius: (radius: number) => set({ radius }),
   isLoadingPlaces: false,
   setIsLoadingPlaces: (isLoadingPlaces: boolean) => set({ isLoadingPlaces }),
+  activeMarker: undefined,
+  setActiveMarker: (id: string | undefined) => set({ activeMarker: id }),
   clearCache: clearAllCache,
   clearExpiredCache: clearExpiredCache,
 }));

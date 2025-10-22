@@ -8,12 +8,14 @@ import {
 } from "@vis.gl/react-google-maps";
 
 import { cn, getAspectRatio, getLatLng } from "@/lib/utils";
+import { useMapStore } from "@/store";
 
 export const AdvancedMarkerComponent = ({
   place,
 }: {
   place: google.maps.places.PlaceResult;
 }) => {
+  const { activeMarker } = useMapStore();
   const [markerRef, marker] = useAdvancedMarkerRef();
   const [infoWindowShown, setInfoWindowShown] = useState(false);
 
@@ -34,22 +36,28 @@ export const AdvancedMarkerComponent = ({
   const imageHeight = mainPhoto?.height;
 
   const hasImage = !!(imageUrl && imageWidth && imageHeight);
+  const isMarkerActive = activeMarker === place.place_id;
 
   return (
     <AdvancedMarker
       zIndex={1000}
       ref={markerRef}
       position={{ lat, lng }}
-      // TODO: Throttle these mouse events
       onClick={toggleInfoWindow}
+      className={cn(
+        "transition-all duration-200",
+        isMarkerActive && "scale-150",
+      )}
     >
       {/* NOTE: Pin must be added explicitly as we have an InfoWindow as a child */}
-      <Pin
-        glyph={place.icon ? new URL(place.icon) : undefined}
-        background="#0f9d58"
-        borderColor="#006425"
-        glyphColor="#60d98f"
-      />
+      <div>
+        <Pin
+          glyph={place.icon ? new URL(place.icon) : undefined}
+          background="#0f9d58"
+          borderColor="#006425"
+          glyphColor="#60d98f"
+        />
+      </div>
 
       {infoWindowShown && (
         <InfoWindow
