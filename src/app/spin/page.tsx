@@ -5,7 +5,8 @@ import { useEffect, useState } from "react";
 
 import { type WheelDataType } from "react-custom-roulette-r19";
 
-import DynamicWheel from "@/features/wheel/components/DynamicWheel";
+import DynamicWheel from "@/features/wheel/components/dynamic-wheel";
+import { PrizeBanner } from "@/features/wheel/components/prize-banner";
 import { cn, truncateText } from "@/lib/utils";
 import { useMapStore } from "@/store";
 
@@ -61,6 +62,19 @@ export default function Page() {
       ) : (
         <div className="h-6 opacity-0" />
       )}
+
+      {/* {hasSpun && state === "idle" ? (
+        <PrizeBanner
+          winner={places[prizeNumber]}
+          onClose={() => setHasSpun(false)}
+        />
+      ) : null} */}
+
+      <PrizeBanner
+        winner={places[prizeNumber]}
+        onClose={() => setHasSpun(false)}
+        open={hasSpun && state === "idle"}
+      />
 
       <DynamicWheel
         mustStartSpinning={state === "spinning"}

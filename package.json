@@ -11,11 +11,13 @@
   "dependencies": {
     "@vis.gl/react-google-maps": "^1.5.5",
     "clsx": "^2.1.1",
+    "lucide-react": "^0.546.0",
     "next": "15.3.2",
     "radash": "^12.1.1",
     "react": "^19.0.0",
     "react-custom-roulette-r19": "^2.0.3",
     "react-dom": "^19.0.0",
+    "react-rewards": "^2.1.0",
     "tailwind-merge": "^3.3.1",
     "zustand": "^5.0.8"
   },
