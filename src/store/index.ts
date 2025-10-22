@@ -4,20 +4,24 @@ import { clearAllCache, clearExpiredCache } from "@/lib/cache";
 import { MAP } from "@/lib/constants";
 import { NearbyPlaces } from "@/types/google";
 
-type PlacesState = {
+type MapState = {
   places: NearbyPlaces;
-  radius: number;
   setPlaces: (places: NearbyPlaces) => void;
+  radius: number;
   setRadius: (radius: number) => void;
+  isLoadingPlaces: boolean;
+  setIsLoadingPlaces: (isLoadingPlaces: boolean) => void;
   clearCache: () => void;
   clearExpiredCache: () => void;
 };
 
-export const usePlacesStore = create<PlacesState>((set) => ({
+export const useMapStore = create<MapState>((set) => ({
   places: [],
-  radius: MAP.defaultRadius,
   setPlaces: (places: NearbyPlaces | undefined) => set({ places }),
+  radius: MAP.defaultRadius,
   setRadius: (radius: number) => set({ radius }),
+  isLoadingPlaces: false,
+  setIsLoadingPlaces: (isLoadingPlaces: boolean) => set({ isLoadingPlaces }),
   clearCache: clearAllCache,
   clearExpiredCache: clearExpiredCache,
 }));

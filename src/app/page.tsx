@@ -2,6 +2,7 @@ import Link from "next/link";
 
 import "@/css/map.css";
 import GoogleMap from "@/features/menu/components/map";
+import { MapList } from "@/features/menu/components/map-list";
 
 export default function Home() {
   return (
@@ -12,6 +13,7 @@ export default function Home() {
       </div>
 
       <GoogleMap />
+      <MapList />
 
       <div className="flex justify-center">
         <Link

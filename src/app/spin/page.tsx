@@ -7,7 +7,7 @@ import { type WheelDataType } from "react-custom-roulette-r19";
 
 import DynamicWheel from "@/features/wheel/components/DynamicWheel";
 import { cn, truncateText } from "@/lib/utils";
-import { usePlacesStore } from "@/store";
+import { useMapStore } from "@/store";
 
 const baseColors = [
   { bg: "#3e3e3e", text: "#ffffff" },
@@ -22,7 +22,7 @@ const baseColors = [
 
 export default function Page() {
   const router = useRouter();
-  const { places } = usePlacesStore();
+  const { places } = useMapStore();
 
   const [prizeNumber, setPrizeNumber] = useState<number>(0);
   const [hasSpun, setHasSpun] = useState<boolean>(false);

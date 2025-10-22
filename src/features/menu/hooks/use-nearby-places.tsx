@@ -1,3 +1,5 @@
+"use client";
+
 import { useRef, useState } from "react";
 
 import {
@@ -5,11 +7,11 @@ import {
   invalidateCacheForCoordinates,
   setCachedPlaces,
 } from "@/lib/cache";
-import { usePlacesStore } from "@/store";
+import { useMapStore } from "@/store";
 import { MapInstance, NearbyPlaces } from "@/types/google";
 
 export const useNearbyPlaces = (map: MapInstance | null) => {
-  const [isLoading, setIsLoading] = useState<boolean>(false);
+  const { isLoadingPlaces, setIsLoadingPlaces } = useMapStore();
   const [error, setError] = useState<string | null>(null);
   const isFetched = useRef<boolean>(false);
 
@@ -18,7 +20,7 @@ export const useNearbyPlaces = (map: MapInstance | null) => {
       if (!map) return [];
 
       // Get radius immediately to avoid render race condition
-      const { radius } = usePlacesStore.getState();
+      const { radius } = useMapStore.getState();
 
       // Invalidate cache entries for same coordinates but different radius
       const isRemoved = invalidateCacheForCoordinates(lat, lng, radius);
@@ -38,7 +40,7 @@ export const useNearbyPlaces = (map: MapInstance | null) => {
 
       console.debug("[Cache]: Cache miss — fetching from API");
       const service = new google.maps.places.PlacesService(map);
-      setIsLoading(true);
+      setIsLoadingPlaces(true);
       setError(null);
 
       const result = await new Promise<NearbyPlaces>((resolve, reject) =>
@@ -64,16 +66,16 @@ export const useNearbyPlaces = (map: MapInstance | null) => {
       setCachedPlaces(lat, lng, radius, result); // Store result in cache
       console.debug("[Cache]: Cached places search result");
 
-      setIsLoading(false);
+      setIsLoadingPlaces(false);
       return result;
     } catch (err) {
       setError(err instanceof Error ? err.message : "Places search failed");
       return [];
     } finally {
       isFetched.current = true;
-      setIsLoading(false);
+      setIsLoadingPlaces(false);
     }
   };
 
-  return { isLoading, error, searchPlaces, isFetched: isFetched.current };
+  return { isLoadingPlaces, error, searchPlaces, isFetched: isFetched.current };
 };
