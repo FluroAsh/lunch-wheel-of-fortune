@@ -1,5 +1,7 @@
 "use client";
 
+import { useApiIsLoaded, useApiLoadingStatus } from "@vis.gl/react-google-maps";
+
 import { cn } from "@/lib/utils";
 import { useMapStore } from "@/store";
 
@@ -11,7 +13,10 @@ export const MapList = () => {
   const { places, isLoadingPlaces, setActiveMarker } = useMapStore();
   const { retry } = useGeolocation();
 
-  if (isLoadingPlaces) {
+  const isMapsAPIReady = useApiIsLoaded();
+  const status = useApiLoadingStatus();
+
+  if (isLoadingPlaces || !isMapsAPIReady || status === "LOADING") {
     return <MapSkeleton />;
   }
 
