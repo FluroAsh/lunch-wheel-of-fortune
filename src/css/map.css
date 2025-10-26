@@ -1,16 +1,17 @@
 .gm-style {
-  color: #efefef;
+  --dialog-text-color: #efefef;
   --dialog-bg-color: hsl(240, 5.9%, 10%);
 }
 
 /* container */
 .gm-style .gm-style-iw {
+  color: var(--dialog-text-color);
   background-color: var(--dialog-bg-color);
 }
 
 /* content */
 .gm-style .gm-style-iw-d {
-  background-color: var(--dialog-bg-color);
+  /* background-color: var(--dialog-bg-color); */
   overflow: hidden !important;
   padding-right: 12px;
   padding-bottom: 12px;
@@ -22,4 +23,16 @@
 
 .gm-ui-hover-effect[title="Close"] > span {
   background-color: #fff;
+}
+
+/* poi dialog */
+.gm-style .gm-title,
+.gm-style .poi-info-window div,
+.gm-style .transit-container div {
+  color: var(--dialog-text-color);
+  background-color: var(--dialog-bg-color);
+}
+
+.gm-style .poi-info-window a:link {
+  background-color: var(--dialog-bg-color);
 }
