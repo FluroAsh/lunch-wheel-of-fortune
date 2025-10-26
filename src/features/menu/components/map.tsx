@@ -1,6 +1,6 @@
 "use client";
 
-import React, { useEffect, useMemo } from "react";
+import React, { CSSProperties, useEffect } from "react";
 
 import {
   AdvancedMarker,
@@ -10,7 +10,6 @@ import {
   useApiLoadingStatus,
   useMap,
 } from "@vis.gl/react-google-maps";
-import { debounce } from "radash";
 
 import { MAP } from "@/lib/constants";
 import { filterLatLng } from "@/lib/utils";
@@ -21,13 +20,14 @@ import { useGeolocation } from "../hooks/use-geolocation";
 import { useNearbyPlaces } from "../hooks/use-nearby-places";
 import { AdvancedMarkerComponent } from "./advanced-marker";
 import { Circle } from "./circle";
+import { RadiusSlider } from "./radius-slider";
 
 const containerStyle = {
   width: "800px",
   height: "600px",
   maxWidth: "100%",
   color: "#1f1f1f",
-};
+} satisfies CSSProperties;
 
 const GoogleMap = () => {
   const map = useMap();
@@ -38,8 +38,7 @@ const GoogleMap = () => {
   const [selectedLocation, setSelectedLocation] =
     React.useState<Coords | null>();
 
-  const { places, setPlaces, radius, setRadius, clearExpiredCache } =
-    useMapStore();
+  const { places, setPlaces, radius, clearExpiredCache } = useMapStore();
 
   const { state, error, coords } = useGeolocation();
   const { searchPlaces, isLoadingPlaces, isFetched } = useNearbyPlaces(map);
@@ -81,34 +80,13 @@ const GoogleMap = () => {
     }
   };
 
-  const debouncedSearch = useMemo(
-    () =>
-      debounce({ delay: MAP.searchDebounceDelay }, () => {
-        searchPlaces(currentLocation.lat, currentLocation.lng).then((places) =>
-          setPlaces(places),
-        );
-      }),
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-    [currentLocation.lat, currentLocation.lng],
-  );
-
   if (state === "loading" || !isMapsAPIReady || !currentLocation) {
-    // if (true) {
     return (
-      <div>
-        {/* Search Bar */}
-        <div className="my-2 flex h-10.5 w-48 animate-pulse items-center justify-center rounded-md bg-neutral-600/50" />
-
-        {/* Radius Slider */}
-        <div className="my-2 flex h-4 w-60 animate-pulse items-center justify-center rounded-full bg-neutral-600/50" />
-
-        {/* Map */}
-        <div
-          style={containerStyle}
-          className="flex animate-pulse items-center justify-center bg-neutral-600/50"
-        >
-          <p className="text-neutral-100">Getting your location...</p>
-        </div>
+      <div
+        style={containerStyle}
+        className="flex animate-pulse items-center justify-center bg-neutral-600/50"
+      >
+        <p className="text-neutral-100">Getting your location...</p>
       </div>
     );
   }
@@ -124,30 +102,6 @@ const GoogleMap = () => {
 
   return (
     <>
-      {/* TODO: Add Google autocomplete for address search (ie when geolocation fails/is disabled) */}
-      <input
-        className="my-2 rounded-md border border-neutral-300 p-2"
-        type="text"
-        placeholder="Search WIP"
-      />
-
-      <div className="flex items-center gap-2">
-        <input
-          id="radius"
-          name="radius"
-          type="range"
-          min={500}
-          max={5000}
-          step={250}
-          value={radius}
-          onChange={(e) => {
-            setRadius(parseInt(e.target.value));
-            debouncedSearch();
-          }}
-        />
-        <label htmlFor="radius">{radius} meters</label>
-      </div>
-
       <Map
         key="google-map"
         mapId={MAP.id}
@@ -158,6 +112,17 @@ const GoogleMap = () => {
         onClick={onMapClick}
         disableDefaultUI
       >
+        {/* TODO: Add Google autocomplete for address search (ie when geolocation fails/is disabled) */}
+        <div className="absolute top-0 left-0 rounded-br-md p-2 shadow-md backdrop-blur-md">
+          <input
+            className="rounded-md bg-neutral-400/50 px-2 py-1 text-neutral-800 focus:ring-2 focus:ring-slate-500 focus:outline-none"
+            type="text"
+            placeholder="Where's the food?"
+          />
+        </div>
+
+        <RadiusSlider currentLocation={currentLocation} />
+
         <AdvancedMarker
           key="current-location-marker"
           position={{
