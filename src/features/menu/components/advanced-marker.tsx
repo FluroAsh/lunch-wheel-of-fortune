@@ -52,7 +52,8 @@ export const AdvancedMarkerComponent = ({
       {/* NOTE: Pin must be added explicitly as we have an InfoWindow as a child */}
       <div>
         <Pin
-          glyph={place.icon ? new URL(place.icon) : undefined}
+          // @ts-expect-error - glyphSrc is a valid prop for the Pin component but not typed
+          glyphSrc={place.icon ? new URL(place.icon) : undefined}
           background="#0f9d58"
           borderColor="#006425"
           glyphColor="#60d98f"
