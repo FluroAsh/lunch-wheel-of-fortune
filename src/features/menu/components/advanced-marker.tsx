@@ -50,7 +50,7 @@ export const AdvancedMarkerComponent = ({ place }: { place: GooglePlace }) => {
       position={{ lat, lng }}
       onClick={toggleInfoWindow}
       className={cn(
-        "opacity-50 transition-[opacity_transform] duration-300",
+        "opacity-60 transition-[opacity_transform] duration-300",
         // Google marker default z-index is 1000
         isMarkerActive && "z-[1001] scale-125 opacity-100",
       )}

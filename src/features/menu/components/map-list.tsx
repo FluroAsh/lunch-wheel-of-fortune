@@ -6,8 +6,9 @@ import { cn } from "@/lib/utils";
 import { useMapStore } from "@/store";
 
 import { useGeolocation } from "../hooks/use-geolocation";
-import { getPriceLevel, getPriceRange, getStarRating } from "../utils/map";
+import { getPriceLevel, getPriceRange } from "../utils/map";
 import { MapSkeleton } from "./map-skeleton";
+import { StarRating } from "./star-rating";
 
 export const MapList = () => {
   const { places, isLoadingPlaces, setActiveMarker } = useMapStore();
@@ -49,8 +50,10 @@ export const MapList = () => {
                   isEven ? "bg-neutral-700/50" : "bg-neutral-700/25",
                 )}
               >
-                <span>{getStarRating(Math.round(place.rating ?? 0))}</span>
-                <span className="pl-0.5 text-sm">{displayPrice}</span>
+                <StarRating rating={place.rating ?? 0} />
+                <span className="flex items-center pl-0.5 text-sm">
+                  {displayPrice}
+                </span>
               </div>
 
               <div
