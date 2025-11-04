@@ -2,7 +2,10 @@ import { METHODS } from "@/lib/constants";
 import { GOOGLE } from "@/lib/urls";
 import { NearbyPlaces, RankPreference } from "@/types/google";
 
-import { FOOD_AND_DRINK_TYPES } from "../constants";
+import {
+  EXCLUDED_NON_FOOD_TYPES,
+  FOOD_AND_DRINK_TYPES,
+} from "../constants";
 
 // Refer to: https://developers.google.com/maps/billing-and-pricing/pricing#places-pricing
 // For a list of pricing tiers and their respective free tier caps
@@ -41,6 +44,7 @@ export const fetchNearbyPlaces = async (
       },
       body: JSON.stringify({
         includedTypes: types,
+        excludedTypes: EXCLUDED_NON_FOOD_TYPES,
         rankPreference: "POPULARITY" satisfies RankPreference,
         locationRestriction: {
           circle: {
