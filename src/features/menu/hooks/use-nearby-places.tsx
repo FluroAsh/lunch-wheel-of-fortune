@@ -45,10 +45,7 @@ export const useNearbyPlaces = (map: MapInstance | null) => {
       setIsLoadingPlaces(true);
       setError(null);
 
-      const result = await fetchNearbyPlaces(lat, lng, radius, [
-        "restaurant",
-        "cafe",
-      ] as const);
+      const result = await fetchNearbyPlaces(lat, lng, radius);
 
       console.log("[API]: Nearby places result", result);
 

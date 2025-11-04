@@ -71,11 +71,6 @@ export const setCachedPlaces = (
       radius,
     };
 
-    entry.data.forEach((place) => {
-      // Do not cache deprecated properties — only open places will be cached, so it can be safely removed
-      delete place.opening_hours?.open_now;
-    });
-
     localStorage.setItem(key, JSON.stringify(entry));
   } catch (error) {
     console.error("[Cache]: Error writing to cache:", error);
