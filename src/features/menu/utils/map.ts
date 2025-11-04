@@ -14,7 +14,6 @@ export const getPriceLevel = (price_level: PriceLevel | undefined) => {
       break;
     case 2:
       priceLevel = "$";
-      break;
     case 3:
       priceLevel = "$$";
       break;

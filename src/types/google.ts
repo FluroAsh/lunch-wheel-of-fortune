@@ -30,6 +30,14 @@ export type GooglePlace = {
   location: { latitude: number; longitude: number };
   priceLevel?: PriceLevel;
   priceRange?: { startPrice: PriceRange; endPrice: PriceRange };
+  currentOpeningHours?: {
+    openNow: boolean;
+    // periods?: Array<{
+    //   open: { day: number; time: string };
+    //   close?: { day: number; time: string };
+    // }>;
+    // weekdayDescriptions?: string[];
+  };
   rating: number;
   shortFormattedAddress: string;
 };

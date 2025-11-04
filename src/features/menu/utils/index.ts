@@ -2,10 +2,7 @@ import { METHODS } from "@/lib/constants";
 import { GOOGLE } from "@/lib/urls";
 import { NearbyPlaces, RankPreference } from "@/types/google";
 
-import {
-  EXCLUDED_NON_FOOD_TYPES,
-  FOOD_AND_DRINK_TYPES,
-} from "../constants";
+import { EXCLUDED_NON_FOOD_TYPES, FOOD_AND_DRINK_TYPES } from "../constants";
 
 // Refer to: https://developers.google.com/maps/billing-and-pricing/pricing#places-pricing
 // For a list of pricing tiers and their respective free tier caps
@@ -18,13 +15,13 @@ const fieldMask = [
   // Pro — (5k requests/month)
   "id",
   // Enterprise — (1k requests/month)
+  "currentOpeningHours.openNow",
   "priceLevel",
   "priceRange",
   "rating",
 ]
   .map((field) => `places.${field}`)
   .join(",");
-
 type NearbyPlacesResponse = { places: NearbyPlaces };
 
 /** Fetches nearby places from the (new) Google Places API. */
@@ -61,7 +58,10 @@ export const fetchNearbyPlaces = async (
     }
 
     const { places = [] }: NearbyPlacesResponse = await response.json();
-    return places;
+
+    // No intention to currently return places that are not open
+    // But might add some better UI/UX for this in the future.
+    return places.filter((place) => !!place.currentOpeningHours?.openNow);
   } catch (error) {
     console.error("[API]: Error fetching nearby places", error);
     throw error;
