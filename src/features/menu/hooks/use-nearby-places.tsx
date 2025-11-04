@@ -8,7 +8,9 @@ import {
   setCachedPlaces,
 } from "@/lib/cache";
 import { useMapStore } from "@/store";
-import { MapInstance, NearbyPlaces } from "@/types/google";
+import { MapInstance } from "@/types/google";
+
+import { fetchNearbyPlaces } from "../utils";
 
 export const useNearbyPlaces = (map: MapInstance | null) => {
   const { isLoadingPlaces, setIsLoadingPlaces } = useMapStore();
@@ -17,7 +19,7 @@ export const useNearbyPlaces = (map: MapInstance | null) => {
 
   const searchPlaces = async (lat: number, lng: number) => {
     try {
-      if (!map) return [];
+      if (!map || isLoadingPlaces) return [];
 
       // Get radius immediately to avoid render race condition
       const { radius } = useMapStore.getState();
@@ -39,29 +41,16 @@ export const useNearbyPlaces = (map: MapInstance | null) => {
       }
 
       console.debug("[Cache]: Cache miss — fetching from API");
-      const service = new google.maps.places.PlacesService(map);
+      // const service = new google.maps.places.PlacesService(map);
       setIsLoadingPlaces(true);
       setError(null);
 
-      const result = await new Promise<NearbyPlaces>((resolve, reject) =>
-        service.nearbySearch(
-          {
-            type: "restaurant",
-            keyword: "restaraunts and cafes near me", // TODO: Make this dynamic, eg. with user preferences
-            radius,
-            openNow: true,
-            rankBy: google.maps.places.RankBy.PROMINENCE,
-            location: { lat, lng },
-          },
-          (results, status) => {
-            if (results && status === "OK") {
-              resolve(results);
-            } else {
-              reject(new Error(`Places search failed with status: ${status}`));
-            }
-          },
-        ),
-      );
+      const result = await fetchNearbyPlaces(lat, lng, radius, [
+        "restaurant",
+        "cafe",
+      ] as const);
+
+      console.log("[API]: Nearby places result", result);
 
       setCachedPlaces(lat, lng, radius, result); // Store result in cache
       console.debug("[Cache]: Cached places search result");

@@ -50,7 +50,7 @@ const GoogleMap = () => {
       const markers = places
         .filter(filterLatLng)
         .map((place) => (
-          <AdvancedMarkerComponent key={place.place_id} place={place} />
+          <AdvancedMarkerComponent key={place.id} place={place} />
         ));
 
       setPlaceMarkers(markers);

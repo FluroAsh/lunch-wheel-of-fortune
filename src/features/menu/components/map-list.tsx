@@ -6,7 +6,7 @@ import { cn } from "@/lib/utils";
 import { useMapStore } from "@/store";
 
 import { useGeolocation } from "../hooks/use-geolocation";
-import { getPriceLevel, getStarRating } from "../utils/map";
+import { getPriceLevel, getPriceRange, getStarRating } from "../utils/map";
 import { MapSkeleton } from "./map-skeleton";
 
 export const MapList = () => {
@@ -30,18 +30,27 @@ export const MapList = () => {
           const isLast = idx === places.length - 1;
           const isEven = idx % 2 === 0;
 
+          const priceLevel = getPriceLevel(place.priceLevel);
+          const { startPrice } = getPriceRange(place.priceRange);
+
+          const displayPrice = priceLevel
+            ? priceLevel
+            : startPrice
+              ? `$${Number(startPrice.units).toFixed(2)}`
+              : "—";
+
           return (
-            <li className="flex gap-2" key={place.place_id}>
+            <li className="flex gap-2" key={place.id}>
               <div
                 className={cn(
-                  "flex w-40 justify-between bg-neutral-700/50 px-2",
+                  "flex w-48 justify-between bg-neutral-700/50 px-2",
                   isFirst && "rounded-t-md pt-2",
                   isLast && "rounded-b-md pb-2",
                   isEven ? "bg-neutral-700/50" : "bg-neutral-700/25",
                 )}
               >
                 <span>{getStarRating(Math.round(place.rating ?? 0))}</span>
-                <span>{getPriceLevel(place.price_level ?? 0)}</span>
+                <span className="pl-0.5 text-sm">{displayPrice}</span>
               </div>
 
               <div
@@ -54,12 +63,12 @@ export const MapList = () => {
               >
                 <a
                   className="block w-fit max-w-full truncate px-2 hover:text-blue-500 hover:underline"
-                  href={`https://www.google.com/maps/place/?q=place_id:${place.place_id}`}
+                  href={`https://www.google.com/maps/place/?q=place_id:${place.id}`}
                   target="_blank"
-                  onMouseEnter={() => setActiveMarker(place.place_id)}
+                  onMouseEnter={() => setActiveMarker(place.id)}
                   onMouseLeave={() => setActiveMarker(undefined)}
                 >
-                  {place.name}
+                  {place.displayName.text}
                 </a>
               </div>
             </li>

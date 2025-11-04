@@ -10,10 +10,16 @@ import { NearbyPlaces } from "@/types/google";
 type PrizeBannerProps = {
   winner: NearbyPlaces[number];
   onClose?: () => void;
+  onRespin: () => void;
   open: boolean;
 };
 
-export const PrizeBanner = ({ winner, onClose, open }: PrizeBannerProps) => {
+export const PrizeBanner = ({
+  winner,
+  open,
+  onClose,
+  onRespin,
+}: PrizeBannerProps) => {
   const { reward: confettiReward } = useReward("confettiReward", "confetti", {
     lifetime: 500,
     spread: 150,
@@ -90,7 +96,9 @@ export const PrizeBanner = ({ winner, onClose, open }: PrizeBannerProps) => {
 
           {/* Winner Name */}
           <div className="space-y-2">
-            <p className="text-3xl font-bold text-slate-800">{winner.name}</p>
+            <p className="text-3xl font-bold text-slate-800">
+              {winner.displayName.text}
+            </p>
             <p className="text-lg text-slate-600">Is on the menu!</p>
           </div>
 
@@ -110,25 +118,27 @@ export const PrizeBanner = ({ winner, onClose, open }: PrizeBannerProps) => {
 
           <div className="mt-6 flex flex-col gap-3">
             {/* TODO: Add Google Maps app deeplink using URL scheme & device detection */}
-            {winner.place_id && (
+            {winner.id && (
               <button
                 className="rounded-lg border border-slate-300 bg-white px-6 py-3 font-semibold text-slate-700 shadow-sm hover:cursor-pointer hover:bg-slate-50 hover:shadow-md"
                 onClick={() => {
-                  const mapsUrl = `https://www.google.com/maps/place/?q=place_id:${winner.place_id}`;
+                  const mapsUrl = `https://www.google.com/maps/place/?q=place_id:${winner.id}`;
                   window.open(mapsUrl, "_blank");
                 }}
               >
                 View on Google Maps
               </button>
             )}
-            {onClose && (
-              <button
-                onClick={onClose}
-                className="rounded-lg bg-gradient-to-r from-emerald-600 to-teal-600 px-6 py-3 font-semibold text-white shadow-sm transition-all duration-200 hover:cursor-pointer hover:from-emerald-700 hover:to-teal-700 hover:shadow-md"
-              >
-                Spin Again
-              </button>
-            )}
+
+            <button
+              onClick={() => {
+                onClose?.();
+                onRespin();
+              }}
+              className="rounded-lg bg-gradient-to-r from-emerald-600 to-teal-600 px-6 py-3 font-semibold text-white shadow-sm transition-all duration-200 hover:cursor-pointer hover:from-emerald-700 hover:to-teal-700 hover:shadow-md"
+            >
+              Spin Again
+            </button>
           </div>
         </div>
       </div>

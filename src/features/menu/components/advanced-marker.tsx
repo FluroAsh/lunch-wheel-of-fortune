@@ -7,19 +7,21 @@ import {
   useAdvancedMarkerRef,
 } from "@vis.gl/react-google-maps";
 
-import { cn, getAspectRatio, getLatLng } from "@/lib/utils";
+import { cn /*, getAspectRatio */, getLatLng } from "@/lib/utils";
 import { useMapStore } from "@/store";
+import { GooglePlace } from "@/types/google";
 
-export const AdvancedMarkerComponent = ({
-  place,
-}: {
-  place: google.maps.places.PlaceResult;
-}) => {
-  const { activeMarker } = useMapStore();
+import { getPriceLevel, getPriceRange } from "../utils/map";
+
+export const AdvancedMarkerComponent = ({ place }: { place: GooglePlace }) => {
+  const { activeMarker, setActiveMarker } = useMapStore();
   const [markerRef, marker] = useAdvancedMarkerRef();
   const [infoWindowShown, setInfoWindowShown] = useState(false);
 
-  const toggleInfoWindow = () => setInfoWindowShown((isShown) => !isShown);
+  const toggleInfoWindow = () => {
+    setInfoWindowShown((isShown) => !isShown);
+    setActiveMarker(activeMarker === place.id ? undefined : place.id);
+  };
 
   const { lat, lng } = getLatLng(place);
 
@@ -27,16 +29,19 @@ export const AdvancedMarkerComponent = ({
     return null;
   }
 
-  const { opening_hours, photos } = place;
-  const hasOpeningHours = opening_hours !== undefined;
+  // const { opening_hours, photos } = place;
+  // const hasOpeningHours = opening_hours !== undefined;
 
-  const mainPhoto = photos?.[0];
-  const imageUrl = mainPhoto?.getUrl?.();
-  const imageWidth = mainPhoto?.width;
-  const imageHeight = mainPhoto?.height;
+  // const mainPhoto = photos?.[0];
+  // const imageUrl = mainPhoto?.getUrl?.();
+  // const imageWidth = mainPhoto?.width;
+  // const imageHeight = mainPhoto?.height;
 
-  const hasImage = !!(imageUrl && imageWidth && imageHeight);
-  const isMarkerActive = activeMarker === place.place_id;
+  // const hasImage = !!(imageUrl && imageWidth && imageHeight);
+  const isMarkerActive = activeMarker === place.id;
+
+  const priceLevel = getPriceLevel(place.priceLevel);
+  const { readablePriceRange } = getPriceRange(place.priceRange);
 
   return (
     <AdvancedMarker
@@ -45,15 +50,16 @@ export const AdvancedMarkerComponent = ({
       position={{ lat, lng }}
       onClick={toggleInfoWindow}
       className={cn(
-        "transition-all duration-200",
-        isMarkerActive && "scale-150",
+        "opacity-50 transition-[opacity_transform] duration-300",
+        // Google marker default z-index is 1000
+        isMarkerActive && "z-[1001] scale-125 opacity-100",
       )}
     >
       {/* NOTE: Pin must be added explicitly as we have an InfoWindow as a child */}
       <div>
         <Pin
           // @ts-expect-error - glyphSrc is a valid prop for the Pin component but not typed
-          glyphSrc={place.icon ? new URL(place.icon) : undefined}
+          glyphSrc={place.icon ? new URL(place.icon) : undefined} // TODO: Update this for new Places API
           background="#0f9d58"
           borderColor="#006425"
           glyphColor="#60d98f"
@@ -64,15 +70,20 @@ export const AdvancedMarkerComponent = ({
         <InfoWindow
           onCloseClick={toggleInfoWindow}
           anchor={marker}
-          headerContent={<h3 className="text-lg font-bold">{place.name}</h3>}
+          // headerContent={<h3 className="text-lg font-bold">{place.name}</h3>}
+          headerContent={
+            <h3 className="text-lg font-bold">{place.displayName.text}</h3>
+          }
         >
           <div>
-            <p>{place.formatted_address}</p>
+            <p>{place.shortFormattedAddress}</p>
             <p>Rating: {place.rating}</p>
-            <p>Price Level: {place.price_level}</p>
-            <p>User Ratings Total: {place.user_ratings_total}</p>
+            {priceLevel && <p> Price Level: {priceLevel}</p>}
+            {readablePriceRange && <p> Price Range: {readablePriceRange}</p>}
+            {/* <p>User Ratings Total: {place.user_ratings_total}</p> */}
 
-            {hasImage && (
+            {/* NOTE: Photos are a part of the "pro" Places API and will incur charges */}
+            {/* {hasImage && (
               // eslint-disable-next-line @next/next/no-img-element
               <img
                 src={imageUrl}
@@ -84,7 +95,7 @@ export const AdvancedMarkerComponent = ({
                   getAspectRatio(imageWidth, imageHeight),
                 )}
               />
-            )}
+            )} */}
 
             {/* {hasOpeningHours && opening_hours.weekday_text && (
               <p>Weekday Text: {opening_hours.weekday_text}</p>
@@ -93,9 +104,9 @@ export const AdvancedMarkerComponent = ({
              * open_now is deprecated as of November 2019. Use the isOpen() method from a PlacesService.getDetails() result instead.
              * See https://goo.gle/js-open-now
              */}
-            {hasOpeningHours && opening_hours.isOpen && (
+            {/* {hasOpeningHours && opening_hours.isOpen && (
               <p>Open Now: {opening_hours.isOpen() ? "Open" : "Closed"}</p>
-            )}
+            )} */}
           </div>
         </InfoWindow>
       )}

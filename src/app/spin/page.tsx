@@ -30,7 +30,7 @@ export default function Page() {
   const [state, setState] = useState<"idle" | "spinning">("idle");
 
   const data: WheelDataType[] = places.map((place) => ({
-    option: truncateText(10, place.name ?? ""),
+    option: truncateText(10, place.displayName.text ?? ""),
   }));
 
   useEffect(() => {
@@ -58,21 +58,15 @@ export default function Page() {
   return places.length > 0 ? (
     <div className="flex flex-1 flex-col items-center justify-center">
       {hasSpun && state === "idle" ? (
-        <p>{places[prizeNumber].name}</p>
+        <p>{places[prizeNumber].displayName.text}</p>
       ) : (
         <div className="h-6 opacity-0" />
       )}
 
-      {/* {hasSpun && state === "idle" ? (
-        <PrizeBanner
-          winner={places[prizeNumber]}
-          onClose={() => setHasSpun(false)}
-        />
-      ) : null} */}
-
       <PrizeBanner
         winner={places[prizeNumber]}
         onClose={() => setHasSpun(false)}
+        onRespin={handleSpinClick}
         open={hasSpun && state === "idle"}
       />
 
