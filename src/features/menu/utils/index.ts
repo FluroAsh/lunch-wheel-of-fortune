@@ -22,6 +22,7 @@ const fieldMask = [
 ]
   .map((field) => `places.${field}`)
   .join(",");
+
 type NearbyPlacesResponse = { places: NearbyPlaces };
 
 /** Fetches nearby places from the (new) Google Places API. */

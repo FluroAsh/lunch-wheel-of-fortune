@@ -23,9 +23,8 @@ import { Circle } from "./circle";
 import { RadiusSlider } from "./radius-slider";
 
 const containerStyle = {
-  width: "800px",
-  height: "600px",
-  maxWidth: "100%",
+  width: "100%",
+  height: "100%",
   color: "#1f1f1f",
 } satisfies CSSProperties;
 
@@ -69,7 +68,7 @@ const GoogleMap = () => {
     }
   }, [map, coords, searchPlaces, setPlaces, isFetched]);
 
-  const onMapClick = (event: MapMouseEvent) => {
+  const handleLocationUpdate = (event: MapMouseEvent) => {
     if (event.detail.latLng && map) {
       const newLat = event.detail.latLng.lat;
       const newLng = event.detail.latLng.lng;
@@ -101,7 +100,7 @@ const GoogleMap = () => {
   }
 
   return (
-    <>
+    <div className="size-full overflow-hidden rounded-md border-2 border-neutral-600">
       <Map
         key="google-map"
         mapId={MAP.id}
@@ -109,7 +108,7 @@ const GoogleMap = () => {
         defaultCenter={currentLocation}
         style={containerStyle}
         defaultZoom={15}
-        onClick={onMapClick}
+        onClick={handleLocationUpdate}
         disableDefaultUI
       >
         {/* TODO: Add Google autocomplete for address search (ie when geolocation fails/is disabled) */}
@@ -144,7 +143,7 @@ const GoogleMap = () => {
 
         {placeMarkers.map((marker) => marker)}
       </Map>
-    </>
+    </div>
   );
 };
 

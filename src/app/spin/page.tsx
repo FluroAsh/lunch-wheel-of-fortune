@@ -55,7 +55,7 @@ export default function Page() {
     return <p>Redirecting... Please wait.</p>;
   }
 
-  return places.length > 0 ? (
+  return (
     <div className="flex flex-1 flex-col items-center justify-center">
       {hasSpun && state === "idle" ? (
         <p>{places[prizeNumber].displayName.text}</p>
@@ -101,5 +101,5 @@ export default function Page() {
         {hasSpun ? "Spin Again" : "Spin"}
       </button>
     </div>
-  ) : null;
+  );
 }
