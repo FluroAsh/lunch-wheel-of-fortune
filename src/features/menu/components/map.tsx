@@ -24,8 +24,11 @@ import { Circle } from "./circle";
 import { RadiusSlider } from "./radius-slider";
 
 const containerStyle = {
+  display: "flex",
+  flexDirection: "column",
   width: "100%",
   height: "100%",
+  flex: "1 1 0%",
   color: "#1f1f1f",
 } satisfies CSSProperties;
 
@@ -101,7 +104,7 @@ const GoogleMap = () => {
   }
 
   return (
-    <div className="relative size-full overflow-hidden rounded-md border-2 border-neutral-600">
+    <div className="relative flex size-full flex-col overflow-hidden rounded-md border-2 border-neutral-600 lg:overflow-y-auto">
       {/* TODO: Add Google autocomplete for address search (ie when geolocation fails/is disabled) */}
       <div className="relative bg-neutral-800 p-4">
         <SearchIcon className="absolute top-1/2 left-7 size-4 -translate-y-1/2 stroke-neutral-400 text-neutral-100" />

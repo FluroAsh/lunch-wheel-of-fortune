@@ -12,7 +12,7 @@ import { getPriceLevel, getPriceRange } from "../utils/map";
 import { StarRating } from "./star-rating";
 
 const ListHeading = () => (
-  <p className="font-bold">Places nearby that are currently OPEN! 🍽️</p>
+  <p className="pb-2 font-bold">Places nearby that are currently OPEN! 🍽️</p>
 );
 
 export const MapList = () => {
@@ -24,7 +24,7 @@ export const MapList = () => {
 
   if (isLoadingPlaces || !isMapsAPIReady || status === "LOADING") {
     return (
-      <div className="h-fit space-y-2 overflow-y-auto rounded-md border border-neutral-600 bg-neutral-800/50 p-4">
+      <div className="flex h-fit max-h-full flex-col overflow-hidden rounded-md border border-neutral-600 bg-neutral-800/50 p-4 lg:h-fit">
         <ListHeading />
         <ListSkeleton />
       </div>
@@ -33,11 +33,11 @@ export const MapList = () => {
 
   //  TODO: These should be selectable, and saved in a list for use in the spinning wheel
   return (
-    <div className="h-fit space-y-2 overflow-y-auto rounded-md border border-neutral-600 bg-neutral-800/50 p-4">
+    <div className="flex h-fit max-h-full flex-col overflow-hidden rounded-md border border-neutral-600 bg-neutral-800/50 p-4">
       {places && places.length > 0 ? (
         <>
           <ListHeading />
-          <ul>
+          <ul className="h-full overflow-y-auto">
             {places.map((place, idx) => {
               const isFirst = idx === 0;
               const isLast = idx === places.length - 1;

@@ -6,7 +6,7 @@ import { MapList } from "@/features/menu/components/map-list";
 
 export default function Home() {
   return (
-    <div className="flex flex-1 flex-col">
+    <div className="flex max-h-dvh flex-1 flex-col">
       <div className="w-full bg-neutral-600">
         <div className="mx-auto max-w-5xl px-4 py-2">
           <h1 className="text-2xl font-bold">Lunch Wheel of Fortune</h1>
@@ -16,12 +16,13 @@ export default function Home() {
         </div>
       </div>
 
-      <div className="mx-auto grid size-full max-w-7xl grid-cols-1 grid-rows-[1.5fr_1fr] gap-4 px-4 py-4 lg:grid-cols-[1fr_minmax(600px,auto)] lg:grid-rows-1">
+      <div className="mx-auto grid size-full max-w-7xl grid-cols-1 grid-rows-[minmax(45vh,400px)_1fr] gap-4 overflow-hidden px-4 py-4 lg:grid-cols-[1fr_minmax(600px,auto)] lg:grid-rows-1">
+        {/* <div className="mx-auto grid size-full max-w-7xl grid-cols-1 grid-rows-[600px_1fr] gap-4 overflow-hidden px-4 py-4 lg:grid-cols-[1fr_minmax(600px,auto)] lg:grid-rows-1"> */}
         <GoogleMap />
         <MapList />
       </div>
 
-      <div className="sticky bottom-0 mt-auto flex justify-center bg-neutral-600 px-4 py-2">
+      <div className="flex justify-center bg-neutral-600 px-4 py-2">
         <Link
           href="/spin"
           className="rounded-md bg-blue-500 px-4 py-2 text-blue-100 transition-colors duration-200 hover:bg-blue-600"
