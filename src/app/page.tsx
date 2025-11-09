@@ -21,7 +21,7 @@ export default function Home() {
         <MapList />
       </div>
 
-      <div className="mt-auto flex justify-center bg-neutral-600 px-4 py-2">
+      <div className="sticky bottom-0 mt-auto flex justify-center bg-neutral-600 px-4 py-2">
         <Link
           href="/spin"
           className="rounded-md bg-blue-500 px-4 py-2 text-blue-100 transition-colors duration-200 hover:bg-blue-600"
