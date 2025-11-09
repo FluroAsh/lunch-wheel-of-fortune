@@ -53,7 +53,7 @@ export const PrizeBanner = ({
 
   return (
     <div
-      className="fixed inset-0 z-50 grid min-h-dvh place-items-center bg-slate-800/70 backdrop-blur-sm"
+      className="fixed inset-0 z-50 grid min-h-full place-items-center bg-slate-800/70 px-4 backdrop-blur-sm"
       onClick={handleBackdropClick}
       onKeyDown={handleKeyDown}
       tabIndex={-1}
@@ -61,7 +61,7 @@ export const PrizeBanner = ({
       aria-modal="true"
       aria-labelledby="prize-title"
     >
-      <div className="relative w-[400px] max-w-full rounded-xl border border-slate-200 bg-slate-50 p-8 shadow-xl">
+      <div className="relative w-[400px] rounded-xl border border-slate-200 bg-slate-50 p-8 shadow-xl">
         {/* Close Button */}
         {onClose && (
           <button

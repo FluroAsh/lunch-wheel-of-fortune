@@ -15,7 +15,7 @@ const geistMono = Geist_Mono({
 });
 
 export const metadata: Metadata = {
-  title: "Flavour of the Week",
+  title: "Wheel of Flavours",
   description: "Spin the wheel, and let the wheel decide what's on the menu!",
 };
 
@@ -27,7 +27,7 @@ export default function RootLayout({
   return (
     <html lang="en">
       <body
-        className={`${geistSans.variable} ${geistMono.variable} flex min-h-screen antialiased`}
+        className={`${geistSans.variable} ${geistMono.variable} flex min-h-dvh antialiased`}
       >
         <Providers>{children}</Providers>
       </body>

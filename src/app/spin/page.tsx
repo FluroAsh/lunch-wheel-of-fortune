@@ -1,11 +1,13 @@
 "use client";
 
 import { useRouter } from "next/navigation";
-import { useEffect, useState } from "react";
+import { Suspense, useEffect, useState } from "react";
 
 import { type WheelDataType } from "react-custom-roulette-r19";
 
-import DynamicWheel from "@/features/wheel/components/dynamic-wheel";
+import DynamicWheel, {
+  WheelSkeleton,
+} from "@/features/wheel/components/dynamic-wheel";
 import { PrizeBanner } from "@/features/wheel/components/prize-banner";
 import { cn, truncateText } from "@/lib/utils";
 import { useMapStore } from "@/store";
@@ -70,36 +72,38 @@ export default function Page() {
         open={hasSpun && state === "idle"}
       />
 
-      <DynamicWheel
-        mustStartSpinning={state === "spinning"}
-        onStopSpinning={onStop}
-        prizeNumber={prizeNumber}
-        data={data.map((option, idx) => {
-          const colorScheme = baseColors[idx % baseColors.length];
+      <Suspense fallback={<WheelSkeleton />}>
+        <DynamicWheel
+          mustStartSpinning={state === "spinning"}
+          onStopSpinning={onStop}
+          prizeNumber={prizeNumber}
+          data={data.map((option, idx) => {
+            const colorScheme = baseColors[idx % baseColors.length];
 
-          return {
-            ...option,
-            style: {
-              backgroundColor: colorScheme.bg,
-              textColor: colorScheme.text,
-            },
-          };
-        })}
-        backgroundColors={["#3e3e3e", "#df3428"]}
-        textColors={["#ffffff"]}
-        spinDuration={0.1}
-      />
+            return {
+              ...option,
+              style: {
+                backgroundColor: colorScheme.bg,
+                textColor: colorScheme.text,
+              },
+            };
+          })}
+          backgroundColors={["#3e3e3e", "#df3428"]}
+          textColors={["#ffffff"]}
+          spinDuration={0.25}
+        />
 
-      <button
-        disabled={state === "spinning"}
-        onClick={handleSpinClick}
-        className={cn(
-          "min-w-[100px] rounded-md p-2 text-white",
-          state === "idle" ? "bg-blue-500" : "bg-gray-600 text-gray-300",
-        )}
-      >
-        {hasSpun ? "Spin Again" : "Spin"}
-      </button>
+        <button
+          disabled={state === "spinning"}
+          onClick={handleSpinClick}
+          className={cn(
+            "min-w-[100px] rounded-md p-2 text-white",
+            state === "idle" ? "bg-blue-500" : "bg-gray-600 text-gray-300",
+          )}
+        >
+          {hasSpun ? "Spin Again" : "Spin"}
+        </button>
+      </Suspense>
     </div>
   );
 }

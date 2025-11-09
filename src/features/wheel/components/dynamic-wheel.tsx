@@ -1,27 +1,30 @@
 "use client";
 
-import dynamic from "next/dynamic";
-import { ComponentProps } from "react";
+import { ComponentProps, lazy } from "react";
 
+import { LucideLoader } from "lucide-react";
 import { Wheel } from "react-custom-roulette-r19";
 
 export type WheelProps = ComponentProps<typeof Wheel>;
 
-// Dynamically import with no SSR - Wheel library othewise accesses window object during initial SSR render
-const ClientsideSafeWheel = dynamic(
-  () =>
-    import("react-custom-roulette-r19").then((mod) => ({ default: mod.Wheel })),
-  {
-    ssr: false,
-    loading: () => (
-      <div className="m-4 flex h-[420px] w-[420px] animate-pulse items-center justify-center rounded-full bg-gray-600">
-        {/* TODO: Add an icon instead of text */}
-        <div className="text-neutral-100">Loading wheel...</div>
-      </div>
-    ),
-  },
+export const WheelSkeleton = () => (
+  <div className="flex max-w-full flex-col items-center justify-center gap-4 px-4">
+    <div className="grid aspect-square w-[80vw] max-w-[445px] animate-pulse place-items-center rounded-full bg-neutral-800/50" />
+
+    <button
+      disabled
+      className="grid h-10 w-[100px] place-items-center rounded-md bg-gray-600 p-2 text-gray-300"
+    >
+      <LucideLoader className="size-4 animate-spin text-neutral-100" />
+    </button>
+  </div>
+);
+
+// Lazy over dynamic so we can suspend the component
+const ClientSideSafeWheel = lazy(() =>
+  import("react-custom-roulette-r19").then((mod) => ({ default: mod.Wheel })),
 );
 
 export default function DynamicWheel(props: WheelProps) {
-  return <ClientsideSafeWheel {...props} />;
+  return <ClientSideSafeWheel {...props} />;
 }
