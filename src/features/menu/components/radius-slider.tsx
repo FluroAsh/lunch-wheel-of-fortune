@@ -1,4 +1,4 @@
-import { useMemo } from "react";
+import { useRef } from "react";
 
 import { useMap } from "@vis.gl/react-google-maps";
 import { debounce } from "radash";
@@ -19,16 +19,7 @@ export const RadiusSlider = ({
   const { radius, setRadius, setPlaces } = useMapStore();
   const { searchPlaces, isLoadingPlaces } = useNearbyPlaces(map);
 
-  const debouncedSearch = useMemo(
-    () =>
-      debounce({ delay: MAP.searchDebounceDelay }, () => {
-        searchPlaces(currentLocation.lat, currentLocation.lng).then((places) =>
-          setPlaces(places),
-        );
-      }),
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-    [currentLocation.lat, currentLocation.lng],
-  );
+  const debouncedSearch = useRef<ReturnType<typeof debounce> | null>(null);
 
   return (
     // Add visual states for loading and interaction
@@ -52,8 +43,22 @@ export const RadiusSlider = ({
           "[&::-webkit-slider-thumb]:transition-colors [&::-webkit-slider-thumb]:hover:bg-slate-700",
         )}
         onChange={(e) => {
+          debouncedSearch.current?.cancel();
+
           setRadius(parseInt(e.target.value));
-          debouncedSearch();
+
+          // TODO: Investigate why a wider range returns fewer results...
+          debouncedSearch.current = debounce(
+            { delay: MAP.searchDebounceDelay },
+            () => {
+              return searchPlaces(
+                currentLocation.lat,
+                currentLocation.lng,
+              ).then((places) => setPlaces(places));
+            },
+          );
+
+          debouncedSearch.current();
         }}
       />
       <label
