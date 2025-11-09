@@ -3,6 +3,7 @@
 import { useApiIsLoaded, useApiLoadingStatus } from "@vis.gl/react-google-maps";
 
 import { ListSkeleton } from "@/components/skeleton";
+import { getPlacesSearchUrl } from "@/lib/helpers";
 import { cn } from "@/lib/utils";
 import { useMapStore } from "@/store";
 
@@ -77,7 +78,7 @@ export const MapList = () => {
                   >
                     <a
                       className="block w-fit max-w-full truncate px-2 hover:text-blue-500 hover:underline"
-                      href={`https://www.google.com/maps/place/?q=place_id:${place.id}`}
+                      href={getPlacesSearchUrl(place)}
                       target="_blank"
                       onMouseEnter={() => setActiveMarker(place.id)}
                       onMouseLeave={() => setActiveMarker(undefined)}

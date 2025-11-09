@@ -5,6 +5,7 @@ import { useEffect } from "react";
 import { LucideX } from "lucide-react";
 import { useReward } from "react-rewards";
 
+import { getPlacesSearchUrl } from "@/lib/helpers";
 import { NearbyPlaces } from "@/types/google";
 
 type PrizeBannerProps = {
@@ -121,10 +122,9 @@ export const PrizeBanner = ({
             {winner.id && (
               <button
                 className="rounded-lg border border-slate-300 bg-white px-6 py-3 font-semibold text-slate-700 shadow-sm hover:cursor-pointer hover:bg-slate-50 hover:shadow-md"
-                onClick={() => {
-                  const mapsUrl = `https://www.google.com/maps/place/?q=place_id:${winner.id}`;
-                  window.open(mapsUrl, "_blank");
-                }}
+                onClick={() =>
+                  window.open(getPlacesSearchUrl(winner), "_blank")
+                }
               >
                 View on Google Maps
               </button>
