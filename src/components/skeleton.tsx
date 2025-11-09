@@ -32,9 +32,5 @@ export const ListSkeleton = () => (
     <Skeleton className="w-60" />
     <Skeleton className="w-80" />
     <Skeleton className="w-96" />
-    <Skeleton className="w-96" />
-    <Skeleton className="w-80" />
-    <Skeleton className="w-60" />
-    <Skeleton className="w-48" />
   </div>
 );

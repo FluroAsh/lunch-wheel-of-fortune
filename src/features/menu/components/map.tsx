@@ -1,5 +1,6 @@
 "use client";
 
+import Link from "next/link";
 import React, { CSSProperties, useEffect } from "react";
 
 import {
@@ -10,10 +11,10 @@ import {
   useApiLoadingStatus,
   useMap,
 } from "@vis.gl/react-google-maps";
-import { SearchIcon } from "lucide-react";
+import { LucideShipWheel, SearchIcon } from "lucide-react";
 
 import { MAP } from "@/lib/constants";
-import { filterLatLng } from "@/lib/utils";
+import { cn, filterLatLng } from "@/lib/utils";
 import { useMapStore } from "@/store";
 import { Coords } from "@/types/google";
 
@@ -24,11 +25,8 @@ import { Circle } from "./circle";
 import { RadiusSlider } from "./radius-slider";
 
 const containerStyle = {
-  display: "flex",
-  flexDirection: "column",
   width: "100%",
   height: "100%",
-  flex: "1 1 0%",
   color: "#1f1f1f",
 } satisfies CSSProperties;
 
@@ -104,14 +102,17 @@ const GoogleMap = () => {
   }
 
   return (
-    <div className="relative flex size-full flex-col overflow-hidden rounded-md border-2 border-neutral-600 lg:overflow-y-auto">
-      {/* TODO: Add Google autocomplete for address search (ie when geolocation fails/is disabled) */}
-      <div className="relative bg-neutral-800 p-4">
+    <div className="relative flex size-full flex-col overflow-hidden rounded-md border border-neutral-700 lg:overflow-y-auto">
+      <div className="relative bg-neutral-800 p-2 lg:p-4">
         <SearchIcon className="absolute top-1/2 left-7 size-4 -translate-y-1/2 stroke-neutral-400 text-neutral-100" />
         <input
-          className="w-full rounded-md bg-neutral-900 px-2 py-2 pl-10 text-neutral-100 focus:ring-2 focus:ring-sky-500 focus:outline-none"
+          className={cn(
+            "w-full rounded-md bg-neutral-900 px-2 py-2 pl-10 text-neutral-100 focus:ring-2 focus:ring-sky-500 focus:outline-none",
+            "disabled:cursor-not-allowed disabled:opacity-50",
+          )}
           type="text"
           placeholder="Where's the food?"
+          disabled={true} // TODO: Add Google autocomplete for address search
         />
       </div>
 
@@ -127,6 +128,19 @@ const GoogleMap = () => {
         onClick={handleLocationUpdate}
         disableDefaultUI
       >
+        {places.length > 0 && (
+          <div className="absolute top-4 right-4 z-10 flex flex-col items-end space-y-2">
+            <Link
+              href="/spin"
+              className="flex items-center rounded-md bg-emerald-600 px-4 py-2 text-white shadow-lg transition-colors duration-200 hover:bg-emerald-700"
+              title="Spin the Wheel for a Lunch Decision"
+            >
+              <LucideShipWheel className="mr-2 size-5 stroke-white" />
+              <span className="font-semibold">Spin the Wheel</span>
+            </Link>
+          </div>
+        )}
+
         <AdvancedMarker
           key="current-location-marker"
           position={{

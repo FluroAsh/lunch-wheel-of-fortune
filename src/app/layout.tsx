@@ -15,7 +15,7 @@ const geistMono = Geist_Mono({
 });
 
 export const metadata: Metadata = {
-  title: "Lunch Wheel of Fortune",
+  title: "Flavour of the Week",
   description: "Spin the wheel, and let the wheel decide what's on the menu!",
 };
 

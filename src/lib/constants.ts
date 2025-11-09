@@ -25,3 +25,15 @@ export const PRICE_LEVELS: Record<PriceLevel, number> = {
   PRICE_LEVEL_EXPENSIVE: 4,
   PRICE_LEVEL_VERY_EXPENSIVE: 5,
 } as const;
+
+export const BREAKPOINTS = {
+  SM: 640,
+  MD: 768,
+  LG: 1024,
+} as const;
+
+export const MEDIA_QUERIES = {
+  DESKTOP: `(min-width: ${BREAKPOINTS.LG}px)`,
+  TABLET: `(min-width: ${BREAKPOINTS.MD}px) and (max-width: ${BREAKPOINTS.LG - 1}px)`,
+  MOBILE: `(max-width: ${BREAKPOINTS.MD - 1}px)`,
+} as const;
