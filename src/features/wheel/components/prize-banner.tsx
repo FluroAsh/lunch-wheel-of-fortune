@@ -1,5 +1,6 @@
 "use client";
 
+import Link from "next/link";
 import { useEffect } from "react";
 
 import { LucideX } from "lucide-react";
@@ -139,6 +140,15 @@ export const PrizeBanner = ({
             >
               Spin Again
             </button>
+
+            <div>
+              <Link
+                className="pt-2 text-xs text-neutral-600 underline"
+                href="/"
+              >
+                Back to the Map
+              </Link>
+            </div>
           </div>
         </div>
       </div>
