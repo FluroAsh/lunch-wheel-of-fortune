@@ -5,9 +5,8 @@ import { Suspense, useEffect, useState } from "react";
 
 import { type WheelDataType } from "react-custom-roulette-r19";
 
-import DynamicWheel, {
-  WheelSkeleton,
-} from "@/features/wheel/components/dynamic-wheel";
+import { WheelSkeleton } from "@/components/skeleton";
+import DynamicWheel from "@/features/wheel/components/dynamic-wheel";
 import { PrizeBanner } from "@/features/wheel/components/prize-banner";
 import { cn, truncateText } from "@/lib/utils";
 import { useMapStore } from "@/store";

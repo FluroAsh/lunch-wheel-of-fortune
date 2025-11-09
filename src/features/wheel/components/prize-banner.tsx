@@ -53,7 +53,7 @@ export const PrizeBanner = ({
 
   return (
     <div
-      className="fixed inset-0 z-50 grid min-h-full place-items-center bg-slate-800/70 px-4 backdrop-blur-sm"
+      className="fixed z-50 grid size-full place-items-center bg-slate-800/70 px-4 backdrop-blur-sm"
       onClick={handleBackdropClick}
       onKeyDown={handleKeyDown}
       tabIndex={-1}
@@ -61,7 +61,8 @@ export const PrizeBanner = ({
       aria-modal="true"
       aria-labelledby="prize-title"
     >
-      <div className="relative w-[400px] rounded-xl border border-slate-200 bg-slate-50 p-8 shadow-xl">
+      {/* NOTE: max-w-full with w-[400px] were causing content to overflow on mobile/break the layout */}
+      <div className="relative w-[min(400px,100%)] rounded-xl border border-slate-200 bg-slate-50 p-8 shadow-xl">
         {/* Close Button */}
         {onClose && (
           <button
@@ -81,7 +82,7 @@ export const PrizeBanner = ({
         {/* Content */}
         <div className="space-y-4 text-center">
           {/* Celebration Icon */}
-          <div className="mx-auto flex h-16 w-16 items-center justify-center rounded-full bg-gradient-to-br from-emerald-100 to-teal-100">
+          <div className="mx-auto flex size-16 items-center justify-center rounded-full bg-gradient-to-br from-emerald-100 to-teal-100">
             <svg
               className="h-8 w-8 text-emerald-600"
               fill="currentColor"
