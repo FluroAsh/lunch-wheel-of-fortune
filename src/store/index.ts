@@ -1,6 +1,5 @@
 import { create } from "zustand";
 
-import { clearAllCache, clearExpiredCache } from "@/lib/cache";
 import { MAP } from "@/lib/constants";
 import { NearbyPlaces } from "@/types/google";
 
@@ -13,8 +12,6 @@ type MapState = {
   setIsLoadingPlaces: (isLoadingPlaces: boolean) => void;
   activeMarker: string | undefined;
   setActiveMarker: (id: string | undefined) => void;
-  clearCache: () => void;
-  clearExpiredCache: () => void;
 };
 
 export const useMapStore = create<MapState>((set) => ({
@@ -26,6 +23,4 @@ export const useMapStore = create<MapState>((set) => ({
   setIsLoadingPlaces: (isLoadingPlaces: boolean) => set({ isLoadingPlaces }),
   activeMarker: undefined,
   setActiveMarker: (id: string | undefined) => set({ activeMarker: id }),
-  clearCache: clearAllCache,
-  clearExpiredCache: clearExpiredCache,
 }));

@@ -39,7 +39,7 @@ const GoogleMap = () => {
   const [selectedLocation, setSelectedLocation] =
     React.useState<Coords | null>();
 
-  const { places, setPlaces, radius, clearExpiredCache } = useMapStore();
+  const { places, setPlaces, radius } = useMapStore();
 
   const { state, error, coords } = useGeolocation();
   const { searchPlaces, isLoadingPlaces, isFetched } = useNearbyPlaces(map);
@@ -57,11 +57,6 @@ const GoogleMap = () => {
       setPlaceMarkers(markers);
     }
   }, [places, map, isFetched, isLoadingPlaces]);
-
-  // Clear expired cache entries on component mount
-  useEffect(() => {
-    clearExpiredCache();
-  }, [clearExpiredCache]);
 
   useEffect(() => {
     // FIXME: This is being called twice
@@ -116,8 +111,6 @@ const GoogleMap = () => {
         />
       </div>
 
-      <RadiusSlider currentLocation={currentLocation} />
-
       <Map
         key="google-map"
         mapId={MAP.id}
@@ -128,6 +121,8 @@ const GoogleMap = () => {
         onClick={handleLocationUpdate}
         disableDefaultUI
       >
+        <RadiusSlider currentLocation={currentLocation} />
+
         {places.length > 0 && (
           <div className="absolute top-4 right-4 z-10 flex flex-col items-end space-y-2">
             <Link
