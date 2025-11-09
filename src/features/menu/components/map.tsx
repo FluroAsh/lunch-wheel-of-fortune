@@ -10,6 +10,7 @@ import {
   useApiLoadingStatus,
   useMap,
 } from "@vis.gl/react-google-maps";
+import { SearchIcon } from "lucide-react";
 
 import { MAP } from "@/lib/constants";
 import { filterLatLng } from "@/lib/utils";
@@ -100,7 +101,19 @@ const GoogleMap = () => {
   }
 
   return (
-    <div className="size-full overflow-hidden rounded-md border-2 border-neutral-600">
+    <div className="relative size-full overflow-hidden rounded-md border-2 border-neutral-600">
+      {/* TODO: Add Google autocomplete for address search (ie when geolocation fails/is disabled) */}
+      <div className="relative bg-neutral-800 p-4">
+        <SearchIcon className="absolute top-1/2 left-7 size-4 -translate-y-1/2 stroke-neutral-400 text-neutral-100" />
+        <input
+          className="w-full rounded-md bg-neutral-900 px-2 py-2 pl-10 text-neutral-100 focus:ring-2 focus:ring-sky-500 focus:outline-none"
+          type="text"
+          placeholder="Where's the food?"
+        />
+      </div>
+
+      <RadiusSlider currentLocation={currentLocation} />
+
       <Map
         key="google-map"
         mapId={MAP.id}
@@ -111,17 +124,6 @@ const GoogleMap = () => {
         onClick={handleLocationUpdate}
         disableDefaultUI
       >
-        {/* TODO: Add Google autocomplete for address search (ie when geolocation fails/is disabled) */}
-        <div className="absolute top-0 left-0 rounded-br-md p-2 shadow-md backdrop-blur-md">
-          <input
-            className="rounded-md bg-neutral-400/50 px-2 py-1 text-neutral-800 focus:ring-2 focus:ring-slate-500 focus:outline-none"
-            type="text"
-            placeholder="Where's the food?"
-          />
-        </div>
-
-        <RadiusSlider currentLocation={currentLocation} />
-
         <AdvancedMarker
           key="current-location-marker"
           position={{

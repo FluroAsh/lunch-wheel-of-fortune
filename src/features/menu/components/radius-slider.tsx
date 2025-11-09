@@ -44,7 +44,7 @@ export const RadiusSlider = ({
         disabled={isLoadingPlaces}
         className={cn(
           "h-2 w-24 cursor-pointer appearance-none rounded-lg bg-neutral-200",
-          "focus:ring-2 focus:ring-slate-500 focus:outline-none",
+          "focus:ring-2 focus:ring-sky-500 focus:outline-none",
           "disabled:cursor-not-allowed disabled:opacity-50",
           "[&::-webkit-slider-thumb]:h-4 [&::-webkit-slider-thumb]:w-4 [&::-webkit-slider-thumb]:appearance-none",
           "[&::-webkit-slider-thumb]:rounded-full [&::-webkit-slider-thumb]:bg-slate-600",
