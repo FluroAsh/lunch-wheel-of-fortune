@@ -1,7 +1,7 @@
 ---
 description: Lunch Wheel of Fortune rules
 globs:
-alwaysApply: false
+alwaysApply: true
 ---
 
 # Next.js 16 + React 19 + TypeScript + Tailwind CSS 4
@@ -14,6 +14,19 @@ alwaysApply: false
 - Use Zustand for global state management
 - Keep styling minimal - prefer Tailwind classes over custom CSS
 - Use named exports for components
+- Prefer compound components where they can be grouped logically under a single parent component
+- Prefer `index.tsx` files for component exports, eg: `/src/features/components/button/index.tsx`
+- Where smaller, atomic components are required, prefer to create them in the same file as the parent component
+  - create separate files when they are complex or need to be re-used in other contexts.
+
+### Utilities
+
+- `cn` - for conditional class merging
+- `truncateText` - for truncating text to a maximum length
+- `filterLatLng` - for filtering out places that are not within a certain latitude and longitude
+- `useGeolocation` - for getting the user's geolocation
+- `useNearbyPlaces` - for fetching nearby places from the Google Places API
+- `useMapStore` - for managing the map state
 
 # Agent Demeanour
 
