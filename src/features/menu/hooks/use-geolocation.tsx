@@ -3,6 +3,8 @@
 import { useCallback, useState } from "react";
 import { useEffect } from "react";
 
+import { MAP } from "@/lib/constants";
+
 const IDLE_TIMEOUT = 10000;
 
 export const useGeolocation = (options: PositionOptions = {}) => {
@@ -66,10 +68,12 @@ export const useGeolocation = (options: PositionOptions = {}) => {
     state,
     error,
     userLocation,
-    coords: {
-      lat: userLocation?.latitude || 0,
-      lng: userLocation?.longitude || 0,
-    },
+    coords: userLocation
+      ? {
+          lat: userLocation.latitude,
+          lng: userLocation.longitude,
+        }
+      : MAP.defaultLocation,
     retry: getCurrentPosition,
   };
 };
