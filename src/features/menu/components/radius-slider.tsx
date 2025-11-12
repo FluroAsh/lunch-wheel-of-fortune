@@ -16,8 +16,8 @@ export const RadiusSlider = ({
   currentLocation: Coords;
 }) => {
   const map = useMap();
-  const { radius, setRadius, setPlaces } = useMapStore();
-  const { searchPlaces, isLoadingPlaces } = useNearbyPlaces(map);
+  const { radius, setRadius, setPlaces, isLoadingPlaces } = useMapStore();
+  const { searchPlaces } = useNearbyPlaces(map);
 
   const debouncedSearch = useRef<ReturnType<typeof debounce> | null>(null);
 
