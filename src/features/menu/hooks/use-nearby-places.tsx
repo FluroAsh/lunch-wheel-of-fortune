@@ -1,6 +1,6 @@
 "use client";
 
-import { useRef, useState } from "react";
+import { useCallback, useRef, useState } from "react";
 
 import { useMapStore } from "@/store";
 import { MapInstance } from "@/types/google";
@@ -12,30 +12,31 @@ export const useNearbyPlaces = (map: MapInstance | null) => {
   const [error, setError] = useState<string | null>(null);
   const isFetched = useRef<boolean>(false);
 
-  const searchPlaces = async (lat: number, lng: number) => {
-    try {
-      if (!map || isLoadingPlaces) return [];
+  const searchPlaces = useCallback(
+    async (lat: number, lng: number) => {
+      try {
+        if (!map || isLoadingPlaces) return [];
 
-      // Get radius immediately to avoid render race condition
-      const { radius } = useMapStore.getState();
+        // Get radius immediately to avoid render race condition
+        const { radius } = useMapStore.getState();
 
-      setIsLoadingPlaces(true);
-      setError(null);
+        setIsLoadingPlaces(true);
+        setError(null);
 
-      const result = await fetchNearbyPlaces(lat, lng, radius);
+        const result = await fetchNearbyPlaces(lat, lng, radius);
 
-      console.log("[API]: Nearby places result", result);
+        console.log("[API]: Nearby places result", result);
+        return result;
+      } catch (err) {
+        setError(err instanceof Error ? err.message : "Places search failed");
+        return [];
+      } finally {
+        isFetched.current = true;
+        setIsLoadingPlaces(false);
+      }
+    },
+    [map],
+  );
 
-      setIsLoadingPlaces(false);
-      return result;
-    } catch (err) {
-      setError(err instanceof Error ? err.message : "Places search failed");
-      return [];
-    } finally {
-      isFetched.current = true;
-      setIsLoadingPlaces(false);
-    }
-  };
-
-  return { isLoadingPlaces, error, searchPlaces, isFetched: isFetched.current };
+  return { error, searchPlaces, isFetched: isFetched.current };
 };

@@ -33,16 +33,21 @@ const containerStyle = {
 const GoogleMap = () => {
   const map = useMap();
   const isMapsAPIReady = useApiIsLoaded();
-  const status = useApiLoadingStatus();
+  const mapsStatus = useApiLoadingStatus();
 
   const [placeMarkers, setPlaceMarkers] = React.useState<React.ReactNode[]>([]);
   const [selectedLocation, setSelectedLocation] =
     React.useState<Coords | null>();
 
-  const { places, setPlaces, radius } = useMapStore();
+  const { places, setPlaces, radius, isLoadingPlaces } = useMapStore();
 
-  const { state, error, coords, userLocation } = useGeolocation();
-  const { searchPlaces, isLoadingPlaces, isFetched } = useNearbyPlaces(map);
+  const {
+    state: locationState,
+    error,
+    coords,
+    userLocation,
+  } = useGeolocation();
+  const { searchPlaces, isFetched } = useNearbyPlaces(map);
 
   const currentLocation: Coords = selectedLocation ?? coords;
 
@@ -70,10 +75,11 @@ const GoogleMap = () => {
   useEffect(() => {
     if (
       map &&
-      state === "success" &&
+      locationState === "success" &&
       userLocation &&
       !selectedLocation &&
-      isFetched
+      isFetched &&
+      !isLoadingPlaces
     ) {
       const userCoords = {
         lat: userLocation.latitude,
@@ -84,7 +90,7 @@ const GoogleMap = () => {
         setPlaces(places),
       );
     }
-  }, [map, state, userLocation, selectedLocation, isFetched, searchPlaces, setPlaces]);
+  }, [map, locationState, userLocation, selectedLocation, isFetched]);
 
   const handleLocationUpdate = (event: MapMouseEvent) => {
     if (event.detail.latLng && map) {
@@ -99,14 +105,16 @@ const GoogleMap = () => {
 
   // Show loading state only while Maps API is loading
   // Map will display with default location if geolocation fails or is still loading
-  if (!isMapsAPIReady || status === "LOADING") {
+  if (!isMapsAPIReady || mapsStatus === "LOADING") {
     return (
       <div
         style={containerStyle}
         className="flex animate-pulse items-center justify-center bg-neutral-600/50"
       >
         <p className="text-neutral-100">
-          {state === "loading" ? "Getting your location..." : "Loading map..."}
+          {locationState === "loading"
+            ? "Getting your location..."
+            : "Loading map..."}
         </p>
       </div>
     );
@@ -114,11 +122,9 @@ const GoogleMap = () => {
 
   // Only show error if Google Maps API failed to load
   // Geolocation errors are handled gracefully with default location
-  if (status === "FAILED") {
+  if (mapsStatus === "FAILED") {
     return (
-      <p className="text-red-500">
-        Error: Failed to load Google Maps API
-      </p>
+      <p className="text-red-500">Error: Failed to load Google Maps API</p>
     );
   }
 
