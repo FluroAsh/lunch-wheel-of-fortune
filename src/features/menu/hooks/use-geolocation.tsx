@@ -11,9 +11,9 @@ export const useGeolocation = (options: PositionOptions = {}) => {
   const [userLocation, setUserLocation] =
     useState<GeolocationCoordinates | null>(null);
   const [error, setError] = useState<string | null>(null);
-  const [state, setState] = useState<"idle" | "loading" | "error" | "success">(
-    "idle",
-  );
+  const [state, setState] = useState<
+    "idle" | "loading" | "error" | "denied" | "success"
+  >("idle");
 
   const getCurrentPosition = useCallback(() => {
     // Check if geolocation is supported and we're in the browser
@@ -32,7 +32,7 @@ export const useGeolocation = (options: PositionOptions = {}) => {
         setState("success");
       },
       (error) => {
-        setState("error");
+        setState(error.PERMISSION_DENIED ? "denied" : "error");
         setError(error.message);
       },
       {
@@ -47,7 +47,6 @@ export const useGeolocation = (options: PositionOptions = {}) => {
   // Initial geolocation request
   useEffect(() => {
     getCurrentPosition();
-    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
   // Reset state after user is considered idle
@@ -74,6 +73,5 @@ export const useGeolocation = (options: PositionOptions = {}) => {
           lng: userLocation.longitude,
         }
       : MAP.defaultLocation,
-    retry: getCurrentPosition,
   };
 };

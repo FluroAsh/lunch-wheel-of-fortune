@@ -1,7 +1,7 @@
 "use client";
 
 import Link from "next/link";
-import React, { CSSProperties, useEffect } from "react";
+import React, { type CSSProperties, useEffect, useState } from "react";
 
 import {
   AdvancedMarker,
@@ -33,20 +33,14 @@ const containerStyle = {
 const GoogleMap = () => {
   const map = useMap();
   const isMapsAPIReady = useApiIsLoaded();
-  const mapsStatus = useApiLoadingStatus();
+  const mapsLoadingState = useApiLoadingStatus();
 
   const [placeMarkers, setPlaceMarkers] = React.useState<React.ReactNode[]>([]);
-  const [selectedLocation, setSelectedLocation] =
-    React.useState<Coords | null>();
+  const [selectedLocation, setSelectedLocation] = useState<Coords | null>();
 
   const { places, setPlaces, radius, isLoadingPlaces } = useMapStore();
 
-  const {
-    state: locationState,
-    error,
-    coords,
-    userLocation,
-  } = useGeolocation();
+  const { state: locationState, coords, userLocation } = useGeolocation();
   const { searchPlaces, isFetched } = useNearbyPlaces(map);
 
   const currentLocation: Coords = selectedLocation ?? coords;
@@ -75,10 +69,10 @@ const GoogleMap = () => {
   useEffect(() => {
     if (
       map &&
-      locationState === "success" &&
+      locationState !== "denied" &&
+      isFetched &&
       userLocation &&
       !selectedLocation &&
-      isFetched &&
       !isLoadingPlaces
     ) {
       const userCoords = {
@@ -105,7 +99,7 @@ const GoogleMap = () => {
 
   // Show loading state only while Maps API is loading
   // Map will display with default location if geolocation fails or is still loading
-  if (!isMapsAPIReady || mapsStatus === "LOADING") {
+  if (!isMapsAPIReady || mapsLoadingState === "LOADING") {
     return (
       <div
         style={containerStyle}
@@ -122,7 +116,7 @@ const GoogleMap = () => {
 
   // Only show error if Google Maps API failed to load
   // Geolocation errors are handled gracefully with default location
-  if (mapsStatus === "FAILED") {
+  if (mapsLoadingState === "FAILED") {
     return (
       <p className="text-red-500">Error: Failed to load Google Maps API</p>
     );
