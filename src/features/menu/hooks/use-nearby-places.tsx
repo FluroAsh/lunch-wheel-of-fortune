@@ -23,7 +23,6 @@ export const useNearbyPlaces = () => {
 
   // Ensure we do not make an unnecessary API call if location is still pending
   const isGeolocationFinished = geoState === "success" || geoState === "denied";
-  console.log({ geoState });
 
   const lat = searchLat ?? geoLat;
   const lng = searchLng ?? geoLng;
