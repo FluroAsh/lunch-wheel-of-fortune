@@ -60,7 +60,7 @@ const GoogleMap = () => {
 
   // Update search coordinates when geolocation succeeds (only if no manual selection)
   useEffect(() => {
-    if (map && userLocation && !currentLocation && locationState !== "denied") {
+    if (map && userLocation && locationState !== "denied") {
       const userCoords = {
         lat: userLocation.latitude,
         lng: userLocation.longitude,
@@ -77,7 +77,6 @@ const GoogleMap = () => {
 
       map.panTo({ lat: newLat, lng: newLng });
       setSearchLocation({ lat: newLat, lng: newLng });
-      // setSearchCoords({ lat: newLat, lng: newLng });
     }
   };
 

@@ -18,7 +18,12 @@ export const useNearbyPlaces = () => {
   // current GPS coords (if enabled), or default location
   const {
     coords: { lat: geoLat, lng: geoLng },
+    state: geoState,
   } = useGeolocation();
+
+  // Ensure we do not make an unnecessary API call if location is still pending
+  const isGeolocationFinished = geoState === "success" || geoState === "denied";
+  console.log({ geoState });
 
   const lat = searchLat ?? geoLat;
   const lng = searchLng ?? geoLng;
@@ -26,8 +31,8 @@ export const useNearbyPlaces = () => {
   const { data: places = [], ...rest } = useQuery({
     queryKey: ["nearbyPlaces", lat, lng, radius],
     queryFn: () => fetchNearbyPlaces(lat, lng, radius),
-    enabled: isMapsAPIReady && !!map && !!lat && !!lng && !!radius,
-    staleTime: 5 * 60 * 1000, // 5 minutes
+    enabled: isGeolocationFinished && !!map && isMapsAPIReady,
+    staleTime: 30 * 60 * 1000, // 30 minutes
   });
 
   return { places, ...rest };

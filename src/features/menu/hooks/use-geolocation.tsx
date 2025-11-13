@@ -13,8 +13,8 @@ export const useGeolocation = (options: PositionOptions = {}) => {
     useState<GeolocationCoordinates | null>(null);
   const [error, setError] = useState<string | null>(null);
   const [state, setState] = useState<
-    "idle" | "loading" | "error" | "denied" | "success"
-  >("idle");
+    "ready" | "loading" | "error" | "denied" | "success"
+  >("ready");
 
   const getCurrentPosition = useCallback(() => {
     // Check if geolocation is supported and we're in the browser
@@ -48,20 +48,6 @@ export const useGeolocation = (options: PositionOptions = {}) => {
   useEffect(() => {
     getCurrentPosition(); // Initial geolocation request
   }, []);
-
-  useEffect(() => {
-    let timeout: NodeJS.Timeout;
-
-    // Reset state after user is considered idle
-    if (state !== "loading") {
-      timeout = setTimeout(() => {
-        setState("idle");
-        setError(null);
-      }, IDLE_TIMEOUT);
-    }
-
-    return () => clearTimeout(timeout);
-  }, [state]);
 
   return {
     state,
