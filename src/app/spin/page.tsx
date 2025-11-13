@@ -6,6 +6,7 @@ import { Suspense, useEffect, useState } from "react";
 import { type WheelDataType } from "react-custom-roulette-r19";
 
 import { WheelSkeleton } from "@/components/skeleton";
+import { useNearbyPlaces } from "@/features/menu/hooks/use-nearby-places";
 import DynamicWheel from "@/features/wheel/components/dynamic-wheel";
 import { PrizeBanner } from "@/features/wheel/components/prize-banner";
 import { cn, truncateText } from "@/lib/utils";
@@ -24,7 +25,7 @@ const baseColors = [
 
 export default function Page() {
   const router = useRouter();
-  const { places } = useMapStore();
+  const { places, isLoading: isLoadingPlaces } = useNearbyPlaces();
 
   const [prizeNumber, setPrizeNumber] = useState<number>(0);
   const [hasSpun, setHasSpun] = useState<boolean>(false);

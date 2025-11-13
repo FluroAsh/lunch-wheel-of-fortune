@@ -5,6 +5,7 @@ import { useEffect } from "react";
 
 import { MAP } from "@/lib/constants";
 
+/** 10 second (10,000ms) idle timeout. */
 const IDLE_TIMEOUT = 10000;
 
 export const useGeolocation = (options: PositionOptions = {}) => {
@@ -44,15 +45,14 @@ export const useGeolocation = (options: PositionOptions = {}) => {
     );
   }, [options]);
 
-  // Initial geolocation request
   useEffect(() => {
-    getCurrentPosition();
+    getCurrentPosition(); // Initial geolocation request
   }, []);
 
-  // Reset state after user is considered idle
   useEffect(() => {
     let timeout: NodeJS.Timeout;
 
+    // Reset state after user is considered idle
     if (state !== "loading") {
       timeout = setTimeout(() => {
         setState("idle");

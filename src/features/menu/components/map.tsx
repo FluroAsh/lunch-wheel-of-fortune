@@ -1,7 +1,7 @@
 "use client";
 
 import Link from "next/link";
-import React, { type CSSProperties, useEffect, useState } from "react";
+import React, { type CSSProperties, useEffect } from "react";
 
 import {
   AdvancedMarker,
@@ -36,17 +36,18 @@ const GoogleMap = () => {
   const mapsLoadingState = useApiLoadingStatus();
 
   const [placeMarkers, setPlaceMarkers] = React.useState<React.ReactNode[]>([]);
-  const [selectedLocation, setSelectedLocation] = useState<Coords | null>();
 
-  const { places, setPlaces, radius, isLoadingPlaces } = useMapStore();
-
+  const { radius, searchLocation, setSearchLocation } = useMapStore();
   const { state: locationState, coords, userLocation } = useGeolocation();
-  const { searchPlaces, isFetched } = useNearbyPlaces(map);
 
-  const currentLocation: Coords = selectedLocation ?? coords;
+  // Determine which coordinates to search - prefer user location, fallback to default coords
+  const currentLocation: Coords = searchLocation ?? coords;
 
+  const { places, isLoading: isPlacesLoading } = useNearbyPlaces();
+
+  // Update markers when places change
   useEffect(() => {
-    if (map && isFetched && !isLoadingPlaces && places.length > 0) {
+    if (map && !isPlacesLoading && places.length > 0) {
       const markers = places
         .filter(filterLatLng)
         .map((place) => (
@@ -55,36 +56,19 @@ const GoogleMap = () => {
 
       setPlaceMarkers(markers);
     }
-  }, [places, map, isFetched, isLoadingPlaces]);
+  }, [places, map, isPlacesLoading]);
 
-  // Initial search when map is ready
+  // Update search coordinates when geolocation succeeds (only if no manual selection)
   useEffect(() => {
-    if (map && !isFetched) {
-      searchPlaces(coords.lat, coords.lng).then((places) => setPlaces(places));
-    }
-  }, [map, coords, searchPlaces, setPlaces, isFetched]);
-
-  // Update map center and search when geolocation succeeds after initial load
-  // Only if user hasn't manually selected a location
-  useEffect(() => {
-    if (
-      map &&
-      locationState !== "denied" &&
-      isFetched &&
-      userLocation &&
-      !selectedLocation &&
-      !isLoadingPlaces
-    ) {
+    if (map && userLocation && !currentLocation && locationState !== "denied") {
       const userCoords = {
         lat: userLocation.latitude,
         lng: userLocation.longitude,
       };
       map.panTo(userCoords);
-      searchPlaces(userCoords.lat, userCoords.lng).then((places) =>
-        setPlaces(places),
-      );
+      setSearchLocation(userCoords);
     }
-  }, [map, locationState, userLocation, selectedLocation, isFetched]);
+  }, [map, userLocation, locationState]);
 
   const handleLocationUpdate = (event: MapMouseEvent) => {
     if (event.detail.latLng && map) {
@@ -92,8 +76,8 @@ const GoogleMap = () => {
       const newLng = event.detail.latLng.lng;
 
       map.panTo({ lat: newLat, lng: newLng });
-      setSelectedLocation({ lat: newLat, lng: newLng });
-      searchPlaces(newLat, newLng).then((places) => setPlaces(places));
+      setSearchLocation({ lat: newLat, lng: newLng });
+      // setSearchCoords({ lat: newLat, lng: newLng });
     }
   };
 

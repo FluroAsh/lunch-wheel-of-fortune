@@ -1,5 +1,6 @@
 "use client";
 
+import { useQueryClient } from "@tanstack/react-query";
 import { useApiIsLoaded, useApiLoadingStatus } from "@vis.gl/react-google-maps";
 import { MessageCircleWarning } from "lucide-react";
 import { useMedia } from "react-use";
@@ -10,6 +11,7 @@ import { getPlacesSearchUrl } from "@/lib/helpers";
 import { cn } from "@/lib/utils";
 import { useMapStore } from "@/store";
 
+import { useNearbyPlaces } from "../hooks/use-nearby-places";
 import { getPriceLevel, getPriceRange } from "../utils/map";
 import { StarRating } from "./star-rating";
 
@@ -20,14 +22,15 @@ const ListHeading = () => (
 );
 
 export const MapList = () => {
-  const { places, isLoadingPlaces, setActiveMarker } = useMapStore();
+  const { setActiveMarker } = useMapStore();
+  const { places, isFetching: isFetchingPlaces } = useNearbyPlaces();
 
   const isDesktop = useMedia(MEDIA_QUERIES.DESKTOP, false);
 
   const isMapsAPIReady = useApiIsLoaded();
-  const status = useApiLoadingStatus();
+  const mapsLoadingState = useApiLoadingStatus();
 
-  if (isLoadingPlaces || !isMapsAPIReady || status === "LOADING") {
+  if (isFetchingPlaces || !isMapsAPIReady || mapsLoadingState === "LOADING") {
     return (
       <div className="flex h-fit max-h-full flex-col overflow-hidden">
         <ListHeading />
@@ -40,7 +43,7 @@ export const MapList = () => {
   return (
     <div className="flex h-fit max-h-full flex-col overflow-hidden">
       <ListHeading />
-      {places && places.length > 0 ? (
+      {places.length > 0 ? (
         <ul
           // TODO: Add a transparent gradient to the bottom of the list to indicate that there is more content to scroll through
           className="h-full overflow-y-auto"
@@ -102,11 +105,11 @@ export const MapList = () => {
         </ul>
       ) : (
         <div className="text-neutral-md mx-2 rounded-sm border border-amber-500 bg-amber-800/20 p-2 px-2 text-center">
-          <span className="flex items-center justify-center gap-1">
-            <MessageCircleWarning className="size-4 stroke-amber-200" />
-            <p className="font-bold text-amber-200">
+          <span className="text-center">
+            <MessageCircleWarning className="-mt-1 mr-1 inline size-4 stroke-amber-200" />
+            <span className="font-bold text-amber-200">
               Uh oh, we couldn&apos;t find any places near you!
-            </p>
+            </span>
           </span>
           <p className="text-sm text-amber-400">
             Try again by either searching for a different location or adjusting

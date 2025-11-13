@@ -15,11 +15,8 @@ export const RadiusSlider = ({
 }: {
   currentLocation: Coords;
 }) => {
-  const map = useMap();
-  const { radius, setRadius, setPlaces, isLoadingPlaces } = useMapStore();
-  const { searchPlaces } = useNearbyPlaces(map);
-
-  const debouncedSearch = useRef<ReturnType<typeof debounce> | null>(null);
+  const { radius, setRadius } = useMapStore();
+  const { isLoading: isLoadingPlaces } = useNearbyPlaces();
 
   return (
     // Add visual states for loading and interaction
@@ -42,24 +39,7 @@ export const RadiusSlider = ({
           "[&::-webkit-slider-thumb]:cursor-pointer [&::-webkit-slider-thumb]:shadow-sm",
           "[&::-webkit-slider-thumb]:transition-colors [&::-webkit-slider-thumb]:hover:bg-slate-700",
         )}
-        onChange={(e) => {
-          debouncedSearch.current?.cancel();
-
-          setRadius(parseInt(e.target.value));
-
-          // TODO: Investigate why a wider range returns fewer results...
-          debouncedSearch.current = debounce(
-            { delay: MAP.searchDebounceDelay },
-            () => {
-              return searchPlaces(
-                currentLocation.lat,
-                currentLocation.lng,
-              ).then((places) => setPlaces(places));
-            },
-          );
-
-          debouncedSearch.current();
-        }}
+        onChange={(e) => setRadius(parseInt(e.target.value))}
       />
       <label
         className={cn(

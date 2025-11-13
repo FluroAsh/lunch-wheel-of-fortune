@@ -1,42 +1,34 @@
 "use client";
 
-import { useCallback, useRef, useState } from "react";
+import { useQuery } from "@tanstack/react-query";
+import { useApiIsLoaded, useMap } from "@vis.gl/react-google-maps";
 
 import { useMapStore } from "@/store";
-import { MapInstance } from "@/types/google";
 
 import { fetchNearbyPlaces } from "../utils";
+import { useGeolocation } from "./use-geolocation";
 
-export const useNearbyPlaces = (map: MapInstance | null) => {
-  const { isLoadingPlaces, setIsLoadingPlaces } = useMapStore();
-  const [error, setError] = useState<string | null>(null);
-  const isFetched = useRef<boolean>(false);
+export const useNearbyPlaces = () => {
+  const map = useMap();
+  const isMapsAPIReady = useApiIsLoaded();
 
-  const searchPlaces = useCallback(
-    async (lat: number, lng: number) => {
-      try {
-        if (!map || isLoadingPlaces) return [];
+  const { searchLocation: { lat: searchLat, lng: searchLng } = {}, radius } =
+    useMapStore();
 
-        // Get radius immediately to avoid render race condition
-        const { radius } = useMapStore.getState();
+  // current GPS coords (if enabled), or default location
+  const {
+    coords: { lat: geoLat, lng: geoLng },
+  } = useGeolocation();
 
-        setIsLoadingPlaces(true);
-        setError(null);
+  const lat = searchLat ?? geoLat;
+  const lng = searchLng ?? geoLng;
 
-        const result = await fetchNearbyPlaces(lat, lng, radius);
+  const { data: places = [], ...rest } = useQuery({
+    queryKey: ["nearbyPlaces", lat, lng, radius],
+    queryFn: () => fetchNearbyPlaces(lat, lng, radius),
+    enabled: isMapsAPIReady && !!map && !!lat && !!lng && !!radius,
+    staleTime: 5 * 60 * 1000, // 5 minutes
+  });
 
-        console.log("[API]: Nearby places result", result);
-        return result;
-      } catch (err) {
-        setError(err instanceof Error ? err.message : "Places search failed");
-        return [];
-      } finally {
-        isFetched.current = true;
-        setIsLoadingPlaces(false);
-      }
-    },
-    [map],
-  );
-
-  return { error, searchPlaces, isFetched: isFetched.current };
+  return { places, ...rest };
 };
