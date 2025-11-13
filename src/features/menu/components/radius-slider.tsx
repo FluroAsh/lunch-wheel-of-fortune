@@ -1,22 +1,19 @@
-import { useRef } from "react";
+import { useRef, useState } from "react";
 
-import { useMap } from "@vis.gl/react-google-maps";
 import { debounce } from "radash";
 
 import { MAP } from "@/lib/constants";
 import { cn } from "@/lib/utils";
 import { useMapStore } from "@/store";
-import { Coords } from "@/types/google";
 
 import { useNearbyPlaces } from "../hooks/use-nearby-places";
 
-export const RadiusSlider = ({
-  currentLocation,
-}: {
-  currentLocation: Coords;
-}) => {
+export const RadiusSlider = () => {
   const { radius, setRadius } = useMapStore();
+  const [localRadius, setLocalRadius] = useState<number>(MAP.defaultRadius);
   const { isLoading: isLoadingPlaces } = useNearbyPlaces();
+
+  const debouncedSetRadius = useRef<ReturnType<typeof debounce>>(null);
 
   return (
     // Add visual states for loading and interaction
@@ -28,7 +25,7 @@ export const RadiusSlider = ({
         min={500}
         max={5000}
         step={250}
-        value={radius}
+        value={localRadius}
         disabled={isLoadingPlaces}
         className={cn(
           "h-2 w-24 cursor-pointer appearance-none rounded-lg bg-neutral-200",
@@ -39,7 +36,19 @@ export const RadiusSlider = ({
           "[&::-webkit-slider-thumb]:cursor-pointer [&::-webkit-slider-thumb]:shadow-sm",
           "[&::-webkit-slider-thumb]:transition-colors [&::-webkit-slider-thumb]:hover:bg-slate-700",
         )}
-        onChange={(e) => setRadius(parseInt(e.target.value))}
+        onChange={(e) => {
+          const value = parseInt(e.target.value);
+          setLocalRadius(value);
+
+          debouncedSetRadius.current?.cancel();
+
+          debouncedSetRadius.current = debounce(
+            { delay: MAP.debounceDelay },
+            setRadius,
+          );
+
+          debouncedSetRadius.current(value);
+        }}
       />
       <label
         className={cn(
@@ -48,7 +57,7 @@ export const RadiusSlider = ({
         )}
         htmlFor="radius"
       >
-        {radius}m
+        {localRadius}m
       </label>
     </div>
   );

@@ -7,7 +7,7 @@ export const CACHE = {
 export const MAP = {
   id: process.env.NEXT_PUBLIC_GOOGLE_MAPS_MAP_ID || "",
   defaultRadius: 1000, // 1000m
-  searchDebounceDelay: 1000, // 1000ms
+  debounceDelay: 1000, // 1000ms
   defaultLocation: {
     lat: -37.8136, // Melbourne, Australia (CBD)
     lng: 144.9631,

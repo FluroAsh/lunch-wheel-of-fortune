@@ -130,7 +130,7 @@ const GoogleMap = () => {
         onClick={handleLocationUpdate}
         disableDefaultUI
       >
-        <RadiusSlider currentLocation={currentLocation} />
+        <RadiusSlider />
 
         {places.length > 0 && (
           <div className="absolute top-4 right-4 z-10 flex flex-col items-end space-y-2">
