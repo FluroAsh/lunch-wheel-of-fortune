@@ -35,7 +35,6 @@ export const getPriceRange = (
     return {};
   }
 
-  // FIXME: This will crash the application when units is undefined
   const readablePriceRange = `$${price_range.startPrice?.units ?? 0} - $${price_range.endPrice?.units ?? 0}`;
 
   return {

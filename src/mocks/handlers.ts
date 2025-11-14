@@ -1,12 +1,15 @@
-import { HttpResponse, http } from "msw";
+import { HttpResponse, delay, http } from "msw";
 
 import { mockPlaces } from "./data";
 
 export const handlers = [
-  // Mock Google Places API: searchNearby endpoint
-  http.post("https://places.googleapis.com/v1/places:searchNearby", () => {
-    return HttpResponse.json({
-      places: mockPlaces,
-    });
-  }),
+  http.post(
+    "https://places.googleapis.com/v1/places:searchNearby",
+    async () => {
+      await delay(250);
+      return HttpResponse.json({
+        places: mockPlaces,
+      });
+    },
+  ),
 ];

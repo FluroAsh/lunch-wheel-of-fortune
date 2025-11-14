@@ -48,13 +48,7 @@ const HalfStar = () => (
   </div>
 );
 
-export const StarRating = ({
-  rating,
-  isMobile,
-}: {
-  rating: number;
-  isMobile: boolean;
-}) => {
+export const StarRating = ({ rating }: { rating: number }) => {
   if (!rating) {
     return null;
   }
@@ -64,17 +58,8 @@ export const StarRating = ({
   const fullStars = Math.floor(clampedRating);
   const hasHalfStar = clampedRating % 1 >= 0.5;
 
-  const renderStars = (isMobile: boolean) => {
+  const renderStars = () => {
     const stars: React.ReactElement[] = [];
-
-    if (isMobile) {
-      return (
-        <div className="flex items-center gap-2">
-          <FullStar key="full-0" />
-          <span>{clampedRating}</span>
-        </div>
-      );
-    }
 
     // Use switch statement to determine full stars to render on desktop
     switch (fullStars) {
@@ -171,7 +156,5 @@ export const StarRating = ({
     return stars;
   };
 
-  return (
-    <div className="flex items-center gap-0.5">{renderStars(isMobile)}</div>
-  );
+  return <div className="flex items-center gap-0.5">{renderStars()}</div>;
 };

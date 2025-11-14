@@ -28,12 +28,10 @@ export const Skeleton = ({
 );
 
 export const ListSkeleton = () => (
-  <div className="[&>*:not(:last-child)]:my-2">
-    <Skeleton className="w-48" />
-    <Skeleton className="w-96" />
-    <Skeleton className="w-60" />
-    <Skeleton className="w-80" />
-    <Skeleton className="w-96" />
+  <div className="flex flex-col gap-0.5">
+    {Array.from({ length: 5 }).map((_, index) => (
+      <Skeleton key={index} className="h-[36px] w-full" />
+    ))}
   </div>
 );
 

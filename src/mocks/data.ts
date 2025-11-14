@@ -429,7 +429,8 @@ export const mockPlaces: GooglePlace[] = [
     currentOpeningHours: {
       openNow: false,
     },
-    shortFormattedAddress: "Cladstone Building, 187 St Georges Rd, Fitzroy North",
+    shortFormattedAddress:
+      "Cladstone Building, 187 St Georges Rd, Fitzroy North",
     priceRange: {
       startPrice: {
         currencyCode: "AUD",
@@ -495,4 +496,3 @@ export const mockPlaces: GooglePlace[] = [
     },
   },
 ];
-
