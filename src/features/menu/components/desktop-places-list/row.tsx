@@ -1,5 +1,6 @@
 import Link from "next/link";
 
+import { Checkbox, Label } from "@/components/checkbox";
 import { getPlacesSearchUrl } from "@/lib/helpers";
 import { cn } from "@/lib/utils";
 import { useMapStore } from "@/store";
@@ -9,28 +10,25 @@ import { getPriceLevel, getPriceRange } from "../../utils/map";
 import { StarRating } from "../star-rating";
 
 const PlaceNameLink = ({
-  placeId,
   placeName,
   href,
+  isSelected,
 }: {
-  placeId: string;
   placeName: string;
   href: string;
-}) => {
-  const { setActiveMarker } = useMapStore();
-
-  return (
-    <Link
-      className="max-w-full truncate px-2 hover:text-blue-500 hover:underline"
-      href={href}
-      target="_blank"
-      onMouseEnter={() => setActiveMarker(placeId)}
-      onMouseLeave={() => setActiveMarker(undefined)}
-    >
-      {placeName}
-    </Link>
-  );
-};
+  isSelected: boolean;
+}) => (
+  <Link
+    className={cn(
+      "max-w-full truncate transition-colors hover:text-emerald-400 hover:underline",
+      isSelected ? "text-emerald-400" : "text-neutral-400",
+    )}
+    href={href}
+    target="_blank"
+  >
+    {placeName}
+  </Link>
+);
 
 type ListRowProps = {
   place: GooglePlace;
@@ -39,6 +37,12 @@ type ListRowProps = {
 
 // Each row is a checkbox that can selected, or de-selected
 export const ListRow = ({ place, isEven }: ListRowProps) => {
+  const {
+    setSelectedPlaceIds: setSelectedPlaceIds,
+    selectedPlaceIds,
+    setActiveMarker,
+  } = useMapStore();
+
   const { displayName, id, rating } = place;
 
   const priceLevel = getPriceLevel(place.priceLevel);
@@ -50,27 +54,63 @@ export const ListRow = ({ place, isEven }: ListRowProps) => {
       ? `$${Number(startPrice.units).toFixed(2)}`
       : "—";
 
-  return (
-    <li
-      key={id}
-      className={cn(
-        "flex w-full gap-4 bg-neutral-700/50 px-2 py-1.5",
-        isEven ? "bg-neutral-700/50" : "bg-neutral-700/25",
-      )}
-    >
-      <div className="flex w-[150px] shrink-0 items-center gap-2">
-        <StarRating rating={rating ?? 0} />
-        <span className="flex items-center pl-0.5 text-sm">{displayPrice}</span>
-      </div>
+  const handleCheckboxChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+    // Must have at-least, one selected place.
+    if (selectedPlaceIds.length === 1 && !e.target.checked) {
+      return;
+    }
 
-      <PlaceNameLink
-        placeId={id}
-        placeName={displayName.text}
-        href={getPlacesSearchUrl({
-          placeName: displayName.text,
-          placeId: id,
-        })}
-      />
+    setSelectedPlaceIds(
+      e.target.checked
+        ? [...selectedPlaceIds, place.id]
+        : selectedPlaceIds.filter((id) => id !== place.id),
+    );
+  };
+
+  const isSelected = selectedPlaceIds.includes(place.id);
+  const hasForcedSelection =
+    selectedPlaceIds.length === 1 && place.id === selectedPlaceIds[0];
+
+  return (
+    <li>
+      <Label
+        htmlFor={`place-checkbox-${id}`}
+        className={cn(
+          "relative flex w-full items-center gap-3 px-3 py-2 transition-all duration-200",
+          "border-l-2 hover:cursor-pointer hover:brightness-125",
+          "border-transparent has-checked:border-emerald-500 has-checked:bg-emerald-950/30",
+          "has-disabled:cursor-not-allowed has-disabled:opacity-60",
+          isEven
+            ? "bg-neutral-700/40 has-checked:bg-emerald-950/40"
+            : "bg-neutral-800/30 has-checked:bg-emerald-950/25",
+        )}
+        onMouseEnter={() => setActiveMarker(id)}
+        onMouseLeave={() => setActiveMarker(undefined)}
+      >
+        <Checkbox
+          id={`place-checkbox-${id}`}
+          className="hidden"
+          onChange={handleCheckboxChange}
+          checked={isSelected || hasForcedSelection}
+          disabled={hasForcedSelection}
+        />
+
+        <div className="flex w-[150px] shrink-0 items-center gap-2">
+          <StarRating rating={rating ?? 0} />
+          <span className="flex items-center pl-0.5 text-sm">
+            {displayPrice}
+          </span>
+        </div>
+
+        <PlaceNameLink
+          placeName={displayName.text}
+          isSelected={isSelected}
+          href={getPlacesSearchUrl({
+            placeName: displayName.text,
+            placeId: id,
+          })}
+        />
+      </Label>
     </li>
   );
 };

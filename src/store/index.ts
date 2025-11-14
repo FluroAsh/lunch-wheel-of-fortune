@@ -10,6 +10,8 @@ type MapState = {
   setActiveMarker: (id: string | undefined) => void;
   searchLocation: Coords | undefined;
   setSearchLocation: (location: Coords) => void;
+  selectedPlaceIds: string[];
+  setSelectedPlaceIds: (ids: string[]) => void;
 };
 
 export const useMapStore = create<MapState>((set) => ({
@@ -19,4 +21,6 @@ export const useMapStore = create<MapState>((set) => ({
   setActiveMarker: (id: string | undefined) => set({ activeMarker: id }),
   searchLocation: undefined,
   setSearchLocation: (location: Coords) => set({ searchLocation: location }),
+  selectedPlaceIds: [],
+  setSelectedPlaceIds: (ids: string[]) => set({ selectedPlaceIds: ids }),
 }));

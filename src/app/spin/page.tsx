@@ -25,13 +25,16 @@ const baseColors = [
 
 export default function Page() {
   const router = useRouter();
-  const { places, isLoading: isLoadingPlaces } = useNearbyPlaces();
+  const { places } = useNearbyPlaces();
+  const { selectedPlaceIds } = useMapStore();
+
+  const selectedPlaces = places.filter((p) => selectedPlaceIds.includes(p.id));
 
   const [prizeNumber, setPrizeNumber] = useState<number>(0);
   const [hasSpun, setHasSpun] = useState<boolean>(false);
   const [state, setState] = useState<"idle" | "spinning">("idle");
 
-  const data: WheelDataType[] = places.map((place) => ({
+  const data: WheelDataType[] = selectedPlaces.map((place) => ({
     option: truncateText(10, place.displayName.text ?? ""),
   }));
 
@@ -43,7 +46,7 @@ export default function Page() {
   }, [places, router]);
 
   const handleSpinClick = () => {
-    const newPrizeNumber = Math.floor(Math.random() * places.length);
+    const newPrizeNumber = Math.floor(Math.random() * selectedPlaces.length);
     setPrizeNumber(newPrizeNumber);
     setState("spinning");
   };
@@ -60,13 +63,13 @@ export default function Page() {
   return (
     <div className="flex flex-1 flex-col items-center justify-center">
       {hasSpun && state === "idle" ? (
-        <p>{places[prizeNumber].displayName.text}</p>
+        <p>{selectedPlaces[prizeNumber].displayName.text}</p>
       ) : (
         <div className="h-6 opacity-0" />
       )}
 
       <PrizeBanner
-        winner={places[prizeNumber]}
+        winner={selectedPlaces[prizeNumber]}
         onClose={() => setHasSpun(false)}
         onRespin={handleSpinClick}
         open={hasSpun && state === "idle"}

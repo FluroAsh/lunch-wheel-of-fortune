@@ -4,19 +4,48 @@ import { useRef } from "react";
 
 import { useApiIsLoaded, useApiLoadingStatus } from "@vis.gl/react-google-maps";
 import { MessageCircleWarning } from "lucide-react";
-import { useMedia } from "react-use";
 
 import { ListSkeleton } from "@/components/skeleton";
-import { MEDIA_QUERIES } from "@/lib/constants";
+import { useMapStore } from "@/store";
+import { GooglePlace } from "@/types/google";
 
 import { useNearbyPlaces } from "../../hooks/use-nearby-places";
 import { ListRow } from "./row";
 
-const ListHeading = () => (
-  <p className="ml-2 pb-2 text-xs font-bold text-neutral-400 uppercase">
-    Open Nearby Now
-  </p>
-);
+const ListHeading = ({ places = [] }: { places?: GooglePlace[] }) => {
+  const { selectedPlaceIds, setSelectedPlaceIds } = useMapStore();
+
+  const action = selectedPlaceIds.length > 1 ? "clear" : "select";
+
+  const handleSelectionClick = () => {
+    setSelectedPlaceIds(
+      action === "clear" ? [selectedPlaceIds[0]] : places.map((p) => p.id),
+    );
+  };
+
+  return (
+    <div className="flex h-7 items-center justify-between pb-2 leading-tight">
+      <span className="gap-2 text-xs font-bold text-neutral-400 uppercase">
+        Open Nearby Now
+      </span>
+
+      {places.length > 0 && (
+        <div className="space-x-2">
+          <span className="text-xs font-bold text-neutral-100">
+            {selectedPlaceIds.length} Places Selected
+          </span>
+
+          <button
+            className="text-xs text-sky-500 underline hover:cursor-pointer"
+            onClick={handleSelectionClick}
+          >
+            {action === "clear" ? "Clear Selection" : "Select All"}
+          </button>
+        </div>
+      )}
+    </div>
+  );
+};
 
 export const DesktopPlacesList = () => {
   const listRef = useRef<HTMLUListElement>(null);
@@ -38,10 +67,9 @@ export const DesktopPlacesList = () => {
     listRef.current &&
     listRef.current.scrollHeight > listRef.current.clientHeight;
 
-  //  TODO: These should be selectable, and saved in a list for use in the spinning wheel
   return (
     <div className="flex max-h-full flex-col overflow-hidden">
-      <ListHeading />
+      <ListHeading places={places} />
       {places.length > 0 ? (
         <div className="relative overflow-hidden rounded-md">
           <ul ref={listRef} className="overflow-y-auto">
