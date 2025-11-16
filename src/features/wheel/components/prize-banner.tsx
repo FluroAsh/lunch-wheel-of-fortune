@@ -120,7 +120,6 @@ export const PrizeBanner = ({
           )}
 
           <div className="mt-6 flex flex-col gap-3">
-            {/* TODO: Add Google Maps app deeplink using URL scheme & device detection */}
             {winner.id && (
               <button
                 className="rounded-lg border border-slate-300 bg-white px-6 py-3 font-semibold text-slate-700 shadow-sm hover:cursor-pointer hover:bg-slate-50 hover:shadow-md"

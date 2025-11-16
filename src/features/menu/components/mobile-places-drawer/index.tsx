@@ -24,12 +24,14 @@ export const Drawer = ({ places }: { places: GooglePlace[] }) => {
 
   return (
     <VDrawer.Root open={open} onOpenChange={setIsOpen}>
-      <VDrawer.Trigger
-        className="rounded-md bg-emerald-600 px-4 py-2 font-bold text-neutral-100"
-        onClick={() => setIsOpen(true)}
-      >
-        Change Places
-      </VDrawer.Trigger>
+      <div className="flex justify-center">
+        <VDrawer.Trigger
+          className="rounded-md bg-emerald-600 px-4 py-2 text-sm font-bold text-neutral-100"
+          onClick={() => setIsOpen(true)}
+        >
+          Change Places
+        </VDrawer.Trigger>
+      </div>
 
       <VDrawer.Portal>
         <VDrawer.Content
@@ -65,8 +67,29 @@ export const Drawer = ({ places }: { places: GooglePlace[] }) => {
   );
 };
 
+const SelectionButton = ({ places = [] }: { places?: GooglePlace[] }) => {
+  const { selectedPlaceIds, setSelectedPlaceIds } = useMapStore();
+
+  const action = selectedPlaceIds.length > 1 ? "clear" : "select";
+
+  const handleSelectionClick = () => {
+    setSelectedPlaceIds(
+      action === "clear" ? [selectedPlaceIds[0]] : places.map((p) => p.id),
+    );
+  };
+
+  return (
+    <button
+      className="px-2 py-1 text-xs leading-tight text-sky-500 underline hover:cursor-pointer"
+      onClick={handleSelectionClick}
+    >
+      {action === "clear" ? "Clear Selection" : "Select All"}
+    </button>
+  );
+};
+
 export const MobilePlacesWithDrawer = () => {
-  const { selectedPlaceIds } = useMapStore();
+  const { selectedPlaceIds, setSelectedPlaceIds } = useMapStore();
   const { places, isFetching: isFetchingPlaces } = useNearbyPlaces();
   const selectedPlaces = places.filter((p) => selectedPlaceIds.includes(p.id));
 
@@ -75,10 +98,25 @@ export const MobilePlacesWithDrawer = () => {
   }
 
   return (
-    <div>
-      {selectedPlaces.map((p) => (
-        <div key={p.id}>{p.displayName.text}</div>
-      ))}
+    <div className="flex flex-col gap-2">
+      <div className="flex items-center justify-between">
+        <h3 className="text-xs font-bold text-neutral-400 uppercase">
+          Selected Places ({selectedPlaceIds.length})
+        </h3>
+
+        {places.length > 0 && <SelectionButton places={places} />}
+      </div>
+
+      <div className="flex max-w-full flex-wrap gap-1 rounded-md border border-neutral-700 bg-neutral-900 p-4">
+        {selectedPlaces.map((p) => (
+          <div
+            key={p.id}
+            className="size-fit rounded-full border border-neutral-500 bg-neutral-700/40 px-3 py-0.5"
+          >
+            <span className="truncate text-xs">{p.displayName.text}</span>
+          </div>
+        ))}
+      </div>
 
       <Drawer places={places} />
     </div>
