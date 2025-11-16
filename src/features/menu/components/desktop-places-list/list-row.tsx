@@ -21,7 +21,6 @@ const PlaceNameLink = ({
   <Link
     className={cn(
       "max-w-full truncate transition-colors hover:text-emerald-400 hover:underline",
-      isSelected ? "text-emerald-400" : "text-neutral-400",
     )}
     href={href}
     target="_blank"
@@ -37,11 +36,8 @@ type ListRowProps = {
 
 // Each row is a checkbox that can selected, or de-selected
 export const ListRow = ({ place, isEven }: ListRowProps) => {
-  const {
-    setSelectedPlaceIds: setSelectedPlaceIds,
-    selectedPlaceIds,
-    setActiveMarker,
-  } = useMapStore();
+  const { setSelectedPlaceIds, selectedPlaceIds, setActiveMarker } =
+    useMapStore();
 
   const { displayName, id, rating } = place;
 
@@ -78,7 +74,7 @@ export const ListRow = ({ place, isEven }: ListRowProps) => {
         className={cn(
           "relative flex w-full items-center gap-3 px-3 py-2 transition-all duration-200",
           "border-l-2 hover:cursor-pointer hover:brightness-125",
-          "border-transparent has-checked:border-emerald-500 has-checked:bg-emerald-950/30",
+          "border-transparent text-neutral-400 has-checked:border-emerald-500 has-checked:text-emerald-400",
           "has-disabled:cursor-not-allowed has-disabled:opacity-60",
           isEven
             ? "bg-neutral-700/40 has-checked:bg-emerald-950/40"

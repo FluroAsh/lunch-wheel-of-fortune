@@ -5,14 +5,15 @@ import { useMedia } from "react-use";
 import "@/css/map.css";
 import { DesktopPlacesList } from "@/features/menu/components/desktop-places-list";
 import GoogleMap from "@/features/menu/components/map";
+import { MobilePlacesWithDrawer } from "@/features/menu/components/mobile-places-drawer";
 import { MEDIA_QUERIES } from "@/lib/constants";
 import { cn } from "@/lib/utils";
 
 export default function Home() {
   const isDesktop = useMedia(MEDIA_QUERIES.DESKTOP, false);
-  const PlacesSelectionComponent = isDesktop
+  const SelectionComponent = isDesktop
     ? DesktopPlacesList
-    : () => <div />;
+    : MobilePlacesWithDrawer;
 
   return (
     <div className="flex max-h-dvh flex-1 flex-col">
@@ -29,12 +30,12 @@ export default function Home() {
 
       <div
         className={cn(
-          "mx-auto grid size-full max-w-7xl grid-cols-1 gap-4 overflow-hidden px-4 py-4",
-          "lg:grid-cols-2",
+          "mx-auto grid size-full max-w-7xl grid-cols-1 grid-rows-[1fr_1fr] gap-4 overflow-hidden px-4 py-4",
+          "lg:grid-cols-2 lg:grid-rows-1",
         )}
       >
         <GoogleMap />
-        <PlacesSelectionComponent />
+        <SelectionComponent />
       </div>
     </div>
   );

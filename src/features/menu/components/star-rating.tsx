@@ -48,7 +48,13 @@ const HalfStar = () => (
   </div>
 );
 
-export const StarRating = ({ rating }: { rating: number }) => {
+export const StarRating = ({
+  rating,
+  isMobile = false,
+}: {
+  rating: number;
+  isMobile?: boolean;
+}) => {
   if (!rating) {
     return null;
   }
@@ -57,6 +63,15 @@ export const StarRating = ({ rating }: { rating: number }) => {
   const clampedRating = Math.max(0, Math.min(5, rating));
   const fullStars = Math.floor(clampedRating);
   const hasHalfStar = clampedRating % 1 >= 0.5;
+
+  if (isMobile) {
+    return (
+      <div className="flex items-center gap-1 text-sm font-bold text-amber-500">
+        <FullStar key="full-0" />
+        {clampedRating.toFixed(1)}
+      </div>
+    );
+  }
 
   const renderStars = () => {
     const stars: React.ReactElement[] = [];

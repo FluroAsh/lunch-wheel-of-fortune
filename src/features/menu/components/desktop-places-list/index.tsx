@@ -10,7 +10,7 @@ import { useMapStore } from "@/store";
 import { GooglePlace } from "@/types/google";
 
 import { useNearbyPlaces } from "../../hooks/use-nearby-places";
-import { ListRow } from "./row";
+import { ListRow } from "./list-row";
 
 const ListHeading = ({ places = [] }: { places?: GooglePlace[] }) => {
   const { selectedPlaceIds, setSelectedPlaceIds } = useMapStore();

@@ -156,6 +156,16 @@ export const mockPlaces: GooglePlace[] = [
       openNow: true,
     },
     shortFormattedAddress: "153 Weston St, Brunswick",
+    priceRange: {
+      startPrice: {
+        currencyCode: "AUD",
+        units: "100",
+      },
+      endPrice: {
+        currencyCode: "AUD",
+        units: "200",
+      },
+    },
   },
   {
     id: "ChIJj6Nz1D5D1moRNKIZ3ceL5AM",
