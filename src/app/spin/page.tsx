@@ -1,5 +1,6 @@
 "use client";
 
+import Link from "next/link";
 import { useRouter } from "next/navigation";
 import { Suspense, useEffect, useState } from "react";
 
@@ -96,16 +97,22 @@ export default function Page() {
           spinDuration={0.25}
         />
 
-        <button
-          disabled={state === "spinning"}
-          onClick={handleSpinClick}
-          className={cn(
-            "min-w-[100px] rounded-md p-2 text-white",
-            state === "idle" ? "bg-blue-500" : "bg-gray-600 text-gray-300",
-          )}
-        >
-          {hasSpun ? "Spin Again" : "Spin"}
-        </button>
+        <div className="flex flex-col items-center">
+          <button
+            disabled={state === "spinning"}
+            onClick={handleSpinClick}
+            className={cn(
+              "min-w-[100px] rounded-md p-2 text-white",
+              state === "idle" ? "bg-blue-500" : "bg-gray-600 text-gray-300",
+            )}
+          >
+            {hasSpun ? "Spin Again" : "Spin"}
+          </button>
+
+          <Link href="/" className="p-2 text-xs text-neutral-500 underline">
+            Back to the Map
+          </Link>
+        </div>
       </Suspense>
     </div>
   );
