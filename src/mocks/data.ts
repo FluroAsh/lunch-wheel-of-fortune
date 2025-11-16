@@ -7,7 +7,7 @@ export const mockPlaces: GooglePlace[] = [
       latitude: -37.7819954,
       longitude: 144.9734771,
     },
-    rating: 4.4,
+    rating: 4.5,
     priceLevel: "PRICE_LEVEL_MODERATE",
     displayName: {
       text: "Great Northern Hotel",
@@ -73,7 +73,7 @@ export const mockPlaces: GooglePlace[] = [
       languageCode: "en",
     },
     currentOpeningHours: {
-      openNow: false,
+      openNow: true,
     },
     shortFormattedAddress: "74 Lygon St, Brunswick East",
     priceRange: {
@@ -170,7 +170,7 @@ export const mockPlaces: GooglePlace[] = [
       languageCode: "en",
     },
     currentOpeningHours: {
-      openNow: true,
+      openNow: false,
     },
     shortFormattedAddress: "714 Nicholson St, Fitzroy North",
     priceRange: {
@@ -261,7 +261,7 @@ export const mockPlaces: GooglePlace[] = [
       latitude: -37.7756725,
       longitude: 144.9717359,
     },
-    rating: 4.6,
+    rating: 4.7,
     priceLevel: "PRICE_LEVEL_MODERATE",
     displayName: {
       text: "Bird Bang'n Chicken",
@@ -321,19 +321,9 @@ export const mockPlaces: GooglePlace[] = [
       languageCode: "en",
     },
     currentOpeningHours: {
-      openNow: false,
+      openNow: true,
     },
     shortFormattedAddress: "161 Lygon St, Brunswick East",
-    priceRange: {
-      startPrice: {
-        currencyCode: "AUD",
-        units: "20",
-      },
-      endPrice: {
-        currencyCode: "AUD",
-        units: "60",
-      },
-    },
   },
   {
     id: "ChIJJYd2cYBD1moRWXKAx026-2M",
@@ -401,7 +391,7 @@ export const mockPlaces: GooglePlace[] = [
       languageCode: "en",
     },
     currentOpeningHours: {
-      openNow: true,
+      openNow: false,
     },
     shortFormattedAddress: "81 Lygon St, Brunswick East",
     priceRange: {
