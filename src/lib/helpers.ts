@@ -1,5 +1,3 @@
-import { GooglePlace } from "@/types/google";
-
 export const getPlacesSearchUrl = ({
   placeName,
   placeId,

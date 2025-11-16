@@ -125,7 +125,13 @@ export const PrizeBanner = ({
               <button
                 className="rounded-lg border border-slate-300 bg-white px-6 py-3 font-semibold text-slate-700 shadow-sm hover:cursor-pointer hover:bg-slate-50 hover:shadow-md"
                 onClick={() =>
-                  window.open(getPlacesSearchUrl(winner), "_blank")
+                  window.open(
+                    getPlacesSearchUrl({
+                      placeName: winner.displayName.text,
+                      placeId: winner.id,
+                    }),
+                    "_blank",
+                  )
                 }
               >
                 View on Google Maps
