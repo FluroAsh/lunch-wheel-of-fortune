@@ -37,7 +37,8 @@ const GoogleMap = () => {
 
   const [placeMarkers, setPlaceMarkers] = React.useState<React.ReactNode[]>([]);
 
-  const { radius, searchLocation, setSearchLocation } = useMapStore();
+  const { radius, searchLocation, setSearchLocation, setActiveMarker } =
+    useMapStore();
   const { state: locationState, coords, userLocation } = useGeolocation();
 
   // Determine which coordinates to search - prefer user location, fallback to default coords
@@ -77,6 +78,7 @@ const GoogleMap = () => {
 
       map.panTo({ lat: newLat, lng: newLng });
       setSearchLocation({ lat: newLat, lng: newLng });
+      setActiveMarker(undefined);
     }
   };
 

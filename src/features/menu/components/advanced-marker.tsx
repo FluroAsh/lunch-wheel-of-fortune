@@ -16,10 +16,8 @@ import { getPriceLevel, getPriceRange } from "../utils/map";
 export const AdvancedMarkerComponent = ({ place }: { place: GooglePlace }) => {
   const { activeMarker, setActiveMarker } = useMapStore();
   const [markerRef, marker] = useAdvancedMarkerRef();
-  const [infoWindowShown, setInfoWindowShown] = useState(false);
 
   const toggleInfoWindow = () => {
-    setInfoWindowShown((isShown) => !isShown);
     setActiveMarker(activeMarker === place.id ? undefined : place.id);
   };
 
@@ -66,7 +64,7 @@ export const AdvancedMarkerComponent = ({ place }: { place: GooglePlace }) => {
         />
       </div>
 
-      {infoWindowShown && (
+      {isMarkerActive && (
         <InfoWindow
           onCloseClick={toggleInfoWindow}
           anchor={marker}
