@@ -70,7 +70,6 @@ export const AdvancedMarkerComponent = ({ place }: { place: GooglePlace }) => {
         <InfoWindow
           onCloseClick={toggleInfoWindow}
           anchor={marker}
-          // headerContent={<h3 className="text-lg font-bold">{place.name}</h3>}
           headerContent={
             <h3 className="text-lg font-bold">{place.displayName.text}</h3>
           }

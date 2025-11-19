@@ -39,13 +39,6 @@ export default function Page() {
     option: truncateText(10, place.displayName.text ?? ""),
   }));
 
-  useEffect(() => {
-    // Do not redirect in-render to avoid setState issues
-    if (places.length === 0) {
-      router.replace("/");
-    }
-  }, [places, router]);
-
   const handleSpinClick = () => {
     const newPrizeNumber = Math.floor(Math.random() * selectedPlaces.length);
     setPrizeNumber(newPrizeNumber);
@@ -56,6 +49,13 @@ export default function Page() {
     setState("idle");
     setHasSpun(true);
   };
+
+  useEffect(() => {
+    // Do not redirect n-riender to avoid setState issues
+    if (places.length === 0) {
+      router.replace("/");
+    }
+  }, []);
 
   if (places.length === 0) {
     return <p>Redirecting... Please wait.</p>;
