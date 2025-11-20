@@ -1,9 +1,11 @@
-import { createContext, useContext, useEffect, useRef, useState } from "react";
+import Link from "next/link";
+import { useEffect, useRef, useState } from "react";
 
-import { LucideX } from "lucide-react";
+import { LucideMapPin, LucideX } from "lucide-react";
 import { Drawer as VDrawer } from "vaul";
 
 import { Checkbox, Label } from "@/components/checkbox";
+import { getPlacesSearchUrl } from "@/lib/helpers";
 import { cn } from "@/lib/utils";
 import { useMapStore } from "@/store";
 import { GooglePlace } from "@/types/google";
@@ -88,34 +90,97 @@ const SelectionButton = ({ places = [] }: { places?: GooglePlace[] }) => {
   );
 };
 
+// TODO: Clean up this component a bit more - initial generation by AI, needs a human touch! 💅
 export const MobilePlacesWithDrawer = () => {
   const { selectedPlaceIds, setSelectedPlaceIds } = useMapStore();
   const { places, isFetching: isFetchingPlaces } = useNearbyPlaces();
   const selectedPlaces = places.filter((p) => selectedPlaceIds.includes(p.id));
+  const previewRef = useRef<HTMLDivElement>(null);
+  const [previewHasOverflow, setPreviewHasOverflow] = useState(false);
+
+  useEffect(() => {
+    const element = previewRef.current;
+    if (!element) return;
+
+    const checkOverflow = () => {
+      setPreviewHasOverflow(element.scrollHeight > element.clientHeight);
+    };
+
+    // Initial check
+    checkOverflow();
+
+    // Use ResizeObserver for accurate overflow detection
+    const resizeObserver = new ResizeObserver(checkOverflow);
+    resizeObserver.observe(element);
+
+    // Also listen to window resize as fallback
+    window.addEventListener("resize", checkOverflow);
+
+    return () => {
+      resizeObserver.disconnect();
+      window.removeEventListener("resize", checkOverflow);
+    };
+  }, [selectedPlaces.length]);
 
   if (!places.length || isFetchingPlaces) {
     return <div>Loading...</div>;
   }
 
   return (
-    <div className="flex flex-col gap-2">
+    <div className="flex max-h-full flex-col gap-2 overflow-hidden">
       <div className="flex items-center justify-between">
-        <h3 className="text-xs font-bold text-neutral-400 uppercase">
-          Selected Places ({selectedPlaceIds.length})
-        </h3>
+        <span className="flex items-center gap-1">
+          <LucideMapPin className="size-3" />
+          <h3 className="text-xs font-bold text-neutral-400 uppercase">
+            Selected Places ({selectedPlaceIds.length})
+          </h3>
+        </span>
 
         {places.length > 0 && <SelectionButton places={places} />}
       </div>
 
-      <div className="flex max-w-full flex-wrap gap-1 rounded-md border border-neutral-700 bg-neutral-900 p-4">
-        {selectedPlaces.map((p) => (
-          <div
-            key={p.id}
-            className="size-fit rounded-full border border-neutral-500 bg-neutral-700/40 px-3 py-0.5"
-          >
-            <span className="truncate text-xs">{p.displayName.text}</span>
-          </div>
-        ))}
+      <div className="relative flex-1 overflow-hidden rounded-md border border-neutral-700 bg-gradient-to-b from-neutral-800/50 to-neutral-900 shadow-[inset_0_0_15px_rgba(0,0,0,0.5)]">
+        <div
+          ref={previewRef}
+          className={cn(
+            "grid max-h-full max-w-full auto-rows-min grid-cols-2 gap-2 overflow-y-auto p-4",
+            "sm:grid-cols-3",
+          )}
+          style={{
+            scrollbarWidth: "thin",
+            scrollbarColor: "#404040 transparent",
+          }}
+        >
+          {selectedPlaces.length > 0 ? (
+            selectedPlaces.map((p) => (
+              <Link
+                key={p.id}
+                href={getPlacesSearchUrl({
+                  placeName: p.displayName.text,
+                  placeId: p.id,
+                })}
+                target="_blank"
+                rel="noopener noreferrer"
+                aria-label={`Open ${p.displayName.text} in Google Maps`}
+                className="group relative flex min-h-[36px] w-full items-center gap-1 rounded-full border border-neutral-600/60 bg-gradient-to-br from-neutral-700/60 to-neutral-800/50 px-2.5 py-1 shadow-sm transition-all duration-200 hover:border-emerald-500/60 hover:bg-gradient-to-br hover:from-emerald-950/40 hover:to-emerald-900/30 hover:shadow-md focus:ring-2 focus:ring-emerald-500/50 focus:ring-offset-2 focus:ring-offset-neutral-900 focus:outline-none active:scale-95"
+              >
+                <LucideMapPin className="size-2.5 shrink-0 text-neutral-400 transition-colors group-hover:text-emerald-400" />
+                <span className="min-w-0 truncate text-xs font-medium text-neutral-200 transition-colors group-hover:text-emerald-300">
+                  {p.displayName.text}
+                </span>
+              </Link>
+            ))
+          ) : (
+            <div className="col-span-full flex w-full items-center justify-center py-8">
+              <span className="text-sm text-neutral-500">
+                No places selected. Open the drawer to select places.
+              </span>
+            </div>
+          )}
+        </div>
+        {previewHasOverflow && (
+          <div className="pointer-events-none absolute right-0 bottom-0 left-0 h-20 translate-y-1/2 bg-gradient-to-b from-transparent via-neutral-900/80 to-neutral-900" />
+        )}
       </div>
 
       <Drawer places={places} />

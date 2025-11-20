@@ -51,7 +51,7 @@ export default function Page() {
   };
 
   useEffect(() => {
-    // Do not redirect n-riender to avoid setState issues
+    // Do not redirect in-render to avoid setState issues
     if (places.length === 0) {
       router.replace("/");
     }
