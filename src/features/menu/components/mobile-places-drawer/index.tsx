@@ -11,6 +11,7 @@ import { useMapStore } from "@/store";
 import { GooglePlace } from "@/types/google";
 
 import { useNearbyPlaces } from "../../hooks/use-nearby-places";
+import { WheelSpinButton } from "../wheel-spin-button";
 import { ListRow } from "./list-row";
 
 // --- Components --- //
@@ -26,13 +27,14 @@ export const Drawer = ({ places }: { places: GooglePlace[] }) => {
 
   return (
     <VDrawer.Root open={open} onOpenChange={setIsOpen}>
-      <div className="flex justify-center">
+      <div className="flex flex-wrap justify-center gap-2">
         <VDrawer.Trigger
-          className="rounded-md bg-emerald-600 px-4 py-2 text-sm font-bold text-neutral-100"
+          className="rounded-md border border-emerald-500 bg-emerald-950 px-4 py-2 text-sm text-emerald-400"
           onClick={() => setIsOpen(true)}
         >
           Change Places
         </VDrawer.Trigger>
+        <WheelSpinButton className="h-full text-sm [svg]:size-4" />
       </div>
 
       <VDrawer.Portal>
@@ -42,6 +44,8 @@ export const Drawer = ({ places }: { places: GooglePlace[] }) => {
             "rounded-t-xl border border-neutral-700",
           )}
         >
+          <VDrawer.Handle className="w-[50px]! bg-neutral-400!" />
+
           <div className="flex flex-1 justify-between pb-4">
             <VDrawer.Title className="text-lg font-bold">
               Nearby Places

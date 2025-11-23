@@ -11,9 +11,10 @@ import {
   useApiLoadingStatus,
   useMap,
 } from "@vis.gl/react-google-maps";
-import { LucideShipWheel, SearchIcon } from "lucide-react";
+import { SearchIcon } from "lucide-react";
+import { useMedia } from "react-use";
 
-import { MAP } from "@/lib/constants";
+import { MAP, MEDIA_QUERIES } from "@/lib/constants";
 import { cn, filterLatLng } from "@/lib/utils";
 import { useMapStore } from "@/store";
 import { Coords } from "@/types/google";
@@ -23,6 +24,7 @@ import { useNearbyPlaces } from "../hooks/use-nearby-places";
 import { AdvancedMarkerComponent } from "./advanced-marker";
 import { Circle } from "./circle";
 import { RadiusSlider } from "./radius-slider";
+import { WheelSpinButton } from "./wheel-spin-button";
 
 const containerStyle = {
   width: "100%",
@@ -34,6 +36,9 @@ const GoogleMap = () => {
   const map = useMap();
   const isMapsAPIReady = useApiIsLoaded();
   const mapsLoadingState = useApiLoadingStatus();
+
+  const isDesktop = useMedia(MEDIA_QUERIES.DESKTOP, false);
+  console.log("isMobile", isDesktop);
 
   const [placeMarkers, setPlaceMarkers] = React.useState<React.ReactNode[]>([]);
 
@@ -134,18 +139,7 @@ const GoogleMap = () => {
       >
         <RadiusSlider />
 
-        {places.length > 0 && (
-          <div className="absolute top-4 right-4 z-10 flex flex-col items-end space-y-2">
-            <Link
-              href="/spin"
-              className="flex items-center rounded-md bg-emerald-600 px-4 py-2 text-white shadow-lg transition-colors duration-200 hover:bg-emerald-700"
-              title="Spin the Wheel for a Lunch Decision"
-            >
-              <LucideShipWheel className="mr-2 size-5 stroke-white" />
-              <span className="font-semibold">Spin the Wheel</span>
-            </Link>
-          </div>
-        )}
+        {places.length > 0 && isDesktop && <WheelSpinButton absolute />}
 
         <AdvancedMarker
           key="current-location-marker"
