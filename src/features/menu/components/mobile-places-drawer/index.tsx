@@ -2,9 +2,9 @@ import Link from "next/link";
 import { useEffect, useRef, useState } from "react";
 
 import { LucideMapPin, LucideX } from "lucide-react";
+import { debounce } from "radash";
 import { Drawer as VDrawer } from "vaul";
 
-import { Checkbox, Label } from "@/components/checkbox";
 import { getPlacesSearchUrl } from "@/lib/helpers";
 import { cn } from "@/lib/utils";
 import { useMapStore } from "@/store";
@@ -102,23 +102,18 @@ export const MobilePlacesWithDrawer = () => {
     const element = previewRef.current;
     if (!element) return;
 
-    const checkOverflow = () => {
-      setPreviewHasOverflow(element.scrollHeight > element.clientHeight);
-    };
+    const checkOverflow = debounce({ delay: 200 }, () =>
+      setPreviewHasOverflow(element.scrollHeight > element.clientHeight),
+    );
 
-    // Initial check
-    checkOverflow();
+    checkOverflow(); // Initial check
 
-    // Use ResizeObserver for accurate overflow detection
     const resizeObserver = new ResizeObserver(checkOverflow);
     resizeObserver.observe(element);
 
-    // Also listen to window resize as fallback
-    window.addEventListener("resize", checkOverflow);
-
     return () => {
       resizeObserver.disconnect();
-      window.removeEventListener("resize", checkOverflow);
+      checkOverflow.cancel();
     };
   }, [selectedPlaces.length]);
 
