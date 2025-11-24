@@ -4,6 +4,7 @@ import { useCallback, useState } from "react";
 import { useEffect } from "react";
 
 import { MAP } from "@/lib/constants";
+import { useMapStore } from "@/store";
 
 /** 10 second (10,000ms) idle timeout. */
 const IDLE_TIMEOUT = 10000;
@@ -15,6 +16,7 @@ export const useGeolocation = (options: PositionOptions = {}) => {
   const [state, setState] = useState<
     "ready" | "loading" | "error" | "denied" | "success"
   >("ready");
+  const { searchLocation } = useMapStore();
 
   const getCurrentPosition = useCallback(() => {
     // Check if geolocation is supported and we're in the browser
@@ -49,15 +51,26 @@ export const useGeolocation = (options: PositionOptions = {}) => {
     getCurrentPosition(); // Initial geolocation request
   }, []);
 
+  // Priority: searchLocation > userLocation > defaultLocation
+  const getCoords = () => {
+    if (searchLocation) {
+      return searchLocation;
+    }
+
+    if (userLocation) {
+      return {
+        lat: userLocation.latitude,
+        lng: userLocation.longitude,
+      };
+    }
+
+    return MAP.defaultLocation;
+  };
+
   return {
     state,
     error,
     userLocation,
-    coords: userLocation
-      ? {
-          lat: userLocation.latitude,
-          lng: userLocation.longitude,
-        }
-      : MAP.defaultLocation,
+    coords: getCoords(),
   };
 };

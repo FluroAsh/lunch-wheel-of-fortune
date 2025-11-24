@@ -17,7 +17,6 @@ import { useMedia } from "react-use";
 import { MAP, MEDIA_QUERIES } from "@/lib/constants";
 import { cn, filterLatLng } from "@/lib/utils";
 import { useMapStore } from "@/store";
-import { Coords } from "@/types/google";
 
 import { useGeolocation } from "../hooks/use-geolocation";
 import { useNearbyPlaces } from "../hooks/use-nearby-places";
@@ -38,17 +37,12 @@ const GoogleMap = () => {
   const mapsLoadingState = useApiLoadingStatus();
 
   const isDesktop = useMedia(MEDIA_QUERIES.DESKTOP, false);
-  console.log("isMobile", isDesktop);
 
   const [placeMarkers, setPlaceMarkers] = React.useState<React.ReactNode[]>([]);
 
   const { radius, searchLocation, setSearchLocation, setActiveMarker } =
     useMapStore();
   const { state: locationState, coords, userLocation } = useGeolocation();
-
-  // Determine which coordinates to search - prefer user location, fallback to default coords
-  const currentLocation: Coords = searchLocation ?? coords;
-
   const { places, isLoading: isPlacesLoading } = useNearbyPlaces();
 
   // Update markers when places change
@@ -66,7 +60,7 @@ const GoogleMap = () => {
 
   // Update search coordinates when geolocation succeeds (only if no manual selection)
   useEffect(() => {
-    if (map && userLocation && locationState !== "denied") {
+    if (map && userLocation && locationState !== "denied" && !searchLocation) {
       const userCoords = {
         lat: userLocation.latitude,
         lng: userLocation.longitude,
@@ -74,7 +68,7 @@ const GoogleMap = () => {
       map.panTo(userCoords);
       setSearchLocation(userCoords);
     }
-  }, [map, userLocation, locationState]);
+  }, [map, userLocation, locationState, searchLocation]);
 
   const handleLocationUpdate = (event: MapMouseEvent) => {
     if (event.detail.latLng && map) {
@@ -131,7 +125,7 @@ const GoogleMap = () => {
         key="google-map"
         mapId={MAP.id}
         mapTypeId={google.maps.MapTypeId.ROADMAP}
-        defaultCenter={currentLocation}
+        defaultCenter={coords}
         style={containerStyle}
         defaultZoom={15}
         onClick={handleLocationUpdate}
@@ -144,14 +138,14 @@ const GoogleMap = () => {
         <AdvancedMarker
           key="current-location-marker"
           position={{
-            lat: currentLocation.lat,
-            lng: currentLocation.lng,
+            lat: coords.lat,
+            lng: coords.lng,
           }}
         />
 
         <Circle
           key="radius-circle"
-          center={{ lat: currentLocation.lat, lng: currentLocation.lng }}
+          center={{ lat: coords.lat, lng: coords.lng }}
           radius={radius}
           strokeColor="#1b99ff"
           strokeOpacity={0.5}

@@ -12,28 +12,17 @@ export const useNearbyPlaces = () => {
   const map = useMap();
   const isMapsAPIReady = useApiIsLoaded();
 
-  const {
-    searchLocation: { lat: searchLat, lng: searchLng } = {},
-    radius,
-    setSelectedPlaceIds,
-  } = useMapStore();
+  const { radius, setSelectedPlaceIds } = useMapStore();
 
-  // current GPS coords (if enabled), or default location
-  const {
-    coords: { lat: geoLat, lng: geoLng },
-    state: geoState,
-  } = useGeolocation();
+  const { coords, state: geoState } = useGeolocation();
 
   // Ensure we do not make an unnecessary API call if location is still pending
   const isGeolocationFinished = geoState === "success" || geoState === "denied";
 
-  const lat = searchLat ?? geoLat;
-  const lng = searchLng ?? geoLng;
-
   const { data: places = [], ...rest } = useQuery({
-    queryKey: ["nearbyPlaces", lat, lng, radius],
+    queryKey: ["nearbyPlaces", coords.lat, coords.lng, radius],
     queryFn: async () => {
-      const places = await fetchNearbyPlaces(lat, lng, radius);
+      const places = await fetchNearbyPlaces(coords.lat, coords.lng, radius);
       setSelectedPlaceIds(places.map((p) => p.id));
       return places;
     },
