@@ -16,6 +16,12 @@ export const mockPlaces: GooglePlace[] = [
     currentOpeningHours: {
       openNow: true,
     },
+    iconMaskBaseUri:
+      "https://maps.gstatic.com/mapfiles/place_api/icons/v2/bar_pinlet.svg",
+    primaryTypeDisplayName: {
+      text: "Bar",
+      languageCode: "en",
+    },
     shortFormattedAddress: "644 Rathdowne St, Carlton North",
     priceRange: {
       startPrice: {
@@ -42,6 +48,12 @@ export const mockPlaces: GooglePlace[] = [
     currentOpeningHours: {
       openNow: true,
     },
+    iconMaskBaseUri:
+      "https://maps.gstatic.com/mapfiles/place_api/icons/v2/bar_pinlet.svg",
+    primaryTypeDisplayName: {
+      text: "Bar",
+      languageCode: "en",
+    },
     shortFormattedAddress: "133B Lygon St, Brunswick East",
   },
   {
@@ -59,6 +71,12 @@ export const mockPlaces: GooglePlace[] = [
     currentOpeningHours: {
       openNow: true,
     },
+    iconMaskBaseUri:
+      "https://maps.gstatic.com/mapfiles/place_api/icons/v2/restaurant_pinlet.svg",
+    primaryTypeDisplayName: {
+      text: "Restaurant",
+      languageCode: "en",
+    },
     shortFormattedAddress: "1 Reid St, Fitzroy North",
   },
   {
@@ -74,6 +92,12 @@ export const mockPlaces: GooglePlace[] = [
     },
     currentOpeningHours: {
       openNow: true,
+    },
+    iconMaskBaseUri:
+      "https://maps.gstatic.com/mapfiles/place_api/icons/v2/restaurant_pinlet.svg",
+    primaryTypeDisplayName: {
+      text: "Restaurant",
+      languageCode: "en",
     },
     shortFormattedAddress: "74 Lygon St, Brunswick East",
     priceRange: {
@@ -102,6 +126,12 @@ export const mockPlaces: GooglePlace[] = [
     currentOpeningHours: {
       openNow: true,
     },
+    iconMaskBaseUri:
+      "https://maps.gstatic.com/mapfiles/place_api/icons/v2/lodging_pinlet.svg",
+    primaryTypeDisplayName: {
+      text: "Hotel",
+      languageCode: "en",
+    },
     shortFormattedAddress: "800 Nicholson St, Fitzroy North",
     priceRange: {
       startPrice: {
@@ -129,6 +159,12 @@ export const mockPlaces: GooglePlace[] = [
     currentOpeningHours: {
       openNow: false,
     },
+    iconMaskBaseUri:
+      "https://maps.gstatic.com/mapfiles/place_api/icons/v2/bar_pinlet.svg",
+    primaryTypeDisplayName: {
+      text: "Bar",
+      languageCode: "en",
+    },
     shortFormattedAddress: "214 St Georges Rd, Fitzroy North",
     priceRange: {
       startPrice: {
@@ -154,6 +190,12 @@ export const mockPlaces: GooglePlace[] = [
     },
     currentOpeningHours: {
       openNow: true,
+    },
+    iconMaskBaseUri:
+      "https://maps.gstatic.com/mapfiles/place_api/icons/v2/restaurant_pinlet.svg",
+    primaryTypeDisplayName: {
+      text: "Restaurant",
+      languageCode: "en",
     },
     shortFormattedAddress: "153 Weston St, Brunswick",
     priceRange: {
@@ -182,6 +224,12 @@ export const mockPlaces: GooglePlace[] = [
     currentOpeningHours: {
       openNow: false,
     },
+    iconMaskBaseUri:
+      "https://maps.gstatic.com/mapfiles/place_api/icons/v2/bar_pinlet.svg",
+    primaryTypeDisplayName: {
+      text: "Pub",
+      languageCode: "en",
+    },
     shortFormattedAddress: "714 Nicholson St, Fitzroy North",
     priceRange: {
       startPrice: {
@@ -208,6 +256,12 @@ export const mockPlaces: GooglePlace[] = [
     },
     currentOpeningHours: {
       openNow: true,
+    },
+    iconMaskBaseUri:
+      "https://maps.gstatic.com/mapfiles/place_api/icons/v2/restaurant_pinlet.svg",
+    primaryTypeDisplayName: {
+      text: "Restaurant",
+      languageCode: "en",
     },
     shortFormattedAddress: "43-49 Lygon St, Brunswick East",
     priceRange: {
@@ -236,6 +290,12 @@ export const mockPlaces: GooglePlace[] = [
     currentOpeningHours: {
       openNow: false,
     },
+    iconMaskBaseUri:
+      "https://maps.gstatic.com/mapfiles/place_api/icons/v2/restaurant_pinlet.svg",
+    primaryTypeDisplayName: {
+      text: "Restaurant",
+      languageCode: "en",
+    },
     shortFormattedAddress: "99 Lygon St, Brunswick East",
   },
   {
@@ -252,6 +312,12 @@ export const mockPlaces: GooglePlace[] = [
     },
     currentOpeningHours: {
       openNow: false,
+    },
+    iconMaskBaseUri:
+      "https://maps.gstatic.com/mapfiles/place_api/icons/v2/restaurant_pinlet.svg",
+    primaryTypeDisplayName: {
+      text: "Restaurant",
+      languageCode: "en",
     },
     shortFormattedAddress: "80 Lygon St, Brunswick East",
     priceRange: {
@@ -280,6 +346,12 @@ export const mockPlaces: GooglePlace[] = [
     currentOpeningHours: {
       openNow: false,
     },
+    iconMaskBaseUri:
+      "https://maps.gstatic.com/mapfiles/place_api/icons/v2/restaurant_pinlet.svg",
+    primaryTypeDisplayName: {
+      text: "Restaurant",
+      languageCode: "en",
+    },
     shortFormattedAddress: "179 Weston St, Brunswick East",
     priceRange: {
       startPrice: {
@@ -307,6 +379,12 @@ export const mockPlaces: GooglePlace[] = [
     currentOpeningHours: {
       openNow: false,
     },
+    iconMaskBaseUri:
+      "https://maps.gstatic.com/mapfiles/place_api/icons/v2/restaurant_pinlet.svg",
+    primaryTypeDisplayName: {
+      text: "Restaurant",
+      languageCode: "en",
+    },
     shortFormattedAddress: "2 Village Ave, Brunswick East",
     priceRange: {
       startPrice: {
@@ -333,6 +411,12 @@ export const mockPlaces: GooglePlace[] = [
     currentOpeningHours: {
       openNow: true,
     },
+    iconMaskBaseUri:
+      "https://maps.gstatic.com/mapfiles/place_api/icons/v2/restaurant_pinlet.svg",
+    primaryTypeDisplayName: {
+      text: "Restaurant",
+      languageCode: "en",
+    },
     shortFormattedAddress: "161 Lygon St, Brunswick East",
   },
   {
@@ -348,6 +432,12 @@ export const mockPlaces: GooglePlace[] = [
     },
     currentOpeningHours: {
       openNow: false,
+    },
+    iconMaskBaseUri:
+      "https://maps.gstatic.com/mapfiles/place_api/icons/v2/restaurant_pinlet.svg",
+    primaryTypeDisplayName: {
+      text: "Restaurant",
+      languageCode: "en",
     },
     shortFormattedAddress: "63 Lygon St, Brunswick East",
     priceRange: {
@@ -376,6 +466,12 @@ export const mockPlaces: GooglePlace[] = [
     currentOpeningHours: {
       openNow: false,
     },
+    iconMaskBaseUri:
+      "https://maps.gstatic.com/mapfiles/place_api/icons/v2/restaurant_pinlet.svg",
+    primaryTypeDisplayName: {
+      text: "Restaurant",
+      languageCode: "en",
+    },
     shortFormattedAddress: "167 St Georges Rd, Fitzroy North",
     priceRange: {
       startPrice: {
@@ -403,6 +499,12 @@ export const mockPlaces: GooglePlace[] = [
     currentOpeningHours: {
       openNow: false,
     },
+    iconMaskBaseUri:
+      "https://maps.gstatic.com/mapfiles/place_api/icons/v2/restaurant_pinlet.svg",
+    primaryTypeDisplayName: {
+      text: "Restaurant",
+      languageCode: "en",
+    },
     shortFormattedAddress: "81 Lygon St, Brunswick East",
     priceRange: {
       startPrice: {
@@ -428,6 +530,12 @@ export const mockPlaces: GooglePlace[] = [
     },
     currentOpeningHours: {
       openNow: false,
+    },
+    iconMaskBaseUri:
+      "https://maps.gstatic.com/mapfiles/place_api/icons/v2/cafe_pinlet.svg",
+    primaryTypeDisplayName: {
+      text: "Cafe",
+      languageCode: "en",
     },
     shortFormattedAddress:
       "Cladstone Building, 187 St Georges Rd, Fitzroy North",
@@ -456,6 +564,12 @@ export const mockPlaces: GooglePlace[] = [
     currentOpeningHours: {
       openNow: false,
     },
+    iconMaskBaseUri:
+      "https://maps.gstatic.com/mapfiles/place_api/icons/v2/cafe_pinlet.svg",
+    primaryTypeDisplayName: {
+      text: "Cafe",
+      languageCode: "en",
+    },
     shortFormattedAddress: "1008 Lygon St, Carlton North",
     priceRange: {
       startPrice: {
@@ -482,6 +596,12 @@ export const mockPlaces: GooglePlace[] = [
     },
     currentOpeningHours: {
       openNow: false,
+    },
+    iconMaskBaseUri:
+      "https://maps.gstatic.com/mapfiles/place_api/icons/v2/restaurant_pinlet.svg",
+    primaryTypeDisplayName: {
+      text: "Restaurant",
+      languageCode: "en",
     },
     shortFormattedAddress: "252 St Georges Rd, Fitzroy North",
     priceRange: {
