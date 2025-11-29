@@ -161,12 +161,31 @@ export const MobilePlacesWithDrawer = () => {
                 target="_blank"
                 rel="noopener noreferrer"
                 aria-label={`Open ${p.displayName.text} in Google Maps`}
-                className="group relative flex min-h-[36px] w-full items-center gap-1 rounded-full border border-neutral-600/60 bg-gradient-to-br from-neutral-700/60 to-neutral-800/50 px-2.5 py-1 shadow-sm transition-all duration-200 hover:border-emerald-500/60 hover:bg-gradient-to-br hover:from-emerald-950/40 hover:to-emerald-900/30 hover:shadow-md focus:ring-2 focus:ring-emerald-500/50 focus:ring-offset-2 focus:ring-offset-neutral-900 focus:outline-none active:scale-95"
+                className={cn(
+                  "group relative flex min-h-[36px] w-full rounded-full border px-4 py-1.5",
+                  "border-neutral-600/60 bg-gradient-to-br from-neutral-700/60 to-neutral-800/50 shadow-sm",
+                  "transition-all duration-200 hover:border-emerald-500/60 hover:bg-gradient-to-br hover:from-emerald-950/40 hover:to-emerald-900/30 hover:shadow-md",
+                  "focus:ring-2 focus:ring-emerald-500/50 focus:ring-offset-2 focus:ring-offset-neutral-900 focus:outline-none active:scale-95",
+                )}
               >
-                <LucideMapPin className="size-2.5 shrink-0 text-neutral-400 transition-colors group-hover:text-emerald-400" />
-                <span className="min-w-0 truncate text-xs font-medium text-neutral-200 transition-colors group-hover:text-emerald-300">
-                  {p.displayName.text}
-                </span>
+                <div className="mt-0.5 mr-2 flex items-center">
+                  <img
+                    src={
+                      p.iconMaskBaseUri ? `${p.iconMaskBaseUri}.svg` : undefined
+                    }
+                    alt={p.primaryTypeDisplayName.text}
+                    className="size-3 invert"
+                  />
+                </div>
+
+                <div className="overflow-hidden">
+                  <p className="min-w-0 truncate text-xs font-medium text-neutral-200 transition-colors group-hover:text-emerald-300">
+                    {p.displayName.text}
+                  </p>
+                  <p className="truncate text-xs text-neutral-400">
+                    {p.primaryTypeDisplayName.text}
+                  </p>
+                </div>
               </Link>
             ))
           ) : (

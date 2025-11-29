@@ -59,6 +59,13 @@ export const ListRow = ({ place }: { place: GooglePlace }) => {
         />
 
         <div className="flex-0.5 flex min-w-[100px] items-center gap-2">
+          <img
+            src={
+              place.iconMaskBaseUri ? `${place.iconMaskBaseUri}.svg` : undefined
+            }
+            alt={place.primaryTypeDisplayName.text}
+            className="size-3 invert"
+          />
           <StarRating rating={rating ?? 0} isMobile />
           <span className="flex items-center pl-0.5 text-sm">
             {displayPrice}
