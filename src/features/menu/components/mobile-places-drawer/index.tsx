@@ -22,6 +22,7 @@ export const Trigger = ({ onClick }: { onClick: () => void }) => {
     </div>
   );
 };
+
 export const Drawer = ({ places }: { places: GooglePlace[] }) => {
   const [open, setIsOpen] = useState(false);
 
@@ -179,7 +180,7 @@ export const MobilePlacesWithDrawer = () => {
                 </div>
 
                 <div className="overflow-hidden">
-                  <p className="min-w-0 truncate text-xs font-medium text-neutral-200 transition-colors group-hover:text-emerald-300">
+                  <p className="truncate text-xs text-neutral-100">
                     {p.displayName.text}
                   </p>
                   <p className="truncate text-xs text-neutral-400">
