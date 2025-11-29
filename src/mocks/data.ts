@@ -17,7 +17,7 @@ export const mockPlaces: GooglePlace[] = [
       openNow: true,
     },
     iconMaskBaseUri:
-      "https://maps.gstatic.com/mapfiles/place_api/icons/v2/bar_pinlet.svg",
+      "https://maps.gstatic.com/mapfiles/place_api/icons/v2/bar_pinlet",
     primaryTypeDisplayName: {
       text: "Bar",
       languageCode: "en",
@@ -49,7 +49,7 @@ export const mockPlaces: GooglePlace[] = [
       openNow: true,
     },
     iconMaskBaseUri:
-      "https://maps.gstatic.com/mapfiles/place_api/icons/v2/bar_pinlet.svg",
+      "https://maps.gstatic.com/mapfiles/place_api/icons/v2/bar_pinlet",
     primaryTypeDisplayName: {
       text: "Bar",
       languageCode: "en",
@@ -72,7 +72,7 @@ export const mockPlaces: GooglePlace[] = [
       openNow: true,
     },
     iconMaskBaseUri:
-      "https://maps.gstatic.com/mapfiles/place_api/icons/v2/restaurant_pinlet.svg",
+      "https://maps.gstatic.com/mapfiles/place_api/icons/v2/restaurant_pinlet",
     primaryTypeDisplayName: {
       text: "Restaurant",
       languageCode: "en",
@@ -94,7 +94,7 @@ export const mockPlaces: GooglePlace[] = [
       openNow: true,
     },
     iconMaskBaseUri:
-      "https://maps.gstatic.com/mapfiles/place_api/icons/v2/restaurant_pinlet.svg",
+      "https://maps.gstatic.com/mapfiles/place_api/icons/v2/restaurant_pinlet",
     primaryTypeDisplayName: {
       text: "Restaurant",
       languageCode: "en",
@@ -127,7 +127,7 @@ export const mockPlaces: GooglePlace[] = [
       openNow: true,
     },
     iconMaskBaseUri:
-      "https://maps.gstatic.com/mapfiles/place_api/icons/v2/lodging_pinlet.svg",
+      "https://maps.gstatic.com/mapfiles/place_api/icons/v2/bar_pinlet",
     primaryTypeDisplayName: {
       text: "Hotel",
       languageCode: "en",
@@ -160,7 +160,7 @@ export const mockPlaces: GooglePlace[] = [
       openNow: false,
     },
     iconMaskBaseUri:
-      "https://maps.gstatic.com/mapfiles/place_api/icons/v2/bar_pinlet.svg",
+      "https://maps.gstatic.com/mapfiles/place_api/icons/v2/bar_pinlet",
     primaryTypeDisplayName: {
       text: "Bar",
       languageCode: "en",
@@ -192,7 +192,7 @@ export const mockPlaces: GooglePlace[] = [
       openNow: true,
     },
     iconMaskBaseUri:
-      "https://maps.gstatic.com/mapfiles/place_api/icons/v2/restaurant_pinlet.svg",
+      "https://maps.gstatic.com/mapfiles/place_api/icons/v2/restaurant_pinlet",
     primaryTypeDisplayName: {
       text: "Restaurant",
       languageCode: "en",
@@ -225,7 +225,7 @@ export const mockPlaces: GooglePlace[] = [
       openNow: false,
     },
     iconMaskBaseUri:
-      "https://maps.gstatic.com/mapfiles/place_api/icons/v2/bar_pinlet.svg",
+      "https://maps.gstatic.com/mapfiles/place_api/icons/v2/bar_pinlet",
     primaryTypeDisplayName: {
       text: "Pub",
       languageCode: "en",
@@ -258,7 +258,7 @@ export const mockPlaces: GooglePlace[] = [
       openNow: true,
     },
     iconMaskBaseUri:
-      "https://maps.gstatic.com/mapfiles/place_api/icons/v2/restaurant_pinlet.svg",
+      "https://maps.gstatic.com/mapfiles/place_api/icons/v2/restaurant_pinlet",
     primaryTypeDisplayName: {
       text: "Restaurant",
       languageCode: "en",
@@ -291,7 +291,7 @@ export const mockPlaces: GooglePlace[] = [
       openNow: false,
     },
     iconMaskBaseUri:
-      "https://maps.gstatic.com/mapfiles/place_api/icons/v2/restaurant_pinlet.svg",
+      "https://maps.gstatic.com/mapfiles/place_api/icons/v2/restaurant_pinlet",
     primaryTypeDisplayName: {
       text: "Restaurant",
       languageCode: "en",
@@ -314,7 +314,7 @@ export const mockPlaces: GooglePlace[] = [
       openNow: false,
     },
     iconMaskBaseUri:
-      "https://maps.gstatic.com/mapfiles/place_api/icons/v2/restaurant_pinlet.svg",
+      "https://maps.gstatic.com/mapfiles/place_api/icons/v2/restaurant_pinlet",
     primaryTypeDisplayName: {
       text: "Restaurant",
       languageCode: "en",
@@ -347,7 +347,7 @@ export const mockPlaces: GooglePlace[] = [
       openNow: false,
     },
     iconMaskBaseUri:
-      "https://maps.gstatic.com/mapfiles/place_api/icons/v2/restaurant_pinlet.svg",
+      "https://maps.gstatic.com/mapfiles/place_api/icons/v2/restaurant_pinlet",
     primaryTypeDisplayName: {
       text: "Restaurant",
       languageCode: "en",
@@ -380,7 +380,7 @@ export const mockPlaces: GooglePlace[] = [
       openNow: false,
     },
     iconMaskBaseUri:
-      "https://maps.gstatic.com/mapfiles/place_api/icons/v2/restaurant_pinlet.svg",
+      "https://maps.gstatic.com/mapfiles/place_api/icons/v2/restaurant_pinlet",
     primaryTypeDisplayName: {
       text: "Restaurant",
       languageCode: "en",
@@ -412,7 +412,7 @@ export const mockPlaces: GooglePlace[] = [
       openNow: true,
     },
     iconMaskBaseUri:
-      "https://maps.gstatic.com/mapfiles/place_api/icons/v2/restaurant_pinlet.svg",
+      "https://maps.gstatic.com/mapfiles/place_api/icons/v2/restaurant_pinlet",
     primaryTypeDisplayName: {
       text: "Restaurant",
       languageCode: "en",
@@ -434,7 +434,7 @@ export const mockPlaces: GooglePlace[] = [
       openNow: false,
     },
     iconMaskBaseUri:
-      "https://maps.gstatic.com/mapfiles/place_api/icons/v2/restaurant_pinlet.svg",
+      "https://maps.gstatic.com/mapfiles/place_api/icons/v2/restaurant_pinlet",
     primaryTypeDisplayName: {
       text: "Restaurant",
       languageCode: "en",
@@ -467,7 +467,7 @@ export const mockPlaces: GooglePlace[] = [
       openNow: false,
     },
     iconMaskBaseUri:
-      "https://maps.gstatic.com/mapfiles/place_api/icons/v2/restaurant_pinlet.svg",
+      "https://maps.gstatic.com/mapfiles/place_api/icons/v2/restaurant_pinlet",
     primaryTypeDisplayName: {
       text: "Restaurant",
       languageCode: "en",
@@ -500,7 +500,7 @@ export const mockPlaces: GooglePlace[] = [
       openNow: false,
     },
     iconMaskBaseUri:
-      "https://maps.gstatic.com/mapfiles/place_api/icons/v2/restaurant_pinlet.svg",
+      "https://maps.gstatic.com/mapfiles/place_api/icons/v2/restaurant_pinlet",
     primaryTypeDisplayName: {
       text: "Restaurant",
       languageCode: "en",
@@ -532,7 +532,7 @@ export const mockPlaces: GooglePlace[] = [
       openNow: false,
     },
     iconMaskBaseUri:
-      "https://maps.gstatic.com/mapfiles/place_api/icons/v2/cafe_pinlet.svg",
+      "https://maps.gstatic.com/mapfiles/place_api/icons/v2/cafe_pinlet",
     primaryTypeDisplayName: {
       text: "Cafe",
       languageCode: "en",
@@ -565,7 +565,7 @@ export const mockPlaces: GooglePlace[] = [
       openNow: false,
     },
     iconMaskBaseUri:
-      "https://maps.gstatic.com/mapfiles/place_api/icons/v2/cafe_pinlet.svg",
+      "https://maps.gstatic.com/mapfiles/place_api/icons/v2/cafe_pinlet",
     primaryTypeDisplayName: {
       text: "Cafe",
       languageCode: "en",
@@ -598,7 +598,7 @@ export const mockPlaces: GooglePlace[] = [
       openNow: false,
     },
     iconMaskBaseUri:
-      "https://maps.gstatic.com/mapfiles/place_api/icons/v2/restaurant_pinlet.svg",
+      "https://maps.gstatic.com/mapfiles/place_api/icons/v2/restaurant_pinlet",
     primaryTypeDisplayName: {
       text: "Restaurant",
       languageCode: "en",
