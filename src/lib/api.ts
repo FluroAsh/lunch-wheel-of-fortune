@@ -2,7 +2,10 @@ import { METHODS } from "@/lib/constants";
 import { GOOGLE } from "@/lib/urls";
 import { NearbyPlaces, RankPreference } from "@/types/google";
 
-import { EXCLUDED_NON_FOOD_TYPES, FOOD_AND_DRINK_TYPES } from "../constants";
+import {
+  EXCLUDED_NON_FOOD_TYPES,
+  FOOD_AND_DRINK_TYPES,
+} from "../features/menu/constants";
 
 // Refer to: https://developers.google.com/maps/billing-and-pricing/pricing#places-pricing
 // For a list of pricing tiers and their respective free tier caps
@@ -14,6 +17,9 @@ const fieldMask = [
   "shortFormattedAddress",
   // Pro — (5k requests/month)
   "id",
+  "iconMaskBaseUri",
+  "primaryTypeDisplayName",
+  // "primaryType",
   // Enterprise — (1k requests/month)
   "currentOpeningHours.openNow",
   "priceLevel",

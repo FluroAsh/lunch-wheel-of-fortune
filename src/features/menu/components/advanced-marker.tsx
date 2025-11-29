@@ -57,7 +57,9 @@ export const AdvancedMarkerComponent = ({ place }: { place: GooglePlace }) => {
       <div>
         <Pin
           // @ts-expect-error - glyphSrc is a valid prop for the Pin component but not typed
-          glyphSrc={place.icon ? new URL(place.icon) : undefined} // TODO: Update this for new Places API
+          glyphSrc={
+            place.iconMaskBaseUri ? `${place.iconMaskBaseUri}.svg` : undefined
+          } // TODO: Update this for new Places API
           background="#0f9d58"
           borderColor="#006425"
           glyphColor="#60d98f"

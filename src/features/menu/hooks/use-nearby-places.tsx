@@ -5,7 +5,7 @@ import { useApiIsLoaded, useMap } from "@vis.gl/react-google-maps";
 
 import { useMapStore } from "@/store";
 
-import { fetchNearbyPlaces } from "../utils/api";
+import { fetchNearbyPlaces } from "../../../lib/api";
 import { useGeolocation } from "./use-geolocation";
 
 export const useNearbyPlaces = () => {

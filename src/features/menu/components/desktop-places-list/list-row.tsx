@@ -91,6 +91,14 @@ export const ListRow = ({ place, isEven }: ListRowProps) => {
           disabled={hasForcedSelection}
         />
 
+        <img
+          src={
+            place.iconMaskBaseUri ? `${place.iconMaskBaseUri}.svg` : undefined
+          }
+          alt={place.primaryTypeDisplayName.text}
+          className="size-4 invert"
+        />
+
         <div className="flex w-[150px] shrink-0 items-center gap-2">
           <StarRating rating={rating ?? 0} />
           <span className="flex items-center pl-0.5 text-sm">

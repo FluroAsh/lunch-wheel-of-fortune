@@ -38,6 +38,11 @@ export type GooglePlace = {
     // }>;
     // weekdayDescriptions?: string[];
   };
+  iconMaskBaseUri: string;
+  primaryTypeDisplayName: {
+    text: string;
+    languageCode: string;
+  };
   rating: number;
   shortFormattedAddress: string;
 };
