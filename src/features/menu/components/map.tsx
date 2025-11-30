@@ -133,7 +133,9 @@ const GoogleMap = () => {
       >
         <RadiusSlider />
 
-        {places.length > 0 && isDesktop && <WheelSpinButton absolute />}
+        {places.length > 0 && isDesktop && (
+          <WheelSpinButton absolute isLoading={isPlacesLoading} />
+        )}
 
         <AdvancedMarker
           key="current-location-marker"
