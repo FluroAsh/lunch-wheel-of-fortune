@@ -1,5 +1,6 @@
 import Link from "next/link";
 
+import { GENERIC_PLACE_ICON } from "@/lib/constants";
 import { getPlacesSearchUrl } from "@/lib/helpers";
 import { cn } from "@/lib/utils";
 import { GooglePlace } from "@/types/google";
@@ -24,7 +25,7 @@ export const PreviewItem = ({ place }: { place: GooglePlace }) => {
     >
       <div className="mt-0.5 mr-2 flex items-center">
         <img
-          src={`${place.iconMaskBaseUri}.svg`}
+          src={`${place.iconMaskBaseUri ?? GENERIC_PLACE_ICON}.svg`}
           alt={place.primaryTypeDisplayName.text}
           className="size-3 min-w-3 invert"
         />

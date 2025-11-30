@@ -7,6 +7,7 @@ import {
   useAdvancedMarkerRef,
 } from "@vis.gl/react-google-maps";
 
+import { GENERIC_PLACE_ICON } from "@/lib/constants";
 import { cn /*, getAspectRatio */, getLatLng } from "@/lib/utils";
 import { useMapStore } from "@/store";
 import { GooglePlace } from "@/types/google";
@@ -57,9 +58,7 @@ export const AdvancedMarkerComponent = ({ place }: { place: GooglePlace }) => {
       <div>
         <Pin
           // @ts-expect-error - glyphSrc is a valid prop for the Pin component but not typed
-          glyphSrc={
-            place.iconMaskBaseUri ? `${place.iconMaskBaseUri}.svg` : undefined
-          } // TODO: Update this for new Places API
+          glyphSrc={`${place.iconMaskBaseUri ?? GENERIC_PLACE_ICON}.svg`}
           background="#0f9d58"
           borderColor="#006425"
           glyphColor="#60d98f"

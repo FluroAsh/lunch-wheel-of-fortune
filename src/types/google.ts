@@ -38,7 +38,8 @@ export type GooglePlace = {
     // }>;
     // weekdayDescriptions?: string[];
   };
-  iconMaskBaseUri: string;
+  iconMaskBaseUri?: string;
+  primaryType: string;
   primaryTypeDisplayName: {
     text: string;
     languageCode: string;

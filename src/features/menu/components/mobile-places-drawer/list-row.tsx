@@ -1,6 +1,7 @@
 import { LucideCheck } from "lucide-react";
 
 import { Checkbox, Label } from "@/components/checkbox";
+import { GENERIC_PLACE_ICON } from "@/lib/constants";
 import { cn } from "@/lib/utils";
 import { useMapStore } from "@/store";
 import { GooglePlace } from "@/types/google";
@@ -60,9 +61,7 @@ export const ListRow = ({ place }: { place: GooglePlace }) => {
 
         <div className="flex-0.5 flex min-w-[100px] items-center gap-2">
           <img
-            src={
-              place.iconMaskBaseUri ? `${place.iconMaskBaseUri}.svg` : undefined
-            }
+            src={`${place.iconMaskBaseUri ?? GENERIC_PLACE_ICON}.svg`}
             alt={place.primaryTypeDisplayName.text}
             className="size-3 invert"
           />

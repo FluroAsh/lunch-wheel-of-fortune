@@ -18,8 +18,8 @@ const fieldMask = [
   // Pro — (5k requests/month)
   "id",
   "iconMaskBaseUri",
+  "primaryType",
   "primaryTypeDisplayName",
-  // "primaryType",
   // Enterprise — (1k requests/month)
   "currentOpeningHours.openNow",
   "priceLevel",
@@ -68,7 +68,9 @@ export const fetchNearbyPlaces = async (
 
     // No intention to currently return places that are not open
     // But might add some better UI/UX for this in the future.
-    return places.filter((place) => !!place.currentOpeningHours?.openNow);
+    return places.filter(
+      (place) => !!place.currentOpeningHours?.openNow && !!place.primaryType,
+    );
   } catch (error) {
     console.error("[API]: Error fetching nearby places", error);
     throw error;

@@ -41,3 +41,6 @@ export const MEDIA_QUERIES = {
   TABLET: `(min-width: ${BREAKPOINTS.MD}px) and (max-width: ${BREAKPOINTS.LG - 1}px)`,
   MOBILE: `(max-width: ${BREAKPOINTS.MD - 1}px)`,
 } as const;
+
+export const GENERIC_PLACE_ICON =
+  "https://maps.gstatic.com/mapfiles/place_api/icons/v2/generic_pinlet";
