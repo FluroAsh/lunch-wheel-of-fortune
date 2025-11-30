@@ -1,6 +1,5 @@
 "use client";
 
-import Link from "next/link";
 import React, { type CSSProperties, useEffect } from "react";
 
 import {
@@ -11,7 +10,6 @@ import {
   useApiLoadingStatus,
   useMap,
 } from "@vis.gl/react-google-maps";
-import { SearchIcon } from "lucide-react";
 import { useMedia } from "react-use";
 
 import { MAP, MEDIA_QUERIES } from "@/lib/constants";
@@ -20,6 +18,7 @@ import { useMapStore } from "@/store";
 
 import { useGeolocation } from "../hooks/use-geolocation";
 import { useNearbyPlaces } from "../hooks/use-nearby-places";
+import { AutocompleteAddressInput } from "./address-input";
 import { AdvancedMarkerComponent } from "./advanced-marker";
 import { Circle } from "./circle";
 import { RadiusSlider } from "./radius-slider";
@@ -108,18 +107,7 @@ const GoogleMap = () => {
 
   return (
     <div className="relative flex size-full flex-col overflow-hidden rounded-md border border-neutral-700 lg:overflow-y-auto">
-      <div className="relative bg-neutral-800 p-2 lg:p-4">
-        <SearchIcon className="absolute top-1/2 left-7 size-4 -translate-y-1/2 stroke-neutral-400 text-neutral-100" />
-        <input
-          className={cn(
-            "w-full rounded-md bg-neutral-900 px-2 py-2 pl-10 text-neutral-100 focus:ring-2 focus:ring-sky-500 focus:outline-none",
-            "disabled:cursor-not-allowed disabled:opacity-50",
-          )}
-          type="text"
-          placeholder="Where's the food?"
-          disabled={true} // TODO: Add Google autocomplete for address search
-        />
-      </div>
+      <AutocompleteAddressInput isLoading={isPlacesLoading} />
 
       <Map
         key="google-map"
