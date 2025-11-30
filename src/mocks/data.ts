@@ -22,6 +22,7 @@ export const mockPlaces: GooglePlace[] = [
       text: "Bar",
       languageCode: "en",
     },
+    primaryType: "bar",
     shortFormattedAddress: "644 Rathdowne St, Carlton North",
     priceRange: {
       startPrice: {
@@ -54,6 +55,7 @@ export const mockPlaces: GooglePlace[] = [
       text: "Bar",
       languageCode: "en",
     },
+    primaryType: "bar",
     shortFormattedAddress: "133B Lygon St, Brunswick East",
   },
   {
@@ -77,6 +79,7 @@ export const mockPlaces: GooglePlace[] = [
       text: "Restaurant",
       languageCode: "en",
     },
+    primaryType: "restaurant",
     shortFormattedAddress: "1 Reid St, Fitzroy North",
   },
   {
@@ -99,6 +102,7 @@ export const mockPlaces: GooglePlace[] = [
       text: "Restaurant",
       languageCode: "en",
     },
+    primaryType: "restaurant",
     shortFormattedAddress: "74 Lygon St, Brunswick East",
     priceRange: {
       startPrice: {
@@ -132,6 +136,7 @@ export const mockPlaces: GooglePlace[] = [
       text: "Hotel",
       languageCode: "en",
     },
+    primaryType: "pub",
     shortFormattedAddress: "800 Nicholson St, Fitzroy North",
     priceRange: {
       startPrice: {
@@ -165,6 +170,7 @@ export const mockPlaces: GooglePlace[] = [
       text: "Bar",
       languageCode: "en",
     },
+    primaryType: "bar",
     shortFormattedAddress: "214 St Georges Rd, Fitzroy North",
     priceRange: {
       startPrice: {
@@ -197,6 +203,7 @@ export const mockPlaces: GooglePlace[] = [
       text: "Restaurant",
       languageCode: "en",
     },
+    primaryType: "restaurant",
     shortFormattedAddress: "153 Weston St, Brunswick",
     priceRange: {
       startPrice: {
@@ -230,6 +237,7 @@ export const mockPlaces: GooglePlace[] = [
       text: "Pub",
       languageCode: "en",
     },
+    primaryType: "pub",
     shortFormattedAddress: "714 Nicholson St, Fitzroy North",
     priceRange: {
       startPrice: {
@@ -263,6 +271,7 @@ export const mockPlaces: GooglePlace[] = [
       text: "Restaurant",
       languageCode: "en",
     },
+    primaryType: "restaurant",
     shortFormattedAddress: "43-49 Lygon St, Brunswick East",
     priceRange: {
       startPrice: {
@@ -296,6 +305,7 @@ export const mockPlaces: GooglePlace[] = [
       text: "Restaurant",
       languageCode: "en",
     },
+    primaryType: "restaurant",
     shortFormattedAddress: "99 Lygon St, Brunswick East",
   },
   {
@@ -319,6 +329,7 @@ export const mockPlaces: GooglePlace[] = [
       text: "Restaurant",
       languageCode: "en",
     },
+    primaryType: "restaurant",
     shortFormattedAddress: "80 Lygon St, Brunswick East",
     priceRange: {
       startPrice: {
@@ -352,6 +363,7 @@ export const mockPlaces: GooglePlace[] = [
       text: "Restaurant",
       languageCode: "en",
     },
+    primaryType: "restaurant",
     shortFormattedAddress: "179 Weston St, Brunswick East",
     priceRange: {
       startPrice: {
@@ -385,6 +397,7 @@ export const mockPlaces: GooglePlace[] = [
       text: "Restaurant",
       languageCode: "en",
     },
+    primaryType: "restaurant",
     shortFormattedAddress: "2 Village Ave, Brunswick East",
     priceRange: {
       startPrice: {
@@ -417,6 +430,7 @@ export const mockPlaces: GooglePlace[] = [
       text: "Restaurant",
       languageCode: "en",
     },
+    primaryType: "restaurant",
     shortFormattedAddress: "161 Lygon St, Brunswick East",
   },
   {
@@ -439,6 +453,7 @@ export const mockPlaces: GooglePlace[] = [
       text: "Restaurant",
       languageCode: "en",
     },
+    primaryType: "restaurant",
     shortFormattedAddress: "63 Lygon St, Brunswick East",
     priceRange: {
       startPrice: {
@@ -472,6 +487,7 @@ export const mockPlaces: GooglePlace[] = [
       text: "Restaurant",
       languageCode: "en",
     },
+    primaryType: "restaurant",
     shortFormattedAddress: "167 St Georges Rd, Fitzroy North",
     priceRange: {
       startPrice: {
@@ -505,6 +521,7 @@ export const mockPlaces: GooglePlace[] = [
       text: "Restaurant",
       languageCode: "en",
     },
+    primaryType: "restaurant",
     shortFormattedAddress: "81 Lygon St, Brunswick East",
     priceRange: {
       startPrice: {
@@ -537,6 +554,7 @@ export const mockPlaces: GooglePlace[] = [
       text: "Cafe",
       languageCode: "en",
     },
+    primaryType: "cafe",
     shortFormattedAddress:
       "Cladstone Building, 187 St Georges Rd, Fitzroy North",
     priceRange: {
@@ -570,6 +588,7 @@ export const mockPlaces: GooglePlace[] = [
       text: "Cafe",
       languageCode: "en",
     },
+    primaryType: "cafe",
     shortFormattedAddress: "1008 Lygon St, Carlton North",
     priceRange: {
       startPrice: {
@@ -603,6 +622,7 @@ export const mockPlaces: GooglePlace[] = [
       text: "Restaurant",
       languageCode: "en",
     },
+    primaryType: "restaurant",
     shortFormattedAddress: "252 St Georges Rd, Fitzroy North",
     priceRange: {
       startPrice: {
