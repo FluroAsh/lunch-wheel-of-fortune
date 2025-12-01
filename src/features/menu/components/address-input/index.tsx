@@ -12,7 +12,8 @@ export const AutocompleteAddressInput = ({
       <div id="address-input-wrapper" className="relative">
         <SearchIcon className="absolute top-1/2 left-3 z-10 size-4 -translate-y-1/2 stroke-neutral-400 text-neutral-100" />
         <input
-          id="search-address-input"
+          name="street-address"
+          autoComplete="street-address"
           className={cn(
             "w-[150px] max-w-full rounded-md bg-neutral-900 p-1.5 pl-8.5 text-neutral-100 opacity-80 backdrop-blur-lg",
             "truncate transition-[opacity,width]",
