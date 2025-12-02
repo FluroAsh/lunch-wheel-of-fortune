@@ -118,7 +118,19 @@ export const MobilePlacesWithDrawer = () => {
   const { places, isFetching: isFetchingPlaces } = useNearbyPlaces();
   const selectedPlaces = places.filter((p) => selectedPlaceIds.includes(p.id));
 
-  const isLoading = !places.length || isFetchingPlaces;
+  if (!isFetchingPlaces && !places.length) {
+    return (
+      <div>
+        <p className="text-center text-sm text-neutral-400">
+          Couldn't find any places near you!
+        </p>
+        <p className="text-center text-sm text-neutral-400">
+          Try again by either searching for a different location or adjusting
+          the radius of your search.
+        </p>
+      </div>
+    );
+  }
 
   return (
     <div className="flex max-h-full flex-col gap-2 overflow-hidden">
@@ -131,11 +143,14 @@ export const MobilePlacesWithDrawer = () => {
           </h3>
         </span>
 
-        <SelectionButton places={places} isLoading={isLoading} />
+        <SelectionButton places={places} isLoading={isFetchingPlaces} />
       </div>
 
-      <PreviewList selectedPlaces={selectedPlaces} isLoading={isLoading} />
-      <Drawer places={places} isLoading={isLoading} />
+      <PreviewList
+        selectedPlaces={selectedPlaces}
+        isLoading={isFetchingPlaces}
+      />
+      <Drawer places={places} isLoading={isFetchingPlaces} />
     </div>
   );
 };
