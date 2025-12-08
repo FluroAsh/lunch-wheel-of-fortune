@@ -77,6 +77,7 @@ export const fetchNearbyPlaces = async (
   }
 };
 
+// https://developers.google.com/maps/documentation/places/web-service/place-autocomplete#example_autocomplete_requests
 type AutocompleteSuggestion = {
   placePrediction?: {
     place: `places/${string}`;
@@ -111,7 +112,6 @@ export type AutocompleteResult = {
 /** Fetches autocomplete suggestions from the Google Places API. */
 export const fetchAddressSuggestions = async (
   input: string,
-  { lat, lng, radius }: { lat: number; lng: number; radius: number },
 ): Promise<AutocompleteResult[]> => {
   try {
     const response = await fetch(GOOGLE.POST.autocomplete, {
@@ -122,16 +122,8 @@ export const fetchAddressSuggestions = async (
       },
       body: JSON.stringify({
         input,
-        locationBias: {
-          circle: {
-            center: {
-              latitude: lat,
-              longitude: lng,
-            },
-            radius,
-          },
-        },
-        includedRegionCodes: ["us", "au", "nz", "gb", "ca"], // Add your preferred regions
+        // TODO: Add intelligent region detection (au, us, etc.) - AU only (for now!)
+        includedRegionCodes: ["au"],
       }),
     });
 
@@ -143,13 +135,15 @@ export const fetchAddressSuggestions = async (
 
     const { suggestions = [] }: AutocompleteResponse = await response.json();
 
-    return suggestions
+    const transformedSuggestions = suggestions
       .filter((suggestion) => suggestion.placePrediction)
       .map((suggestion) => ({
         placeId: suggestion.placePrediction!.placeId,
         text: suggestion.placePrediction!.text.text,
         place: suggestion.placePrediction!.place,
       }));
+
+    return transformedSuggestions;
   } catch (error) {
     console.error("[API]: Error fetching autocomplete suggestions", error);
     throw error;
