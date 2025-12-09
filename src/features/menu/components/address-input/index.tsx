@@ -1,6 +1,6 @@
-import { useEffect, useRef, useState } from "react";
+import { useRef, useState } from "react";
 
-import { Loader2, SearchIcon } from "lucide-react";
+import { SearchIcon } from "lucide-react";
 import { debounce } from "radash";
 
 import { cn } from "@/lib/utils";
