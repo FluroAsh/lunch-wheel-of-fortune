@@ -2,7 +2,9 @@ import { useRef, useState } from "react";
 
 import { LucideXCircle, SearchIcon } from "lucide-react";
 import { debounce } from "radash";
+import { useMedia } from "react-use";
 
+import { MEDIA_QUERIES } from "@/lib/constants";
 import { cn } from "@/lib/utils";
 import { useMapStore } from "@/store";
 
@@ -17,6 +19,8 @@ export const AutocompleteAddressInput = ({
   const [isInputActive, setIsInputActive] = useState<boolean>(false);
   const [debouncedSearchQuery, setDebouncedSearchQuery] = useState<string>("");
 
+  const isMobile = useMedia(MEDIA_QUERIES.MOBILE, false);
+
   const {
     autocompleteInput,
     setAutocompleteInput,
@@ -26,9 +30,9 @@ export const AutocompleteAddressInput = ({
     resetAutocomplete,
   } = useMapStore();
 
-  // Use debounced query for API calls
+  // Use debounced query for API calls - only on mobile
   const { data: suggestions = [], isLoading: isLoadingSuggestions } =
-    useAutocompleteSearch(debouncedSearchQuery);
+    useAutocompleteSearch(isMobile ? debouncedSearchQuery : "");
 
   // Debounce function ref to persist across renders
   const debouncedSetQuery = useRef<ReturnType<typeof debounce>>(null);
@@ -60,9 +64,9 @@ export const AutocompleteAddressInput = ({
 
         <input
           name="street-address"
-          autoComplete="off"
+          autoComplete={isMobile ? "street-address" : "off"}
           className={cn(
-            "w-[150px] max-w-full rounded-md bg-neutral-900 p-1.5 pl-8.5 text-neutral-100 opacity-80 backdrop-blur-lg",
+            "w-[150px] max-w-full rounded-md bg-neutral-900 p-1.5 pr-7.5 pl-8.5 text-neutral-100 opacity-80 backdrop-blur-lg",
             "truncate transition-[opacity,width]",
             "focus:w-[220px] focus:opacity-100 focus:ring-2 focus:ring-sky-500 focus:outline-none",
             "data-[active=true]:w-[220px] data-[active=true]:opacity-100 data-[active=true]:ring-2 data-[active=true]:ring-sky-500 data-[active=true]:outline-none",
