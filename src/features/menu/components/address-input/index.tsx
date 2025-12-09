@@ -1,6 +1,6 @@
 import { useRef, useState } from "react";
 
-import { SearchIcon } from "lucide-react";
+import { LucideXCircle, SearchIcon } from "lucide-react";
 import { debounce } from "radash";
 
 import { cn } from "@/lib/utils";
@@ -23,6 +23,7 @@ export const AutocompleteAddressInput = ({
     shouldShowSuggestions,
     setShouldShowSuggestions,
     isFetchingDetails,
+    resetAutocomplete,
   } = useMapStore();
 
   // Use debounced query for API calls
@@ -50,6 +51,8 @@ export const AutocompleteAddressInput = ({
       !isLoadingSuggestions ||
       autocompleteInput.trim().length > 0);
 
+  const showClearButton = autocompleteInput.length > 0;
+
   return (
     <div className="absolute top-0 right-0 left-0 z-10 w-fit max-w-full p-2 lg:p-4">
       <div id="address-input-wrapper" className="relative">
@@ -76,12 +79,22 @@ export const AutocompleteAddressInput = ({
             () =>
               setTimeout(() => {
                 setIsInputActive(false);
+                setShouldShowSuggestions(false);
               }, 200) // Delay to allow click events on suggestions
           }
           type="text"
           placeholder="Search address..."
           disabled={isLoading || isFetchingDetails}
         />
+
+        {showClearButton && (
+          <button
+            className="absolute top-1/2 right-2 -translate-y-1/2"
+            onClick={() => resetAutocomplete()}
+          >
+            <LucideXCircle className="size-4 text-neutral-400" />
+          </button>
+        )}
 
         {showSuggestions && <SuggestionList suggestions={suggestions} />}
       </div>
