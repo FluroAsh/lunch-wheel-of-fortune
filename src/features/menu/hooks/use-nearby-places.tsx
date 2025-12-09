@@ -13,7 +13,6 @@ export const useNearbyPlaces = () => {
   const isMapsAPIReady = useApiIsLoaded();
 
   const { radius, setSelectedPlaceIds } = useMapStore();
-
   const { coords, state: geoState } = useGeolocation();
 
   // Ensure we do not make an unnecessary API call if location is still pending
