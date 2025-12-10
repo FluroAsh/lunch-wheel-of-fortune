@@ -32,7 +32,7 @@ export const AutocompleteAddressInput = ({
 
   // Use debounced query for API calls - only on mobile
   const { data: suggestions = [], isLoading: isLoadingSuggestions } =
-    useAutocompleteSearch(isMobile ? debouncedSearchQuery : "");
+    useAutocompleteSearch(debouncedSearchQuery);
 
   // Debounce function ref to persist across renders
   const debouncedSetQuery = useRef<ReturnType<typeof debounce>>(null);
