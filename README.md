@@ -37,6 +37,7 @@ Making group lunch decisions can be time-consuming and frustrating. This applica
 ### Prerequisites
 
 - Node.js 20+ installed
+- [mkcert](https://github.com/FiloSottile/mkcert) for generating local SSL certificates
 - A Google Maps API key with the following APIs enabled:
   - Maps JavaScript API
   - Places API (New)
@@ -57,22 +58,58 @@ cd lunch-wheel-of-fortune
 npm install
 ```
 
-3. Set up environment variables:
+3. Generate SSL certificates for HTTPS development:
+
+   The application requires HTTPS to use the Geolocation API. Generate self-signed certificates using mkcert:
+
+   **First, install mkcert** (if not already installed):
+
+   ```bash
+   # macOS
+   brew install mkcert
+   
+   # Linux (Debian/Ubuntu)
+   sudo apt install mkcert
+   
+   # For other platforms, see: https://github.com/FiloSottile/mkcert#installation
+   ```
+
+   **Then, create the certificates:**
+
+   ```bash
+   # Install the local CA (one-time setup)
+   mkcert -install
+   
+   # Create certificates directory
+   mkdir -p certificates
+   
+   # Generate localhost certificates
+   mkcert -key-file certificates/localhost-key.pem -cert-file certificates/localhost.pem localhost
+   ```
+
+   This will create:
+   - `certificates/localhost-key.pem` - Private key
+   - `certificates/localhost.pem` - Certificate
+
+   > **Note**: The `certificates/` directory is already in `.gitignore` to prevent committing sensitive certificate files.
+
+4. Set up environment variables:
+
    Create a `.env.local` file in the root directory:
 
-```env
-NEXT_PUBLIC_GOOGLE_MAPS_API_KEY=your_api_key_here
-```
+   ```env
+   NEXT_PUBLIC_GOOGLE_MAPS_API_KEY=your_api_key_here
+   ```
 
-4. Run the development server:
+5. Run the development server:
 
 ```bash
 npm run dev
 ```
 
-5. Open [https://localhost:3000](https://localhost:3000) in your browser
+6. Open [https://localhost:3000](https://localhost:3000) in your browser
 
-> **Note**: The dev server runs with HTTPS enabled for geolocation API compatibility.
+> **Note**: The dev server runs with HTTPS enabled for geolocation API compatibility. You may see a security warning on first visit - this is expected with self-signed certificates and safe to proceed.
 
 ## 📖 Usage
 
