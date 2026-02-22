@@ -1,5 +1,9 @@
 # 🍽️ Flavour of the Week
 
+| Map view | Spin the wheel | Recommended restaurant |
+|----------|----------------|-------------------------|
+| ![Map, selected places, and spin actions](static/README-screenshot.png) | ![Wheel spin page](static/README-screenshot-2.png) | ![Prize modal after spin](static/README-screenshot-3.png) |
+
 **Flavour of the Week** is an interactive web application designed to solve the age-old question: "Where should we eat for lunch?" Built for office teams and individuals who struggle with decision fatigue, this tool discovers nearby restaurants, cafes, and eateries, then gamifies the selection process with a fun spinning wheel interface.
 
 ## 🎯 Problem Statement
@@ -14,11 +18,11 @@ Making group lunch decisions can be time-consuming and frustrating. This applica
 ## ✨ Features
 
 - **📍 Location-Based Search**: Automatically detects your location or allows manual address input
-- **🗺️ Interactive Map**: Visual representation of nearby restaurants with custom markers and radius visualization
+- **🗺️ Interactive Map**: Nearby places with custom markers; tap or click a marker for an info window (ratings, address, price) and a “View on Google Maps” link. Radius slider in the bottom-left corner; clicking the map with an info window open closes it without moving the search centre
 - **🎡 Spinning Wheel**: Custom Canvas wheel with a curated colour palette, radial text labels, smooth ease-out animation, and responsive sizing — no third-party wheel library
-- **📱 Responsive Design**: Optimized for both desktop and mobile devices with adaptive UI components
-- **⭐ Smart Filtering**: Displays ratings, distance, and establishment types to help inform your choices
-- **🎨 Modern UI**: Clean, dark-themed interface built with Tailwind CSS and modern design principles
+- **📱 Responsive Design**: Optimized for both desktop and mobile with adaptive layout, drawer on mobile, and full-viewport spin page
+- **⭐ Smart Filtering**: Ratings, distance, and establishment types in list and map info windows to inform your choices
+- **🎨 Modern UI**: Dark theme with subtle background texture, global “Wheel of Flavours” header, accessible contrast (WCAG-friendly greys), and minimal controls (e.g. radius slider) that stay readable over the map
 
 ## 🛠️ Tech Stack
 
@@ -31,7 +35,7 @@ Making group lunch decisions can be time-consuming and frustrating. This applica
 - **Wheel**: Custom Canvas-based spinning wheel with responsive sizing, radial text rendering, and ease-out animation
 - **UI Components**: Custom components with [Vaul](https://vaul.emilkowal.ski/) (drawer), [Lucide React](https://lucide.dev/) (icons)
 - **Testing**: [MSW (Mock Service Worker)](https://mswjs.io/) for API mocking
-- **Code Quality**: ESLint, Prettier with import sorting
+- **Code Quality**: ESLint, Prettier with import sorting and Tailwind class ordering ([prettier-plugin-tailwindcss](https://github.com/tailwindlabs/prettier-plugin-tailwindcss)); project conventions in `.cursor/rules/` (e.g. `cn` and grouped class names for Tailwind)
 
 ## 🚀 Getting Started
 
@@ -125,19 +129,21 @@ npm run dev
 
 ```
 src/
-├── app/                    # Next.js App Router pages
+├── app/                   # Next.js App Router
+│   ├── layout.tsx         # Root layout with global header
 │   ├── page.tsx           # Main map and selection interface
 │   └── spin/              # Wheel spinner page
-├── components/            # Shared UI components
+├── components/            # Shared UI (site header, skeleton, providers)
+├── css/                   # Global and map-specific styles
 ├── features/              # Feature-based modules
-│   ├── menu/              # Restaurant search and map features
-│   │   ├── components/    # Map, lists, inputs
-│   │   ├── hooks/         # Custom hooks for geolocation, places
+│   ├── menu/              # Restaurant search and map
+│   │   ├── components/    # Map, advanced markers, lists, radius slider, address input
+│   │   ├── hooks/         # Geolocation, places, autocomplete
 │   │   └── utils/         # Map utilities
-│   └── wheel/             # Spinning wheel feature
-├── lib/                   # Utilities and helpers
+│   └── wheel/             # Canvas wheel, prize modal, spin button
+├── lib/                   # API client, constants, helpers (e.g. Google Maps URLs), utils
 ├── mocks/                 # MSW mock handlers for development
-├── store/                 # Zustand state management
+├── store/                 # Zustand (map state, selected places)
 └── types/                 # TypeScript type definitions
 ```
 
@@ -155,10 +161,12 @@ src/
 This project follows modern best practices:
 
 - **Functional Programming**: Modular, reusable functions with single responsibilities
-- **Component Architecture**: Well-organized, feature-based structure
+- **Component Architecture**: Well-organized, feature-based structure with clear separation (menu vs wheel, shared components)
 - **Type Safety**: Full TypeScript coverage
-- **Code Quality**: Automated formatting with Prettier, linting with ESLint
-- **Performance**: Optimized with React 19, Turbopack, and lazy loading
+- **Styling**: Tailwind CSS with `cn()` for class composition and grouped, multi-line class names (see `.cursor/rules/tailwind-classnames.mdc`)
+- **Accessibility**: Contrast and focus handling aligned with WCAG where applicable (e.g. map info windows, form controls)
+- **Code Quality**: Prettier (import sorting + Tailwind class ordering), ESLint, conventional commits
+- **Performance**: React 19, Turbopack, and lazy loading (e.g. wheel canvas)
 
 ## 🤝 Contributing
 
@@ -175,7 +183,7 @@ Contributions are welcome! This project is ideal for developers looking to:
 2. Create a feature branch (`git checkout -b feat/amazing-feature`)
 3. Commit your changes (`git commit -m 'feat: adds amazing feature'`)
 
-- Adhere to conventional commit messages standards, refer to: [Conentional Commits](https://www.conventionalcommits.org/en/v1.0.0/)
+- Adhere to conventional commit message standards; see [Conventional Commits](https://www.conventionalcommits.org/en/v1.0.0/)
 
 5. Push to the branch (`git push origin feat/amazing-feature`)
 6. Open a Pull Request
