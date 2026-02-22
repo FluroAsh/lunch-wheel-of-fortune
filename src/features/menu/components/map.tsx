@@ -35,8 +35,13 @@ const GoogleMap = () => {
 
   const [placeMarkers, setPlaceMarkers] = React.useState<React.ReactNode[]>([]);
 
-  const { radius, searchLocation, setSearchLocation, setActiveMarker } =
-    useMapStore();
+  const {
+    radius,
+    searchLocation,
+    setSearchLocation,
+    activeMarker,
+    setActiveMarker,
+  } = useMapStore();
   const { state: locationState, coords, userLocation } = useGeolocation();
   const { places, isLoading: isPlacesLoading } = useNearbyPlaces();
 
@@ -66,13 +71,19 @@ const GoogleMap = () => {
   }, [map, userLocation, locationState, searchLocation]);
 
   const handleLocationUpdate = (event: MapMouseEvent) => {
+    // If there's an active marker, user should not be able to select a new location
+    // by clicking on the map; instead close the marker.
+    if (activeMarker) {
+      setActiveMarker(undefined);
+      return;
+    }
+
     if (event.detail.latLng && map) {
       const newLat = event.detail.latLng.lat;
       const newLng = event.detail.latLng.lng;
 
       map.panTo({ lat: newLat, lng: newLng });
       setSearchLocation({ lat: newLat, lng: newLng });
-      setActiveMarker(undefined);
     }
   };
 
