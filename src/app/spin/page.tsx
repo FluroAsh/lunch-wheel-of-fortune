@@ -1,28 +1,22 @@
 "use client";
 
+import Image from "next/image";
 import Link from "next/link";
 import { useRouter } from "next/navigation";
 import { Suspense, useEffect, useState } from "react";
 
-import { type WheelDataType } from "react-custom-roulette-r19";
+import {
+  LucideArrowLeft,
+  LucideCookingPot,
+  LucideRefreshCw,
+} from "lucide-react";
 
 import { WheelSkeleton } from "@/components/skeleton";
 import { useNearbyPlaces } from "@/features/menu/hooks/use-nearby-places";
 import DynamicWheel from "@/features/wheel/components/dynamic-wheel";
 import { PrizeBanner } from "@/features/wheel/components/prize-banner";
-import { cn, truncateText } from "@/lib/utils";
+import { truncateText } from "@/lib/utils";
 import { useMapStore } from "@/store";
-
-const baseColors = [
-  { bg: "#3e3e3e", text: "#ffffff" },
-  { bg: "#df3428", text: "#ffffff" },
-  { bg: "#4a90e2", text: "#ffffff" },
-  { bg: "#f39c12", text: "#000000" },
-  { bg: "#27ae60", text: "#ffffff" },
-  { bg: "#9b59b6", text: "#ffffff" },
-  { bg: "#e74c3c", text: "#ffffff" },
-  { bg: "#f1c40f", text: "#000000" },
-];
 
 export default function Page() {
   const router = useRouter();
@@ -31,89 +25,113 @@ export default function Page() {
 
   const selectedPlaces = places.filter((p) => selectedPlaceIds.includes(p.id));
 
-  const [prizeNumber, setPrizeNumber] = useState<number>(0);
+  const [prizeIndex, setPrizeIndex] = useState<number>(0);
   const [hasSpun, setHasSpun] = useState<boolean>(false);
-  const [state, setState] = useState<"idle" | "spinning">("idle");
+  const [isSpinning, setIsSpinning] = useState<boolean>(false);
 
-  const data: WheelDataType[] = selectedPlaces.map((place) => ({
-    option: truncateText(10, place.displayName.text ?? ""),
+  const segments = selectedPlaces.map((place) => ({
+    label: truncateText(12, place.displayName.text ?? ""),
   }));
 
   const handleSpinClick = () => {
-    const newPrizeNumber = Math.floor(Math.random() * selectedPlaces.length);
-    setPrizeNumber(newPrizeNumber);
-    setState("spinning");
+    if (isSpinning) return;
+    const newPrizeIndex = Math.floor(Math.random() * selectedPlaces.length);
+    setPrizeIndex(newPrizeIndex);
+    setHasSpun(false);
+    setIsSpinning(true);
   };
 
-  const onStop = () => {
-    setState("idle");
+  const onSpinComplete = () => {
+    setIsSpinning(false);
     setHasSpun(true);
   };
 
+  // biome-ignore lint/correctness/useExhaustiveDependencies: mount-only redirect check
   useEffect(() => {
-    // Do not redirect in-render to avoid setState issues
     if (places.length === 0) {
       router.replace("/");
     }
   }, []);
 
   if (places.length === 0) {
-    return <p>Redirecting... Please wait.</p>;
+    return <p className="text-neutral-400">Redirecting…</p>;
   }
 
   return (
-    <div className="flex flex-1 flex-col items-center justify-center">
-      {hasSpun && state === "idle" ? (
-        <p>{selectedPlaces[prizeNumber].displayName.text}</p>
-      ) : (
-        <div className="h-6 opacity-0" />
-      )}
+    <div className="flex min-h-dvh w-full flex-col">
+      <header className="w-full shrink-0 border-b border-neutral-800 bg-neutral-900/80 backdrop-blur-sm">
+        <div className="mx-auto flex max-w-7xl items-center gap-3 px-4 py-3">
+          <Image
+            src="/favicon.ico"
+            alt="Wheel of Flavours"
+            width={32}
+            height={32}
+            className="size-7 lg:size-8"
+          />
+          <div>
+            <h1 className="text-base leading-tight font-semibold text-neutral-100 lg:text-lg">
+              Wheel of Flavours
+            </h1>
+          </div>
+        </div>
+      </header>
 
-      <PrizeBanner
-        winner={selectedPlaces[prizeNumber]}
-        onClose={() => setHasSpun(false)}
-        onRespin={handleSpinClick}
-        open={hasSpun && state === "idle"}
-      />
+      {/* Main content */}
+      <main className="flex flex-1 flex-col items-center justify-center gap-6 px-4 py-8">
+        {/* Page context */}
+        <div className="text-center">
+          <div className="flex items-center gap-2">
+            <h2 className="bg-gradient-to-r from-neutral-100 to-neutral-300 bg-clip-text text-lg font-bold tracking-widest text-transparent uppercase">
+              {selectedPlaces.length} place
+              {selectedPlaces.length !== 1 ? "s" : ""} in the pot
+            </h2>
+            <LucideCookingPot className="inline-block size-6 stroke-neutral-300" />
+          </div>
+          <p className="text-sm text-neutral-400 italic">
+            {!isSpinning ? "Let's get cooking..." : "Cooking up a storm..."}
+          </p>
+        </div>
 
-      <Suspense fallback={<WheelSkeleton />}>
-        <DynamicWheel
-          mustStartSpinning={state === "spinning"}
-          onStopSpinning={onStop}
-          prizeNumber={prizeNumber}
-          data={data.map((option, idx) => {
-            const colorScheme = baseColors[idx % baseColors.length];
-
-            return {
-              ...option,
-              style: {
-                backgroundColor: colorScheme.bg,
-                textColor: colorScheme.text,
-              },
-            };
-          })}
-          backgroundColors={["#3e3e3e", "#df3428"]}
-          textColors={["#ffffff"]}
-          spinDuration={0.25}
+        {/* Wheel */}
+        <PrizeBanner
+          winner={selectedPlaces[prizeIndex]}
+          onClose={() => setHasSpun(false)}
+          onRespin={handleSpinClick}
+          open={hasSpun && !isSpinning}
         />
 
-        <div className="flex flex-col items-center">
+        <Suspense fallback={<WheelSkeleton />}>
+          <DynamicWheel
+            segments={segments}
+            prizeIndex={prizeIndex}
+            mustSpin={isSpinning}
+            onSpinComplete={onSpinComplete}
+          />
+        </Suspense>
+
+        {/* Controls */}
+        <div className="flex flex-col items-center gap-3">
           <button
-            disabled={state === "spinning"}
+            type="button"
+            disabled={isSpinning}
             onClick={handleSpinClick}
-            className={cn(
-              "min-w-[100px] rounded-md p-2 text-white",
-              state === "idle" ? "bg-blue-500" : "bg-gray-600 text-gray-300",
-            )}
+            className="flex items-center gap-2 rounded-lg bg-gradient-to-r from-emerald-600 to-teal-600 px-8 py-3 font-semibold text-white shadow-md transition-all duration-200 hover:cursor-pointer hover:from-emerald-700 hover:to-teal-700 hover:shadow-lg disabled:cursor-not-allowed disabled:from-neutral-700 disabled:to-neutral-700 disabled:text-neutral-400 disabled:shadow-none"
           >
-            {hasSpun ? "Spin Again" : "Spin"}
+            <LucideRefreshCw
+              className={`size-4 ${isSpinning ? "animate-spin" : ""}`}
+            />
+            {hasSpun ? "Spin Again" : "Spin the Wheel"}
           </button>
 
-          <Link href="/" className="p-2 text-xs text-neutral-500 underline">
+          <Link
+            href="/"
+            className="flex items-center gap-1.5 rounded-md px-3 py-1.5 text-sm text-neutral-500 transition-colors hover:text-neutral-300"
+          >
+            <LucideArrowLeft className="size-3.5" />
             Back to the Map
           </Link>
         </div>
-      </Suspense>
+      </main>
     </div>
   );
 }
