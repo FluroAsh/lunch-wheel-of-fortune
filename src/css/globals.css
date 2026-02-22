@@ -21,8 +21,23 @@
   --font-mono: var(--font-geist-mono);
 }
 
+/*
+ * Grain texture applied directly as a background-image layer on body.
+ * Opacity is encoded inside the SVG (rect opacity attr) to avoid stacking
+ * context issues — position: fixed + z-index: -1 on ::before falls behind
+ * the initial containing block background and is never visible.
+ *
+ * Tuning knobs:
+ *   baseFrequency — higher = finer grain (0.65 coarse → 0.85 fine)
+ *   numOctaves    — more octaves = more natural, slightly more expensive
+ *   rect opacity  — 0.04–0.08 is the sweet spot on dark backgrounds
+
+ See (MDN): https://developer.mozilla.org/en-US/docs/Web/SVG/Reference/Element/feTurbulence
+ */
 body {
-  background: var(--color-background);
+  background-color: var(--color-background);
+  background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='200' height='200'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.75' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='200' height='200' filter='url(%23n)' opacity='0.05'/%3E%3C/svg%3E");
+  background-size: 200px 200px;
   color: var(--color-foreground);
   font-family: Arial, Helvetica, sans-serif;
 }
