@@ -1,20 +1,23 @@
 "use client";
 
-import { ComponentProps, lazy } from "react";
+import { lazy } from "react";
 
-import { Wheel } from "react-custom-roulette-r19";
+import type { WheelSegment } from "./wheel-canvas";
 
-export type WheelProps = ComponentProps<typeof Wheel>;
+export type { WheelSegment };
 
-// Lazy over dynamic so we can suspend the component
+export type DynamicWheelProps = {
+  segments: WheelSegment[];
+  prizeIndex: number;
+  mustSpin: boolean;
+  onSpinComplete: () => void;
+};
+
+// Lazy-loaded so the Canvas API is only accessed client-side
 const ClientSideSafeWheel = lazy(() =>
-  import("react-custom-roulette-r19").then((mod) => ({ default: mod.Wheel })),
+  import("./wheel-canvas").then((mod) => ({ default: mod.WheelCanvas })),
 );
 
-export default function DynamicWheel(props: WheelProps) {
-  return (
-    <div className="overflow-hidden">
-      <ClientSideSafeWheel {...props} />
-    </div>
-  );
+export default function DynamicWheel(props: DynamicWheelProps) {
+  return <ClientSideSafeWheel {...props} />;
 }
