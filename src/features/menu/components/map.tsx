@@ -5,15 +5,14 @@ import React, { type CSSProperties, useEffect } from "react";
 import {
   AdvancedMarker,
   Map,
-  MapMouseEvent,
+  type MapMouseEvent,
   useApiIsLoaded,
   useApiLoadingStatus,
   useMap,
 } from "@vis.gl/react-google-maps";
-import { useMedia } from "react-use";
 
-import { MAP, MEDIA_QUERIES } from "@/lib/constants";
-import { cn, filterLatLng } from "@/lib/utils";
+import { MAP } from "@/lib/constants";
+import { filterLatLng } from "@/lib/utils";
 import { useMapStore } from "@/store";
 
 import { useGeolocation } from "../hooks/use-geolocation";
@@ -22,7 +21,6 @@ import { AutocompleteAddressInput } from "./address-input";
 import { AdvancedMarkerComponent } from "./advanced-marker";
 import { Circle } from "./circle";
 import { RadiusSlider } from "./radius-slider";
-import { WheelSpinButton } from "./wheel-spin-button";
 
 const containerStyle = {
   width: "100%",
@@ -34,8 +32,6 @@ const GoogleMap = () => {
   const map = useMap();
   const isMapsAPIReady = useApiIsLoaded();
   const mapsLoadingState = useApiLoadingStatus();
-
-  const isDesktop = useMedia(MEDIA_QUERIES.DESKTOP, false);
 
   const [placeMarkers, setPlaceMarkers] = React.useState<React.ReactNode[]>([]);
 
@@ -120,10 +116,6 @@ const GoogleMap = () => {
         disableDefaultUI
       >
         <RadiusSlider />
-
-        {places.length > 0 && isDesktop && (
-          <WheelSpinButton absolute isLoading={isPlacesLoading} />
-        )}
 
         <AdvancedMarker
           key="current-location-marker"

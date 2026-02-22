@@ -1,6 +1,6 @@
 import Link from "next/link";
 
-import { LucideLoader2, LucideShipWheel } from "lucide-react";
+import { LucideLoader2, LucideRefreshCw, LucideShipWheel } from "lucide-react";
 
 import { cn } from "@/lib/utils";
 
@@ -15,10 +15,7 @@ export const WheelSpinButton = ({
 }) => {
   return (
     <div
-      className={cn(
-        "flex flex-col",
-        absolute && "absolute top-4 right-4 z-10",
-      )}
+      className={cn("flex flex-col", absolute && "absolute top-4 right-4 z-10")}
     >
       <Link
         href="/spin"
@@ -34,7 +31,7 @@ export const WheelSpinButton = ({
         {isLoading ? (
           <LucideLoader2 className="size-4 animate-spin" />
         ) : (
-          <LucideShipWheel className="size-4" />
+          <LucideRefreshCw className="size-4" />
         )}
         <span>{isLoading ? "Loading places…" : "Spin the Wheel"}</span>
       </Link>
