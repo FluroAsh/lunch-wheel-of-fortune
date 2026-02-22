@@ -115,9 +115,10 @@ export const AdvancedMarkerComponent = ({ place }: { place: GooglePlace }) => {
             target="_blank"
             rel="noopener noreferrer"
             className={cn(
-              "flex w-full items-center justify-center gap-1.5",
-              "border-t border-neutral-700/60 px-3 py-2.5",
-              "text-xs font-medium text-neutral-400 transition-colors hover:text-emerald-400",
+              "flex w-full items-center justify-center gap-1.5 px-3 py-2.5",
+              "border-t border-neutral-700/60",
+              "text-xs font-medium text-neutral-400",
+              "transition-colors hover:text-emerald-400",
             )}
           >
             View on Google Maps

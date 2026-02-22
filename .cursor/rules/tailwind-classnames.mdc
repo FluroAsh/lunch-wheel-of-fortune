@@ -20,18 +20,36 @@ Never concatenate or template-literal className strings directly. Always use the
 
 ## Split long className strings across multiple lines
 
-When a className string would exceed ~80 characters, split it into grouped logical chunks inside `cn`. Group by concern: layout, spacing, typography, colour/state.
+When a className string would exceed ~80 characters, split it into grouped logical chunks inside `cn`. Each string argument should represent one concern — do not mix concerns in a single string.
+
+### Class ordering — group by concern, top to bottom
+
+This mirrors the order enforced by `prettier-plugin-tailwindcss`:
+
+| Order | Concern | Examples |
+|-------|---------|---------|
+| 1 | **Layout** | `flex`, `grid`, `block`, `relative`, `absolute`, `overflow-*` |
+| 2 | **Spacing** | `p-*`, `px-*`, `py-*`, `m-*`, `gap-*` |
+| 3 | **Sizing** | `w-*`, `h-*`, `size-*`, `max-*`, `min-*` |
+| 4 | **Typography** | `text-{size}`, `font-*`, `leading-*`, `tracking-*`, `uppercase` |
+| 5 | **Presentational** | `bg-*`, `border-*`, `rounded-*`, `shadow-*` |
+| 6 | **Colour** | `text-{colour}`, `fill-*`, `stroke-*` |
+| 7 | **Animation** | `transition-*`, `duration-*`, `ease-*`, `animate-*` |
+| 8 | **State modifiers** | `hover:*`, `focus:*`, `active:*`, `disabled:*`, `dark:*` |
 
 ```tsx
-// ❌ BAD
+// ❌ BAD — mixed concerns, unreadable at a glance
 <a className="flex w-full items-center justify-center gap-1.5 border-t border-neutral-700/60 px-3 py-2.5 text-xs font-medium text-neutral-400 transition-colors hover:text-emerald-400" />
 
-// ✅ GOOD
+// ✅ GOOD — each line is one concern, ordered layout → state
 <a
   className={cn(
-    "flex w-full items-center justify-center gap-1.5",
-    "border-t border-neutral-700/60 px-3 py-2.5",
-    "text-xs font-medium text-neutral-400 transition-colors hover:text-emerald-400",
+    "flex w-full items-center justify-center gap-1.5 px-3 py-2.5", // layout + spacing
+    "border-t border-neutral-700/60",                               // presentational
+    "text-xs font-medium text-neutral-400",                         // typography + colour
+    "transition-colors hover:text-emerald-400",                     // animation + state
   )}
 />
 ```
+
+> **Tip:** Layout and spacing can share a line when tightly related (e.g. a flex row with its gap/padding). Presentational, colour, animation, and state should each be their own line.
