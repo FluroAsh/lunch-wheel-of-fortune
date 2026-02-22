@@ -16,6 +16,7 @@ export const AutocompleteAddressInput = ({
 }: {
   isLoading: boolean;
 }) => {
+  const inputRef = useRef<HTMLInputElement>(null);
   const [isInputActive, setIsInputActive] = useState<boolean>(false);
   const [debouncedSearchQuery, setDebouncedSearchQuery] = useState<string>("");
 
@@ -28,6 +29,8 @@ export const AutocompleteAddressInput = ({
     setShouldShowSuggestions,
     isFetchingDetails,
     resetAutocomplete,
+    activeMarker,
+    setActiveMarker,
   } = useMapStore();
 
   // Use debounced query for API calls - only on mobile
@@ -55,22 +58,47 @@ export const AutocompleteAddressInput = ({
       !isLoadingSuggestions ||
       autocompleteInput.trim().length > 0);
 
+  const isMarkerActive = !!activeMarker;
   const showClearButton = autocompleteInput.length > 0;
 
   return (
     <div className="absolute top-0 right-0 left-0 z-10 w-fit max-w-full p-2 lg:p-4">
-      <div id="address-input-wrapper" className="relative">
+      {/* biome-ignore lint/a11y/noStaticElementInteractions: role is applied dynamically when the element becomes interactive */}
+      <div
+        id="address-input-wrapper"
+        role={isMarkerActive ? "button" : undefined}
+        tabIndex={isMarkerActive ? 0 : undefined}
+        className={cn("relative", isMarkerActive && "cursor-pointer")}
+        onClick={
+          isMarkerActive
+            ? () => {
+                setActiveMarker(undefined);
+                inputRef.current?.focus();
+              }
+            : undefined
+        }
+        onKeyDown={
+          isMarkerActive
+            ? (e) => {
+                if (e.key === "Enter" || e.key === " ")
+                  setActiveMarker(undefined);
+              }
+            : undefined
+        }
+      >
         <SearchIcon className="absolute top-1/2 left-3 z-10 size-4 -translate-y-1/2 stroke-neutral-400 text-neutral-100" />
 
         <input
+          ref={inputRef}
           name="street-address"
           autoComplete={isMobile ? "street-address" : "off"}
           className={cn(
             "w-[150px] max-w-full rounded-md bg-neutral-900 p-1.5 pr-7.5 pl-8.5 text-neutral-100 opacity-80 backdrop-blur-lg",
-            "truncate transition-[opacity,width]",
+            "truncate transition-[opacity,width] duration-200",
             "focus:w-[220px] focus:opacity-100 focus:ring-2 focus:ring-sky-500 focus:outline-none",
             "data-[active=true]:w-[220px] data-[active=true]:opacity-100 data-[active=true]:ring-2 data-[active=true]:ring-sky-500 data-[active=true]:outline-none",
             "disabled:cursor-not-allowed disabled:opacity-60",
+            isMarkerActive && "pointer-events-none w-8 pr-2",
           )}
           data-active={isInputActive || showSuggestions}
           value={autocompleteInput}
@@ -93,6 +121,7 @@ export const AutocompleteAddressInput = ({
 
         {showClearButton && (
           <button
+            type="button"
             className="absolute top-1/2 right-2 -translate-y-1/2"
             onClick={() => resetAutocomplete()}
           >
