@@ -8,7 +8,7 @@ alwaysApply: false
 
 ## Always use `cn` for className composition
 
-Never concatenate or template-literal className strings directly. Always use the `cn` utility (from `@/lib/utils`) to combine classes, even for a single conditional.
+Never concatenate or template-literal className strings directly. Always use the `cn` utility (from `@/lib/utils`) to combine classes, even for a single conditional. Do not comment each line, just group by concern.
 
 ```tsx
 // ❌ BAD
@@ -26,16 +26,16 @@ When a className string would exceed ~80 characters, split it into grouped logic
 
 This mirrors the order enforced by `prettier-plugin-tailwindcss`:
 
-| Order | Concern | Examples |
-|-------|---------|---------|
-| 1 | **Layout** | `flex`, `grid`, `block`, `relative`, `absolute`, `overflow-*` |
-| 2 | **Spacing** | `p-*`, `px-*`, `py-*`, `m-*`, `gap-*` |
-| 3 | **Sizing** | `w-*`, `h-*`, `size-*`, `max-*`, `min-*` |
-| 4 | **Typography** | `text-{size}`, `font-*`, `leading-*`, `tracking-*`, `uppercase` |
-| 5 | **Presentational** | `bg-*`, `border-*`, `rounded-*`, `shadow-*` |
-| 6 | **Colour** | `text-{colour}`, `fill-*`, `stroke-*` |
-| 7 | **Animation** | `transition-*`, `duration-*`, `ease-*`, `animate-*` |
-| 8 | **State modifiers** | `hover:*`, `focus:*`, `active:*`, `disabled:*`, `dark:*` |
+| Order | Concern             | Examples                                                        |
+| ----- | ------------------- | --------------------------------------------------------------- |
+| 1     | **Layout**          | `flex`, `grid`, `block`, `relative`, `absolute`, `overflow-*`   |
+| 2     | **Spacing**         | `p-*`, `px-*`, `py-*`, `m-*`, `gap-*`                           |
+| 3     | **Sizing**          | `w-*`, `h-*`, `size-*`, `max-*`, `min-*`                        |
+| 4     | **Typography**      | `text-{size}`, `font-*`, `leading-*`, `tracking-*`, `uppercase` |
+| 5     | **Presentational**  | `bg-*`, `border-*`, `rounded-*`, `shadow-*`                     |
+| 6     | **Colour**          | `text-{colour}`, `fill-*`, `stroke-*`                           |
+| 7     | **Animation**       | `transition-*`, `duration-*`, `ease-*`, `animate-*`             |
+| 8     | **State modifiers** | `hover:*`, `focus:*`, `active:*`, `disabled:*`, `dark:*`        |
 
 ```tsx
 // ❌ BAD — mixed concerns, unreadable at a glance
