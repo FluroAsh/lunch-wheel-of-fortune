@@ -3,6 +3,17 @@
 @theme {
   --color-background: #0a0a0a;
   --color-foreground: #ededed;
+
+  /*
+   * Semantic text scale — contrast ratios are against --color-background (#0a0a0a).
+   * WCAG AA requires 4.5:1 for normal text, 3:1 for large text (18px+ or 14px+ bold).
+   *
+   *  text-primary   #f5f5f5  neutral-100  18.7:1  ✓ AAA
+   *  text-secondary #a3a3a3  neutral-400   7.6:1  ✓ AAA  ← use for secondary/muted UI text
+   *  neutral-500    #737373               4.0:1  ✗ AA   — large decorative labels only
+   */
+  --color-text-primary: #f5f5f5;
+  --color-text-secondary: #a3a3a3;
 }
 
 @theme inline {

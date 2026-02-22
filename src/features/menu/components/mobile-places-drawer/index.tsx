@@ -123,8 +123,8 @@ export const MobilePlacesWithDrawer = () => {
       {/* Selection header */}
       <div className="flex items-center justify-between">
         <span className="flex items-center gap-1.5">
-          <LucideMapPin className="size-3 text-neutral-500" />
-          <h3 className="text-xs font-semibold tracking-widest text-neutral-500 uppercase">
+          <LucideMapPin className="size-3 text-neutral-400" />
+          <h3 className="text-xs font-semibold tracking-widest text-neutral-400 uppercase">
             Selected
             {selectedPlaces.length > 0 ? (
               <span className="ml-1.5 rounded-full bg-neutral-700 px-1.5 py-0.5 font-medium text-neutral-300 normal-case tracking-normal">

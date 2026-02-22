@@ -26,7 +26,7 @@ const ListHeading = ({ places = [] }: { places?: GooglePlace[] }) => {
 
   return (
     <div className="flex items-center justify-between pb-2">
-      <span className="text-xs font-semibold tracking-widest text-neutral-500 uppercase">
+      <span className="text-xs font-semibold tracking-widest text-neutral-400 uppercase">
         Open Nearby Now
       </span>
 
