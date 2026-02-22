@@ -1,0 +1,37 @@
+---
+description: Standards for writing Tailwind className strings in TSX components
+globs: **/*.tsx
+alwaysApply: false
+---
+
+# Tailwind className Standards
+
+## Always use `cn` for className composition
+
+Never concatenate or template-literal className strings directly. Always use the `cn` utility (from `@/lib/utils`) to combine classes, even for a single conditional.
+
+```tsx
+// ❌ BAD
+<div className={`flex flex-col ${isActive ? "text-emerald-400" : "text-neutral-400"}`} />
+
+// ✅ GOOD
+<div className={cn("flex flex-col", isActive ? "text-emerald-400" : "text-neutral-400")} />
+```
+
+## Split long className strings across multiple lines
+
+When a className string would exceed ~80 characters, split it into grouped logical chunks inside `cn`. Group by concern: layout, spacing, typography, colour/state.
+
+```tsx
+// ❌ BAD
+<a className="flex w-full items-center justify-center gap-1.5 border-t border-neutral-700/60 px-3 py-2.5 text-xs font-medium text-neutral-400 transition-colors hover:text-emerald-400" />
+
+// ✅ GOOD
+<a
+  className={cn(
+    "flex w-full items-center justify-center gap-1.5",
+    "border-t border-neutral-700/60 px-3 py-2.5",
+    "text-xs font-medium text-neutral-400 transition-colors hover:text-emerald-400",
+  )}
+/>
+```

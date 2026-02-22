@@ -1,5 +1,5 @@
 ---
-description: Lunch Wheel of Fortune rules
+description: General project standards for Lunch Wheel of Fortune
 globs:
 alwaysApply: true
 ---
