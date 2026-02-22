@@ -1,31 +1,54 @@
 .gm-style {
   --dialog-text-color: #efefef;
   --dialog-bg-color: hsl(240, 5.9%, 10%);
+  --dialog-border-color: hsl(240, 3.7%, 18%);
 }
 
-/* container */
+/* Outer container */
 .gm-style .gm-style-iw {
   color: var(--dialog-text-color);
   background-color: var(--dialog-bg-color);
+  border: 1px solid var(--dialog-border-color);
+  border-radius: 10px !important;
+  box-shadow: 0 8px 24px rgba(0, 0, 0, 0.5) !important;
+  padding: 0 !important;
 }
 
-/* content */
+/* Header — padding on the content node only */
+.gm-style .gm-style-iw-ch {
+  padding: 12px 12px 10px !important;
+}
+
+/* chr wraps both the header content and the close button, so border-bottom
+   here spans the full width of the info window without being cut off. */
+.gm-style .gm-style-iw-chr {
+  border-bottom: 1px solid var(--dialog-border-color);
+}
+
+/* Scrollable content wrapper */
 .gm-style .gm-style-iw-d {
-  /* background-color: var(--dialog-bg-color); */
   overflow: hidden !important;
-  padding-right: 12px;
-  padding-bottom: 12px;
+  padding: 0 !important;
 }
 
+/* Tail / caret */
 .gm-style .gm-style-iw-tc::after {
   background-color: var(--dialog-bg-color);
 }
 
+/* Close button icon */
 .gm-ui-hover-effect[title="Close"] > span {
-  background-color: #fff;
+  background-color: #9ca3af;
 }
 
-/* poi dialog */
+/* Google Maps programmatically focuses this button on InfoWindow open,
+   which triggers :focus-visible in Chrome regardless of input method.
+   outline: none is safe here — the icon is always visually present. */
+.gm-ui-hover-effect:focus {
+  outline: none !important;
+}
+
+/* POI info dialogs (non-custom) */
 .gm-style .gm-title,
 .gm-style .poi-info-window div,
 .gm-style .transit-container div {

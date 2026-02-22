@@ -1,18 +1,18 @@
-import { useState } from "react";
-
 import {
   AdvancedMarker,
   InfoWindow,
   Pin,
   useAdvancedMarkerRef,
 } from "@vis.gl/react-google-maps";
+import { LucideMapPin } from "lucide-react";
 
 import { GENERIC_PLACE_ICON } from "@/lib/constants";
-import { cn /*, getAspectRatio */, getLatLng } from "@/lib/utils";
+import { cn, getLatLng } from "@/lib/utils";
 import { useMapStore } from "@/store";
-import { GooglePlace } from "@/types/google";
+import type { GooglePlace } from "@/types/google";
 
 import { getPriceLevel, getPriceRange } from "../utils/map";
+import { StarRating } from "./star-rating";
 
 export const AdvancedMarkerComponent = ({ place }: { place: GooglePlace }) => {
   const { activeMarker, setActiveMarker } = useMapStore();
@@ -70,41 +70,52 @@ export const AdvancedMarkerComponent = ({ place }: { place: GooglePlace }) => {
           onCloseClick={toggleInfoWindow}
           anchor={marker}
           headerContent={
-            <h3 className="text-lg font-bold">{place.displayName.text}</h3>
+            <div className="flex flex-col gap-0.5 pr-4">
+              <p className="text-[10px] font-semibold tracking-widest text-emerald-400 uppercase">
+                {place.primaryTypeDisplayName?.text ?? "Place"}
+              </p>
+              <h3 className="text-base font-bold leading-tight text-neutral-100">
+                {place.displayName.text}
+              </h3>
+            </div>
           }
         >
-          <div>
-            <p>{place.shortFormattedAddress}</p>
-            <p>Rating: {place.rating}</p>
-            {priceLevel && <p> Price Level: {priceLevel}</p>}
-            {readablePriceRange && <p> Price Range: {readablePriceRange}</p>}
-            {/* <p>User Ratings Total: {place.user_ratings_total}</p> */}
+          <div className="flex min-w-[180px] flex-col gap-2.5 px-3 pt-2.5 pb-3">
+            {/* Rating row */}
+            {place.rating && (
+              <div className="flex items-center gap-2">
+                <StarRating rating={place.rating} />
+                <span className="text-xs font-semibold text-amber-400">
+                  {place.rating.toFixed(1)}
+                </span>
+              </div>
+            )}
 
-            {/* NOTE: Photos are a part of the "pro" Places API and will incur charges */}
-            {/* {hasImage && (
-              // eslint-disable-next-line @next/next/no-img-element
-              <img
-                src={imageUrl}
-                alt={place.name ?? ""}
-                height={imageHeight}
-                width={imageWidth}
-                className={cn(
-                  "w-[150px] max-w-full",
-                  getAspectRatio(imageWidth, imageHeight),
+            {/* Address row */}
+            {place.shortFormattedAddress && (
+              <div className="flex items-start gap-1.5 text-xs text-neutral-300">
+                <LucideMapPin className="mt-px size-3 shrink-0 stroke-neutral-400" />
+                <span className="leading-tight">
+                  {place.shortFormattedAddress}
+                </span>
+              </div>
+            )}
+
+            {/* Price row */}
+            {(priceLevel || readablePriceRange) && (
+              <div className="flex items-center gap-1.5">
+                {priceLevel && (
+                  <span className="rounded-full border border-neutral-600 px-2 py-0.5 text-[11px] font-medium text-neutral-200">
+                    {priceLevel}
+                  </span>
                 )}
-              />
-            )} */}
-
-            {/* {hasOpeningHours && opening_hours.weekday_text && (
-              <p>Weekday Text: {opening_hours.weekday_text}</p>
-            )} */}
-            {/*
-             * open_now is deprecated as of November 2019. Use the isOpen() method from a PlacesService.getDetails() result instead.
-             * See https://goo.gle/js-open-now
-             */}
-            {/* {hasOpeningHours && opening_hours.isOpen && (
-              <p>Open Now: {opening_hours.isOpen() ? "Open" : "Closed"}</p>
-            )} */}
+                {readablePriceRange && (
+                  <span className="text-xs font-medium text-neutral-300">
+                    {readablePriceRange}
+                  </span>
+                )}
+              </div>
+            )}
           </div>
         </InfoWindow>
       )}
