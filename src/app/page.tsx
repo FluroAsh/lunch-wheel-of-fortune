@@ -1,5 +1,7 @@
 "use client";
 
+import Image from "next/image";
+
 import { useMedia } from "react-use";
 
 import "@/css/map.css";
@@ -17,21 +19,35 @@ export default function Home() {
 
   return (
     <div className="flex max-h-dvh flex-1 flex-col">
-      <div className="w-full border-b border-neutral-700 bg-gradient-to-b from-neutral-800 to-neutral-900">
-        <div className="mx-auto flex max-w-7xl gap-2 px-4 py-2">
-          <img
+      {/* Header */}
+      <header className="w-full shrink-0 border-b border-neutral-800 bg-neutral-900/80 backdrop-blur-sm">
+        <div className="mx-auto flex max-w-7xl items-center gap-3 px-4 py-3">
+          <Image
             src="/favicon.ico"
-            alt="Flavour of the Week"
-            className="size-6 lg:size-8"
+            alt="Wheel of Flavours"
+            width={32}
+            height={32}
+            className="size-7 lg:size-8"
           />
-          <h1 className="text-lg font-bold lg:text-2xl">Flavour of the Week</h1>
+          <div>
+            <h1 className="text-base leading-tight font-semibold text-neutral-100 lg:text-lg">
+              Wheel of Flavours
+            </h1>
+            <p className="text-xs text-neutral-400">
+              Spin the wheel. Let fate decide lunch.
+            </p>
+          </div>
         </div>
-      </div>
+      </header>
 
+      {/* Content grid */}
       <div
         className={cn(
-          "mx-auto grid size-full max-w-7xl grid-cols-1 grid-rows-[1fr_1fr] gap-4 overflow-hidden px-4 py-4",
-          "lg:grid-cols-2 lg:grid-rows-1",
+          "mx-auto grid size-full max-w-7xl overflow-hidden px-4 py-4",
+          // Mobile: map takes 60% height, controls 40%
+          "grid-cols-1 grid-rows-[3fr_2fr] gap-3",
+          // Desktop: equal columns
+          "lg:grid-cols-2 lg:grid-rows-1 lg:gap-4",
         )}
       >
         <GoogleMap />
