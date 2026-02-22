@@ -7,6 +7,7 @@ import {
 import { LucideExternalLink, LucideMapPin } from "lucide-react";
 
 import { GENERIC_PLACE_ICON } from "@/lib/constants";
+import { getPlacesSearchUrl } from "@/lib/helpers";
 import { cn, getLatLng } from "@/lib/utils";
 import { useMapStore } from "@/store";
 import type { GooglePlace } from "@/types/google";
@@ -111,7 +112,7 @@ export const AdvancedMarkerComponent = ({ place }: { place: GooglePlace }) => {
 
           {/* Footer CTA */}
           <a
-            href={`https://www.google.com/maps/place/?q=place_id:${place.id}`}
+            href={getPlacesSearchUrl({ placeName: place.displayName.text, placeId: place.id })}
             target="_blank"
             rel="noopener noreferrer"
             className={cn(
