@@ -1,6 +1,6 @@
 import Link from "next/link";
 
-import { LucideLoader2, LucideRefreshCw, LucideShipWheel } from "lucide-react";
+import { LucideLoader2, LucideRefreshCw } from "lucide-react";
 
 import { cn } from "@/lib/utils";
 
