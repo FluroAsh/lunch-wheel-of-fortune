@@ -4,7 +4,7 @@ import {
   Pin,
   useAdvancedMarkerRef,
 } from "@vis.gl/react-google-maps";
-import { LucideMapPin } from "lucide-react";
+import { LucideExternalLink, LucideMapPin } from "lucide-react";
 
 import { GENERIC_PLACE_ICON } from "@/lib/constants";
 import { cn, getLatLng } from "@/lib/utils";
@@ -28,15 +28,6 @@ export const AdvancedMarkerComponent = ({ place }: { place: GooglePlace }) => {
     return null;
   }
 
-  // const { opening_hours, photos } = place;
-  // const hasOpeningHours = opening_hours !== undefined;
-
-  // const mainPhoto = photos?.[0];
-  // const imageUrl = mainPhoto?.getUrl?.();
-  // const imageWidth = mainPhoto?.width;
-  // const imageHeight = mainPhoto?.height;
-
-  // const hasImage = !!(imageUrl && imageWidth && imageHeight);
   const isMarkerActive = activeMarker === place.id;
 
   const priceLevel = getPriceLevel(place.priceLevel);
@@ -74,7 +65,7 @@ export const AdvancedMarkerComponent = ({ place }: { place: GooglePlace }) => {
               <p className="text-[10px] font-semibold tracking-widest text-emerald-400 uppercase">
                 {place.primaryTypeDisplayName?.text ?? "Place"}
               </p>
-              <h3 className="text-base font-bold leading-tight text-neutral-100">
+              <h3 className="text-base leading-tight font-bold text-neutral-100">
                 {place.displayName.text}
               </h3>
             </div>
@@ -117,6 +108,21 @@ export const AdvancedMarkerComponent = ({ place }: { place: GooglePlace }) => {
               </div>
             )}
           </div>
+
+          {/* Footer CTA */}
+          <a
+            href={`https://www.google.com/maps/place/?q=place_id:${place.id}`}
+            target="_blank"
+            rel="noopener noreferrer"
+            className={cn(
+              "flex w-full items-center justify-center gap-1.5",
+              "border-t border-neutral-700/60 px-3 py-2.5",
+              "text-xs font-medium text-neutral-400 transition-colors hover:text-emerald-400",
+            )}
+          >
+            View on Google Maps
+            <LucideExternalLink className="size-3" />
+          </a>
         </InfoWindow>
       )}
     </AdvancedMarker>

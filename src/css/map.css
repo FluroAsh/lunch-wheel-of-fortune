@@ -1,6 +1,7 @@
 .gm-style {
   --dialog-text-color: #efefef;
   --dialog-bg-color: hsl(240, 5.9%, 10%);
+  --dialog-hover-bg-color: hsl(240, 4%, 14%);
   --dialog-border-color: hsl(240, 3.7%, 18%);
 }
 
@@ -34,6 +35,18 @@
 /* Tail / caret */
 .gm-style .gm-style-iw-tc::after {
   background-color: var(--dialog-bg-color);
+}
+
+/* When the footer link is hovered, apply the same surface colour to both
+   the link background and the caret so the card and tail feel continuous.
+   :has() walks up to the shared .gm-style-iw-t ancestor then back down
+   to the sibling caret — no JS needed. */
+.gm-style .gm-style-iw a:hover {
+  background-color: var(--dialog-hover-bg-color);
+}
+
+.gm-style .gm-style-iw-t:has(a:hover) .gm-style-iw-tc::after {
+  background-color: var(--dialog-hover-bg-color);
 }
 
 /* Close button icon */
