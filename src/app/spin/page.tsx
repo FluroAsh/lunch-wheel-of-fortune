@@ -13,7 +13,7 @@ import {
 import { WheelSkeleton } from "@/components/skeleton";
 import { useNearbyPlaces } from "@/features/menu/hooks/use-nearby-places";
 import DynamicWheel from "@/features/wheel/components/dynamic-wheel";
-import { PrizeBanner } from "@/features/wheel/components/prize-banner-modal";
+import { PrizeBannerModal } from "@/features/wheel/components/prize-banner-modal";
 import { truncateText } from "@/lib/utils";
 import { useMapStore } from "@/store";
 
@@ -75,7 +75,7 @@ export default function Page() {
         </div>
 
         {/* Wheel */}
-        <PrizeBanner
+        <PrizeBannerModal
           winner={selectedPlaces[prizeIndex]}
           onClose={() => setHasSpun(false)}
           onRespin={handleSpinClick}

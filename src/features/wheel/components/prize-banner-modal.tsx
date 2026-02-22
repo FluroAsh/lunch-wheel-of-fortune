@@ -9,19 +9,19 @@ import { useReward } from "react-rewards";
 import { getPlacesSearchUrl } from "@/lib/helpers";
 import type { NearbyPlaces } from "@/types/google";
 
-type PrizeBannerProps = {
+type PrizeBannerModalProps = {
   winner: NearbyPlaces[number];
   onClose?: () => void;
   onRespin: () => void;
   open: boolean;
 };
 
-export const PrizeBanner = ({
+export const PrizeBannerModal = ({
   winner,
   open,
   onClose,
   onRespin,
-}: PrizeBannerProps) => {
+}: PrizeBannerModalProps) => {
   const { reward: confettiReward } = useReward("confettiReward", "confetti", {
     lifetime: 500,
     spread: 150,
