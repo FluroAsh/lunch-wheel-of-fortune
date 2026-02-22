@@ -64,11 +64,11 @@ export default function Page() {
         <div className="flex flex-col justify-center gap-4">
           <div>
             <div className="flex justify-center gap-2">
-              <h2 className="bg-gradient-to-r from-neutral-100 to-neutral-300 bg-clip-text text-lg font-bold tracking-widest text-transparent uppercase">
+              <h2 className="bg-gradient-to-r from-neutral-100 to-neutral-300 bg-clip-text font-bold tracking-widest text-transparent uppercase sm:text-lg">
                 {selectedPlaces.length} place
                 {selectedPlaces.length !== 1 ? "s" : ""} near you
               </h2>
-              <LucideCookingPot className="inline-block size-6 stroke-neutral-300" />
+              <LucideCookingPot className="inline-block size-5 stroke-neutral-300 sm:size-6" />
             </div>
             <p className="text-center text-sm text-neutral-400 italic">
               {!isSpinning ? "Let's get cooking..." : "Cooking up a storm..."}
