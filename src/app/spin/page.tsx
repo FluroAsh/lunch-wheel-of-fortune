@@ -1,6 +1,5 @@
 "use client";
 
-import Image from "next/image";
 import Link from "next/link";
 import { useRouter } from "next/navigation";
 import { Suspense, useEffect, useState } from "react";
@@ -58,24 +57,7 @@ export default function Page() {
   }
 
   return (
-    <div className="flex min-h-dvh w-full flex-col">
-      <header className="w-full shrink-0 border-b border-neutral-800 bg-neutral-900/80 backdrop-blur-sm">
-        <div className="mx-auto flex max-w-7xl items-center gap-3 px-4 py-3">
-          <Image
-            src="/favicon.ico"
-            alt="Wheel of Flavours"
-            width={32}
-            height={32}
-            className="size-7 lg:size-8"
-          />
-          <div>
-            <h1 className="text-base leading-tight font-semibold text-neutral-100 lg:text-lg">
-              Wheel of Flavours
-            </h1>
-          </div>
-        </div>
-      </header>
-
+    <div className="flex w-full flex-1 flex-col">
       {/* Main content */}
       <main className="flex flex-1 flex-col items-center justify-center gap-6 px-4 py-8">
         {/* Page context */}
