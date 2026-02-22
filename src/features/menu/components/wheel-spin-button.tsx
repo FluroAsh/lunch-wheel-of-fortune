@@ -16,29 +16,27 @@ export const WheelSpinButton = ({
   return (
     <div
       className={cn(
-        "flex flex-col items-end space-y-2",
+        "flex flex-col",
         absolute && "absolute top-4 right-4 z-10",
       )}
     >
       <Link
         href="/spin"
         className={cn(
-          "flex min-w-[160.35px] items-center justify-center rounded-md bg-emerald-600 px-4 py-2 text-white shadow-lg transition-all duration-200",
-          "hover:bg-emerald-700 focus:ring-2 focus:ring-emerald-500 focus:ring-offset-2 focus:outline-none",
-          isLoading && "opacity-75",
+          "flex w-full items-center justify-center gap-2 rounded-lg bg-gradient-to-r from-emerald-600 to-teal-600 px-4 py-2.5 font-semibold text-white shadow-md transition-all duration-200",
+          "hover:from-emerald-700 hover:to-teal-700 hover:shadow-lg focus:ring-2 focus:ring-emerald-500 focus:ring-offset-2 focus:outline-none",
+          isLoading && "pointer-events-none opacity-60",
           className,
         )}
         title="Spin the Wheel for a Lunch Decision"
         aria-busy={isLoading}
       >
         {isLoading ? (
-          <LucideLoader2 className="mr-2 size-5 animate-spin stroke-white" />
+          <LucideLoader2 className="size-4 animate-spin" />
         ) : (
-          <LucideShipWheel className="mr-2 size-5 stroke-white" />
+          <LucideShipWheel className="size-4" />
         )}
-        <span className="font-semibold">
-          {isLoading ? "" : "Spin the Wheel"}
-        </span>
+        <span>{isLoading ? "Loading places…" : "Spin the Wheel"}</span>
       </Link>
     </div>
   );

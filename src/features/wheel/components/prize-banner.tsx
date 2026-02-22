@@ -7,7 +7,7 @@ import { LucideX } from "lucide-react";
 import { useReward } from "react-rewards";
 
 import { getPlacesSearchUrl } from "@/lib/helpers";
-import { NearbyPlaces } from "@/types/google";
+import type { NearbyPlaces } from "@/types/google";
 
 type PrizeBannerProps = {
   winner: NearbyPlaces[number];
@@ -33,7 +33,7 @@ export const PrizeBanner = ({
       confettiReward();
     }
     // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [open]);
+  }, [open, confettiReward]);
 
   const handleBackdropClick = (e: React.MouseEvent) => {
     if (e.target === e.currentTarget && onClose) {
@@ -53,7 +53,7 @@ export const PrizeBanner = ({
 
   return (
     <div
-      className="fixed z-50 grid size-full place-items-center bg-slate-800/70 px-4 backdrop-blur-sm"
+      className="fixed inset-0 z-50 grid size-full place-items-center bg-slate-800/70 px-4 backdrop-blur-sm"
       onClick={handleBackdropClick}
       onKeyDown={handleKeyDown}
       tabIndex={-1}
@@ -66,6 +66,7 @@ export const PrizeBanner = ({
         {/* Close Button */}
         {onClose && (
           <button
+            type="button"
             onClick={onClose}
             className="absolute top-4 right-4 rounded-full p-2 text-slate-400 transition-colors hover:cursor-pointer hover:bg-slate-100 hover:text-slate-600"
             aria-label="Close"
@@ -84,6 +85,7 @@ export const PrizeBanner = ({
           {/* Celebration Icon */}
           <div className="mx-auto flex size-16 items-center justify-center rounded-full bg-gradient-to-br from-emerald-100 to-teal-100">
             <svg
+              aria-label="Celebration icon"
               className="h-8 w-8 text-emerald-600"
               fill="currentColor"
               viewBox="0 0 24 24"
@@ -109,6 +111,7 @@ export const PrizeBanner = ({
           {winner.rating && (
             <div className="flex items-center justify-center space-x-2 text-sm text-slate-500">
               <svg
+                aria-label="Rating icon"
                 className="h-4 w-4 text-amber-500"
                 fill="currentColor"
                 viewBox="0 0 24 24"
@@ -122,6 +125,7 @@ export const PrizeBanner = ({
           <div className="mt-6 flex flex-col gap-3">
             {winner.id && (
               <button
+                type="button"
                 className="rounded-lg border border-slate-300 bg-white px-6 py-3 font-semibold text-slate-700 shadow-sm hover:cursor-pointer hover:bg-slate-50 hover:shadow-md"
                 onClick={() =>
                   window.open(
@@ -138,6 +142,7 @@ export const PrizeBanner = ({
             )}
 
             <button
+              type="button"
               onClick={() => {
                 onClose?.();
                 onRespin();

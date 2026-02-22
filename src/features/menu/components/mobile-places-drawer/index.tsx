@@ -1,28 +1,17 @@
-import Link from "next/link";
-import { useEffect, useRef, useState } from "react";
+import { useState } from "react";
 
 import { LucideMapPin, LucideX } from "lucide-react";
-import { debounce } from "radash";
 import { Drawer as VDrawer } from "vaul";
 
-import { getPlacesSearchUrl } from "@/lib/helpers";
 import { cn } from "@/lib/utils";
 import { useMapStore } from "@/store";
-import { GooglePlace } from "@/types/google";
+import type { GooglePlace } from "@/types/google";
 
 import { useNearbyPlaces } from "../../hooks/use-nearby-places";
 import { WheelSpinButton } from "../wheel-spin-button";
 import { ListRow } from "./list-row";
 import { PreviewList } from "./preview-list";
 
-// --- Components --- //
-export const Trigger = ({ onClick }: { onClick: () => void }) => {
-  return (
-    <div>
-      <button onClick={onClick}>Open Drawer</button>
-    </div>
-  );
-};
 
 export const Drawer = ({
   places,
@@ -35,18 +24,15 @@ export const Drawer = ({
 
   return (
     <VDrawer.Root open={open} onOpenChange={setIsOpen}>
-      <div className="flex flex-wrap justify-center gap-2">
+      <div className="flex gap-2">
         <VDrawer.Trigger
           disabled={isLoading}
-          className="rounded-md border border-emerald-500 bg-emerald-950 px-4 py-2 text-sm text-emerald-400 disabled:cursor-not-allowed disabled:opacity-50"
+          className="flex-1 rounded-lg border border-neutral-700 bg-neutral-800 px-4 py-2.5 text-sm font-medium text-neutral-300 transition-colors hover:border-neutral-600 hover:bg-neutral-700 disabled:cursor-not-allowed disabled:opacity-50"
           onClick={() => !isLoading && setIsOpen(true)}
         >
           Change Places
         </VDrawer.Trigger>
-        <WheelSpinButton
-          isLoading={isLoading}
-          className="h-full text-sm [svg]:size-4"
-        />
+        <WheelSpinButton isLoading={isLoading} className="flex-1 text-sm" />
       </div>
 
       <VDrawer.Portal>
@@ -104,11 +90,12 @@ const SelectionButton = ({
 
   return (
     <button
+      type="button"
       disabled={isLoading}
-      className="px-2 py-1 text-xs leading-tight text-sky-500 underline hover:cursor-pointer disabled:cursor-not-allowed disabled:opacity-50"
+      className="rounded-md px-2 py-0.5 text-xs font-medium text-sky-400 transition-colors hover:cursor-pointer hover:bg-neutral-800 hover:text-sky-300 disabled:cursor-not-allowed disabled:opacity-50"
       onClick={handleSelectionClick}
     >
-      {action === "clear" ? "Clear Selection" : "Select All"}
+      {action === "clear" ? "Clear" : "Select All"}
     </button>
   );
 };
@@ -120,13 +107,12 @@ export const MobilePlacesWithDrawer = () => {
 
   if (!isFetchingPlaces && !places.length) {
     return (
-      <div>
-        <p className="text-center text-sm text-neutral-400">
-          Couldn't find any places near you!
+      <div className="flex flex-col items-center justify-center gap-2 rounded-lg border border-amber-800/50 bg-amber-950/30 p-4 text-center">
+        <p className="text-sm font-semibold text-amber-300">
+          No places found nearby
         </p>
-        <p className="text-center text-sm text-neutral-400">
-          Try again by either searching for a different location or adjusting
-          the radius of your search.
+        <p className="text-xs text-amber-500">
+          Try searching a different location or expanding your radius.
         </p>
       </div>
     );
@@ -134,12 +120,17 @@ export const MobilePlacesWithDrawer = () => {
 
   return (
     <div className="flex max-h-full flex-col gap-2 overflow-hidden">
+      {/* Selection header */}
       <div className="flex items-center justify-between">
-        <span className="flex items-center gap-1">
-          <LucideMapPin className="size-3" />
-          <h3 className="text-xs font-bold text-neutral-400 uppercase">
-            Selected Places{" "}
-            {selectedPlaces.length > 0 ? `(${selectedPlaceIds.length})` : ""}
+        <span className="flex items-center gap-1.5">
+          <LucideMapPin className="size-3 text-neutral-500" />
+          <h3 className="text-xs font-semibold tracking-widest text-neutral-500 uppercase">
+            Selected
+            {selectedPlaces.length > 0 ? (
+              <span className="ml-1.5 rounded-full bg-neutral-700 px-1.5 py-0.5 font-medium text-neutral-300 normal-case tracking-normal">
+                {selectedPlaceIds.length}
+              </span>
+            ) : null}
           </h3>
         </span>
 

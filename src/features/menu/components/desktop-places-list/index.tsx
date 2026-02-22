@@ -7,9 +7,10 @@ import { MessageCircleWarning } from "lucide-react";
 
 import { ListSkeleton } from "@/components/skeleton";
 import { useMapStore } from "@/store";
-import { GooglePlace } from "@/types/google";
+import type { GooglePlace } from "@/types/google";
 
 import { useNearbyPlaces } from "../../hooks/use-nearby-places";
+import { WheelSpinButton } from "../wheel-spin-button";
 import { ListRow } from "./list-row";
 
 const ListHeading = ({ places = [] }: { places?: GooglePlace[] }) => {
@@ -24,22 +25,23 @@ const ListHeading = ({ places = [] }: { places?: GooglePlace[] }) => {
   };
 
   return (
-    <div className="flex h-7 items-center justify-between pb-2 leading-tight">
-      <span className="gap-2 text-xs font-bold text-neutral-400 uppercase">
+    <div className="flex items-center justify-between pb-2">
+      <span className="text-xs font-semibold tracking-widest text-neutral-500 uppercase">
         Open Nearby Now
       </span>
 
       {places.length > 0 && (
-        <div className="space-x-2">
-          <span className="text-xs font-bold text-neutral-100">
-            {selectedPlaceIds.length} Places Selected
+        <div className="flex items-center gap-2">
+          <span className="rounded-full bg-neutral-700 px-2 py-0.5 text-xs font-medium text-neutral-300">
+            {selectedPlaceIds.length} selected
           </span>
 
           <button
-            className="text-xs text-sky-500 underline hover:cursor-pointer"
+            type="button"
+            className="rounded-md px-2 py-0.5 text-xs font-medium text-sky-400 transition-colors hover:cursor-pointer hover:bg-neutral-800 hover:text-sky-300"
             onClick={handleSelectionClick}
           >
-            {action === "clear" ? "Clear Selection" : "Select All"}
+            {action === "clear" ? "Clear" : "Select All"}
           </button>
         </div>
       )}
@@ -56,7 +58,7 @@ export const DesktopPlacesList = () => {
 
   if (isFetchingPlaces || !isMapsAPIReady || mapsLoadingState === "LOADING") {
     return (
-      <div className="flex h-fit max-h-full flex-col overflow-hidden">
+      <div className="flex h-fit max-h-full flex-col gap-3 overflow-hidden">
         <ListHeading />
         <ListSkeleton />
       </div>
@@ -68,33 +70,36 @@ export const DesktopPlacesList = () => {
     listRef.current.scrollHeight > listRef.current.clientHeight;
 
   return (
-    <div className="flex max-h-full flex-col overflow-hidden">
+    <div className="flex max-h-full flex-col gap-3 overflow-hidden">
       <ListHeading places={places} />
+
       {places.length > 0 ? (
-        <div className="relative overflow-hidden rounded-md">
-          <ul ref={listRef} className="overflow-y-auto">
+        <div className="relative min-h-0 flex-1 overflow-hidden rounded-md">
+          <ul ref={listRef} className="h-full overflow-y-auto">
             {places.map((place, idx) => (
               <ListRow key={place.id} place={place} isEven={idx % 2 === 0} />
             ))}
           </ul>
           {listHasOverflow && (
-            <div className="to-background absolute right-0 bottom-0 left-0 h-20 translate-y-1/2 bg-gradient-to-b from-transparent" />
+            <div className="to-background pointer-events-none absolute right-0 bottom-0 left-0 h-16 bg-gradient-to-b from-transparent" />
           )}
         </div>
       ) : (
-        <div className="text-neutral-md mx-2 rounded-sm border border-amber-500 bg-amber-800/20 p-2 px-2 text-center">
-          <span className="text-center">
-            <MessageCircleWarning className="-mt-1 mr-1 inline size-4 stroke-amber-200" />
-            <span className="font-bold text-amber-200">
-              Uh oh, we couldn&apos;t find any places near you!
-            </span>
-          </span>
-          <p className="text-sm text-amber-400">
-            Try again by either searching for a different location or adjusting
-            the radius of your search.
+        <div className="rounded-lg border border-amber-800/50 bg-amber-950/30 p-4 text-center">
+          <MessageCircleWarning className="mx-auto mb-2 size-5 stroke-amber-400" />
+          <p className="text-sm font-semibold text-amber-300">
+            No places found nearby
+          </p>
+          <p className="mt-1 text-xs text-amber-500">
+            Try searching a different location or expanding your radius.
           </p>
         </div>
       )}
+
+      {/* Spin CTA — separated from the list with a clear visual boundary */}
+      <div className="shrink-0 border-t border-neutral-800 pt-3">
+        <WheelSpinButton isLoading={isFetchingPlaces} />
+      </div>
     </div>
   );
 };
