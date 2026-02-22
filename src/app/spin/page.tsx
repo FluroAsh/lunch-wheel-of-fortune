@@ -61,17 +61,19 @@ export default function Page() {
       {/* Main content */}
       <main className="flex flex-1 flex-col items-center justify-center gap-6 px-4 py-8">
         {/* Page context */}
-        <div className="text-center">
-          <div className="flex items-center gap-2">
-            <h2 className="bg-gradient-to-r from-neutral-100 to-neutral-300 bg-clip-text text-lg font-bold tracking-widest text-transparent uppercase">
-              {selectedPlaces.length} place
-              {selectedPlaces.length !== 1 ? "s" : ""} in the pot
-            </h2>
-            <LucideCookingPot className="inline-block size-6 stroke-neutral-300" />
+        <div className="flex flex-col justify-center gap-4">
+          <div>
+            <div className="flex justify-center gap-2">
+              <h2 className="bg-gradient-to-r from-neutral-100 to-neutral-300 bg-clip-text text-lg font-bold tracking-widest text-transparent uppercase">
+                {selectedPlaces.length} place
+                {selectedPlaces.length !== 1 ? "s" : ""} near you
+              </h2>
+              <LucideCookingPot className="inline-block size-6 stroke-neutral-300" />
+            </div>
+            <p className="text-center text-sm text-neutral-400 italic">
+              {!isSpinning ? "Let's get cooking..." : "Cooking up a storm..."}
+            </p>
           </div>
-          <p className="text-sm text-neutral-400 italic">
-            {!isSpinning ? "Let's get cooking..." : "Cooking up a storm..."}
-          </p>
         </div>
 
         {/* Wheel */}

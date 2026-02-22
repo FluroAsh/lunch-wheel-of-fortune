@@ -14,13 +14,8 @@ const SuggestionItem = ({
   className?: string;
 }) => {
   const map = useMap();
-  const {
-    setSearchLocation,
-    setSearchAddress,
-    setAutocompleteInput,
-    setShouldShowSuggestions,
-    setIsFetchingDetails,
-  } = useMapStore();
+  const { setSearchLocation, setIsFetchingDetails, resetAutocomplete } =
+    useMapStore();
 
   const handleSuggestionClick = async (
     e: React.MouseEvent<HTMLButtonElement> | React.KeyboardEvent<HTMLElement>,
@@ -31,14 +26,10 @@ const SuggestionItem = ({
     setIsFetchingDetails(true);
 
     try {
-      const { lat, lng, name } = await fetchAddressDetails(placeId);
+      const { lat, lng } = await fetchAddressDetails(placeId);
       map!.panTo({ lat, lng });
       setSearchLocation({ lat, lng });
-      setSearchAddress(name);
-      // Show the selected address in the input rather than clearing it,
-      // so the user can see what location is currently active.
-      setAutocompleteInput(name);
-      setShouldShowSuggestions(false);
+      resetAutocomplete();
     } catch (error) {
       console.error("Failed to fetch place details:", error);
     } finally {

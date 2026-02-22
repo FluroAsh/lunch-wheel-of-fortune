@@ -12,9 +12,6 @@ type MapState = {
   setActiveMarker: (id: string | undefined) => void;
   searchLocation: Coords | undefined;
   setSearchLocation: (location: Coords) => void;
-  /** Human-readable address label for the current searchLocation. */
-  searchAddress: string | undefined;
-  setSearchAddress: (address: string | undefined) => void;
   selectedPlaceIds: string[];
   setSelectedPlaceIds: (ids: string[]) => void;
   // -- Autocomplete UI State -- //
@@ -25,7 +22,7 @@ type MapState = {
   setShouldShowSuggestions: (shouldShow: boolean) => void;
   isFetchingDetails: boolean;
   setIsFetchingDetails: (isFetching: boolean) => void;
-  /** Resets autocomplete UI state and clears the saved address. */
+  /** Resets autocomplete state after selection */
   resetAutocomplete: () => void;
 };
 
@@ -38,8 +35,6 @@ export const useMapStore = create<MapState>()(
     setActiveMarker: (id: string | undefined) => set({ activeMarker: id }),
     searchLocation: undefined,
     setSearchLocation: (location: Coords) => set({ searchLocation: location }),
-    searchAddress: undefined,
-    setSearchAddress: (address: string | undefined) => set({ searchAddress: address }),
     selectedPlaceIds: [],
     setSelectedPlaceIds: (ids: string[]) => set({ selectedPlaceIds: ids }),
     // -- Autocomplete UI State -- //
@@ -55,7 +50,6 @@ export const useMapStore = create<MapState>()(
     resetAutocomplete: () =>
       set({
         autocompleteInput: "",
-        searchAddress: undefined,
         shouldShowSuggestions: false,
         isFetchingDetails: false,
       }),
