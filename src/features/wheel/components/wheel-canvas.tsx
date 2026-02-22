@@ -71,8 +71,9 @@ export function WheelCanvas({
   const targetRotationRef = useRef<number>(0);
   const isSpinningRef = useRef<boolean>(false);
 
-  // Responsive canvas size — driven by container width, capped at MAX_SIZE_PX
-  const [canvasSize, setCanvasSize] = useState<number>(MAX_SIZE_PX);
+  // Initialise to 0 — ResizeObserver sets the true size after first paint.
+  // Avoids the MAX_SIZE_PX > actual-width collapse that causes layout shift.
+  const [canvasSize, setCanvasSize] = useState<number>(0);
 
   useEffect(() => {
     const container = containerRef.current;
@@ -95,6 +96,7 @@ export function WheelCanvas({
     (rotation: number) => {
       const canvas = canvasRef.current;
       if (!canvas) return;
+      if (canvasSize === 0) return;
       const ctx = canvas.getContext("2d");
       if (!ctx) return;
 
@@ -291,8 +293,9 @@ export function WheelCanvas({
 
   return (
     // Container drives responsive sizing via ResizeObserver.
-    // max-w-[420px] caps the wheel on large screens; w-full fills available space.
-    <div ref={containerRef} className="w-full max-w-[420px]">
+    // aspect-square reserves the correct height before ResizeObserver fires,
+    // preventing the collapse-then-expand layout shift on first paint.
+    <div ref={containerRef} className="aspect-square w-full max-w-[420px]">
       <div className="relative flex items-center justify-center">
         {/* Minimal pointer triangle at top centre */}
         <div
