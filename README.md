@@ -15,10 +15,10 @@ Making group lunch decisions can be time-consuming and frustrating. This applica
 
 - **📍 Location-Based Search**: Automatically detects your location or allows manual address input
 - **🗺️ Interactive Map**: Visual representation of nearby restaurants with custom markers and radius visualization
-- **🎡 Wheel of Fortune**: Gamified selection process with a spinning wheel to randomly choose from your selected options
+- **🎡 Spinning Wheel**: Custom Canvas wheel with a curated colour palette, radial text labels, smooth ease-out animation, and responsive sizing — no third-party wheel library
 - **📱 Responsive Design**: Optimized for both desktop and mobile devices with adaptive UI components
 - **⭐ Smart Filtering**: Displays ratings, distance, and establishment types to help inform your choices
-- **🎨 Modern UI**: Clean, intuitive interface built with Tailwind CSS and modern design principles
+- **🎨 Modern UI**: Clean, dark-themed interface built with Tailwind CSS and modern design principles
 
 ## 🛠️ Tech Stack
 
@@ -28,6 +28,7 @@ Making group lunch decisions can be time-consuming and frustrating. This applica
 - **State Management**: [Zustand](https://github.com/pmndrs/zustand)
 - **Data Fetching**: [TanStack Query (React Query)](https://tanstack.com/query/latest)
 - **Maps**: [Google Maps API](https://developers.google.com/maps) via [@vis.gl/react-google-maps](https://visgl.github.io/react-google-maps/)
+- **Wheel**: Custom Canvas-based spinning wheel with responsive sizing, radial text rendering, and ease-out animation
 - **UI Components**: Custom components with [Vaul](https://vaul.emilkowal.ski/) (drawer), [Lucide React](https://lucide.dev/) (icons)
 - **Testing**: [MSW (Mock Service Worker)](https://mswjs.io/) for API mocking
 - **Code Quality**: ESLint, Prettier with import sorting
@@ -67,10 +68,10 @@ npm install
    ```bash
    # macOS
    brew install mkcert
-   
+
    # Linux (Debian/Ubuntu)
    sudo apt install mkcert
-   
+
    # For other platforms, see: https://github.com/FiloSottile/mkcert#installation
    ```
 
@@ -79,10 +80,10 @@ npm install
    ```bash
    # Install the local CA (one-time setup)
    mkcert -install
-   
+
    # Create certificates directory
    mkdir -p certificates
-   
+
    # Generate localhost certificates
    mkcert -key-file certificates/localhost-key.pem -cert-file certificates/localhost.pem localhost
    ```
@@ -194,7 +195,6 @@ This project is open source and available under the [MIT License](LICENSE).
 
 - Built with [Next.js](https://nextjs.org/) by Vercel
 - Maps powered by [Google Maps Platform](https://developers.google.com/maps)
-- Wheel component from [react-custom-roulette](https://github.com/effectussoftware/react-custom-roulette)
 - Icons from [Lucide](https://lucide.dev/)
 
 ## 📧 Contact
