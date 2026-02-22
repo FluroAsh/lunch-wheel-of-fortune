@@ -5,7 +5,9 @@
   --dialog-border-color: hsl(240, 3.7%, 18%);
 }
 
-/* Outer container */
+/* Outer container — max-height: none overrides the dynamic viewport-relative
+   value Google injects as an inline style on short screens (e.g. mobile).
+   Our content is compact enough that unconstrained height is safe. */
 .gm-style .gm-style-iw {
   color: var(--dialog-text-color);
   background-color: var(--dialog-bg-color);
@@ -13,6 +15,7 @@
   border-radius: 10px !important;
   box-shadow: 0 8px 24px rgba(0, 0, 0, 0.5) !important;
   padding: 0 !important;
+  max-height: none !important;
 }
 
 /* Header — padding on the content node only */
@@ -26,9 +29,11 @@
   border-bottom: 1px solid var(--dialog-border-color);
 }
 
-/* Scrollable content wrapper */
+/* Scrollable content wrapper — max-height: none prevents Google's
+   viewport-relative inline style from clipping the footer CTA. */
 .gm-style .gm-style-iw-d {
   overflow: hidden !important;
+  max-height: none !important;
   padding: 0 !important;
 }
 
