@@ -3,9 +3,9 @@
 import { useMedia } from "react-use";
 
 import "@/css/map.css";
-import { DesktopPlacesList } from "@/features/menu/components/desktop-places-list";
+import { DesktopPlacesList } from "@/features/menu/components/desktop-places";
 import GoogleMap from "@/features/menu/components/map";
-import { MobilePlacesWithDrawer } from "@/features/menu/components/mobile-places-drawer";
+import { MobilePlacesWithDrawer } from "@/features/menu/components/mobile-places";
 import { MEDIA_QUERIES } from "@/lib/constants";
 import { cn } from "@/lib/utils";
 
