@@ -1,11 +1,15 @@
 import { NextResponse } from "next/server";
 
+import { Ratelimit } from "@upstash/ratelimit";
+import { Redis } from "@upstash/redis";
+
 import {
   EXCLUDED_NON_FOOD_TYPES,
   FOOD_AND_DRINK_TYPES,
 } from "@/features/menu/constants";
 import { METHODS } from "@/lib/constants";
 import { GOOGLE } from "@/lib/urls";
+import { getClientIp } from "@/lib/utils";
 import type { NearbyPlaces, RankPreference } from "@/types/google";
 
 // Refer to: https://developers.google.com/maps/billing-and-pricing/pricing#places-pricing
@@ -30,11 +34,26 @@ const fieldMask = [
   .map((field) => `places.${field}`)
   .join(",");
 
+const ratelimit = new Ratelimit({
+  redis: Redis.fromEnv(),
+  limiter: Ratelimit.slidingWindow(10, "30s"),
+  analytics: true,
+});
+
 export async function POST(request: Request) {
-  // TODO: Add rate limiting for fetch requests...
   const { lat, lng, radius } = await request.json();
+  const ip = getClientIp(request);
 
   try {
+    const limit = await ratelimit.limit(`nearby-places-${ip}`, { ip });
+
+    if (!limit.success) {
+      return NextResponse.json(
+        { error: "Rate limit exceeded" },
+        { status: 429 },
+      );
+    }
+
     const res = await fetch(GOOGLE.POST.searchNearby, {
       method: METHODS.POST,
       headers: {

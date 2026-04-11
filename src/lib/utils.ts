@@ -32,3 +32,7 @@ export const getAspectRatio = (width: number, height: number) => {
       return "aspect-square";
   }
 };
+
+// Handle if multiple IPs are comma separated in the header
+export const getClientIp = (request: Request) =>
+  request.headers.get("x-forwarded-for")?.split(",")[0] ?? "127.0.0.1";

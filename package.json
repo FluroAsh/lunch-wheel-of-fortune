@@ -11,6 +11,7 @@
   "dependencies": {
     "@tanstack/react-query": "^5.90.8",
     "@tanstack/react-query-devtools": "^5.90.2",
+    "@upstash/ratelimit": "^2.0.8",
     "@vis.gl/react-google-maps": "^1.5.5",
     "clsx": "^2.1.1",
     "js-cookie": "^3.0.5",
