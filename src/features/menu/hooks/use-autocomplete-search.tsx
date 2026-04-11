@@ -24,7 +24,6 @@ export const useAutocompleteSearch = (input: string) => {
 
   // Update UI state based on query results
   useEffect(() => {
-    console.log("query.data", query.data);
     if (query.data !== undefined) {
       // Hide suggestions if no results and input is empty
       if (query.data.length === 0 && input.trim().length === 0) {
